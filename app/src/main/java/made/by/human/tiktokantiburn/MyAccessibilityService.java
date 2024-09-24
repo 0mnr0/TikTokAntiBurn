@@ -28,8 +28,6 @@ public class MyAccessibilityService extends AccessibilityService {
             }
 
 
-
-
             Intent serviceIntent = new Intent(this, FloatingWindowService.class);
             if (!activePackages.contains("com.zhiliaoapp.musically")){
                 serviceIntent.setAction("ACTION_CLOSE_WINDOW");
@@ -37,16 +35,6 @@ public class MyAccessibilityService extends AccessibilityService {
             } else {
                 startService(serviceIntent);
             }
-
-            try{
-                Log.wtf("Services list: ", String.valueOf(activePackages.contains("com.zhiliaoapp.musically")));
-                Log.wtf("Service start with launching: ", String.valueOf(Launched));
-            } catch (Exception e) {
-                Log.w("Service Start exception", e);
-            }
-
-
-
 
         }
     }
