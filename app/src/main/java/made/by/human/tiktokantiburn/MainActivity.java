@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void openSpecificAccessibilityServiceSettings() {
+    public void openSpecificAccessibilityServiceSettings(View view) {
         try {
             Intent openSettings = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
             openSettings.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("isServiceEnabled:", String.valueOf(isServiceEnabled));
         if (!isServiceEnabled) {
-            openSpecificAccessibilityServiceSettings();
+            openSpecificAccessibilityServiceSettings(null);
         }
         if (!Settings.canDrawOverlays(this)) {
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
@@ -114,9 +114,7 @@ public class MainActivity extends AppCompatActivity {
         int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
                 android.os.Process.myUid(), getPackageName());
 
-        if (mode == AppOpsManager.MODE_ALLOWED) {
-            // Разрешение выдано
-        } else {
+        if (mode != AppOpsManager.MODE_ALLOWED) {
             UseDataRequest(null);
         }
 
