@@ -35,9 +35,7 @@ public class MyAccessibilityService extends AccessibilityService {
                 } else {
                     startService(serviceIntent);
                 }
-            } catch (Exception e){
-                Log.w("Exception catched (maybe getPackageName is null): ", e);
-            }
+            }catch (Exception ignored) {}
 
         }
     }

@@ -53,6 +53,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void CreateFloatingWindow(View view){
+        if (Settings.canDrawOverlays(this)) {
+            Intent serviceIntent = new Intent(this, FloatingWindowService.class);
+            startService(serviceIntent);
+        } else {
+            Log.d("FloatingWindowService", "Overlay permission not granted");
+        }
+
+
+    }
+
     public void openRequestTopWindow(View view){
         Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                 Uri.parse("package:" + getPackageName()));
@@ -64,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void openSpecificAccessibilityServiceSettings(View view) {
+    private void openSpecificAccessibilityServiceSettings() {
         try {
             Intent openSettings = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
             openSettings.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
@@ -87,11 +98,11 @@ public class MainActivity extends AppCompatActivity {
         });
         checkOverlayPermission();
 
-
         boolean isServiceEnabled = isAccessibilityServiceEnabled(this, MyAccessibilityService.class);
 
+        Log.d("isServiceEnabled:", String.valueOf(isServiceEnabled));
         if (!isServiceEnabled) {
-            openSpecificAccessibilityServiceSettings(null);
+            openSpecificAccessibilityServiceSettings();
         }
         if (!Settings.canDrawOverlays(this)) {
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
@@ -100,9 +111,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         AppOpsManager appOps = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
-        int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, android.os.Process.myUid(), getPackageName());
+        int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
+                android.os.Process.myUid(), getPackageName());
 
-        if (mode != AppOpsManager.MODE_ALLOWED) {
+        if (mode == AppOpsManager.MODE_ALLOWED) {
+            // Разрешение выдано
+        } else {
             UseDataRequest(null);
         }
 
