@@ -12,28 +12,31 @@ import java.util.Set;
 
 
 public class MyAccessibilityService extends AccessibilityService {
-    boolean Launched = false;
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
-            List<AccessibilityWindowInfo> windows = getWindows();
+            try {
+                List<AccessibilityWindowInfo> windows = getWindows();
 
-            Set<String> activePackages = new HashSet<>();
-            for (AccessibilityWindowInfo window : windows) {
-                if (window.getRoot() != null && window.getRoot().getPackageName() != null) {
-                    String packageName = window.getRoot().getPackageName().toString();
-                    activePackages.add(packageName);
+                Set<String> activePackages = new HashSet<>();
+                for (AccessibilityWindowInfo window : windows) {
+                    if (window.getRoot() != null && window.getRoot().getPackageName() != null) {
+                        String packageName = window.getRoot().getPackageName().toString();
+                        activePackages.add(packageName);
+                    }
                 }
-            }
 
 
-            Intent serviceIntent = new Intent(this, FloatingWindowService.class);
-            if (!activePackages.contains("com.zhiliaoapp.musically")){
-                serviceIntent.setAction("ACTION_CLOSE_WINDOW");
-                startService(serviceIntent);
-            } else {
-                startService(serviceIntent);
+                Intent serviceIntent = new Intent(this, FloatingWindowService.class);
+                if (!activePackages.contains("com.zhiliaoapp.musically")) {
+                    serviceIntent.setAction("ACTION_CLOSE_WINDOW");
+                    startService(serviceIntent);
+                } else {
+                    startService(serviceIntent);
+                }
+            } catch (Exception e){
+                Log.w("Exception catched (maybe getPackageName is null): ", e);
             }
 
         }
