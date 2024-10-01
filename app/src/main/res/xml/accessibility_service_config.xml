@@ -5,7 +5,6 @@
     android:notificationTimeout="100"
     android:canRetrieveWindowContent="true"
     android:settingsActivity=".MainActivity"
-    android:accessibilityFlags="flagReportViewIds|flagRetrieveInteractiveWindows"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
 </accessibility-service>

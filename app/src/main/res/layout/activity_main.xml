@@ -9,22 +9,21 @@
 
     <Button
         android:id="@+id/button1"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="openRequestTopWindow"
         android:text="Запрос &quot;Поверх других окон&quot;"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button4"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="UseDataRequest"
-        android:text='Запрос "Доступ об использовании"'
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="45dp"
+        android:onClick="CreateFloatingWindow"
+        android:text="Button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button1" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
