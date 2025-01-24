@@ -1,11 +1,13 @@
 package made.by.human.tiktokantiburn;
 
 import android.accessibilityservice.AccessibilityServiceInfo;
+import android.annotation.SuppressLint;
 import android.app.AppOpsManager;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -13,6 +15,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.accessibility.AccessibilityManager;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -25,6 +29,14 @@ import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    private SeekBar seekBar;
+    private TextView progressText;
+    private SharedPreferences sharedPreferences;
+    private static final String PREFS_NAME = "SeekBarPrefs";
+    private static final String PREF_VALUE = "seekBarValue";
+
+
     public static boolean isAccessibilityServiceEnabled(Context context, Class<?> accessibilityService) {
         ComponentName expectedComponentName = new ComponentName(context, accessibilityService);
 
@@ -60,8 +72,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Log.d("FloatingWindowService", "Overlay permission not granted");
         }
-
-
     }
 
     public void openRequestTopWindow(View view){
@@ -71,8 +81,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void UseDataRequest(View view){
-        Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-        startActivity(intent);
+        try {
+            Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+            startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(this, "Request permission of USAGE ACCESS manually, please", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void openSpecificAccessibilityServiceSettings(View view) {
@@ -86,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,6 +136,36 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(MainActivity.this, FloatingWindowService.class);
         startService(intent);
+
+        seekBar = findViewById(R.id.seekBar2);
+        progressText = findViewById(R.id.textView);
+        sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        int screenHeight = getResources().getDisplayMetrics().heightPixels;
+        int max = (int) (screenHeight * 0.1);
+        seekBar.setMax(max);
+        seekBar.setMin(40);
+        int savedValue = sharedPreferences.getInt(PREF_VALUE, 40);
+        seekBar.setProgress(savedValue);
+        progressText.setText("Popup height: " + savedValue + " px");
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                int value = Math.max(progress, 40);
+                progressText.setText("Popup height: " + value + " px");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                int value = Math.max(seekBar.getProgress(), 40);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt(PREF_VALUE, value);
+                editor.apply();
+            }
+        });
 
     }
 
