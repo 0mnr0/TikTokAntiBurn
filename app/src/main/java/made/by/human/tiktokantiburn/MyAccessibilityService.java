@@ -12,7 +12,21 @@ import java.util.Set;
 
 
 public class MyAccessibilityService extends AccessibilityService {
-    boolean Launched = false;
+
+    public boolean isKeyboardActive() {
+        try {
+            List<AccessibilityWindowInfo> windows = getWindows();
+            if (windows == null) return false;
+            for (AccessibilityWindowInfo window : windows) {
+                if (window.getType() == AccessibilityWindowInfo.TYPE_INPUT_METHOD) {
+                    return true; // Если окно типа INPUT_METHOD активно, значит клавиатура открыта
+                }
+            }
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
@@ -29,7 +43,7 @@ public class MyAccessibilityService extends AccessibilityService {
 
 
             Intent serviceIntent = new Intent(this, FloatingWindowService.class);
-            if (!activePackages.contains("com.zhiliaoapp.musically")){
+            if (!activePackages.contains("com.zhiliaoapp.musically") || isKeyboardActive()){
                 serviceIntent.setAction("ACTION_CLOSE_WINDOW");
                 startService(serviceIntent);
             } else {
