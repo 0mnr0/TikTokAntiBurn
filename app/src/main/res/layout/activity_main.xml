@@ -101,5 +101,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:maxHeight="40dp"
+        android:onClick="OpenGithub"
+        android:tint="@color/ButtonBackdround"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/github_svgrepo_com" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

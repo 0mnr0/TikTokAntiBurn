@@ -59,25 +59,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkOverlayPermission() {
-        if (!Settings.canDrawOverlays(this)) {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-            startActivityForResult(intent, 1234);
-        }
-    }
-
-    public void CreateFloatingWindow(View view){
-        if (Settings.canDrawOverlays(this)) {
-            Intent serviceIntent = new Intent(this, FloatingWindowService.class);
-            startService(serviceIntent);
-        } else {
-            Log.d("FloatingWindowService", "Overlay permission not granted");
+        try {
+            if (!Settings.canDrawOverlays(this)) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                startActivityForResult(intent, 1234);
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Failed to request Overlay permission. Request it manually", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void openRequestTopWindow(View view){
-        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                Uri.parse("package:" + getPackageName()));
-        startActivity(intent);
+        try {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:" + getPackageName()));
+            startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(this, "Failed to request Overlay permission. Request it manually", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void OpenGithub(View view) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/0mnr0/TikTokAntiBurn"));
+        startActivity(browserIntent);
     }
 
     public void UseDataRequest(View view){
@@ -96,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(openSettings, 1000);
         } catch (ActivityNotFoundException e) {
             e.printStackTrace();
-            Toast.makeText(this, "Невозможно открыть настройки доступности", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Cant reach accessibility setting. Request permission manually", Toast.LENGTH_SHORT).show();
         }
     }
 
