@@ -2,6 +2,7 @@ package made.by.human.tiktokantiburn;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.os.Build;
@@ -22,6 +23,8 @@ public class FloatingWindowService extends Service {
 
     private WindowManager windowManager;
     private View floatingView;
+    private static final String PREFS_NAME = "SeekBarPrefs";
+    private static final String PREF_VALUE = "seekBarValue";
 
     @Override
     public void onCreate() {
@@ -63,8 +66,12 @@ public class FloatingWindowService extends Service {
         display.getSize(size);
         int screenWidth = size.x;
 
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        int savedValue = sharedPreferences.getInt(PREF_VALUE, 40); // 40 - значение по умолчанию
+
+
         params.width = screenWidth / 5 - 20;
-        params.height = 120;
+        params.height = savedValue;
         params.gravity = Gravity.BOTTOM | Gravity.CENTER;
 
 
