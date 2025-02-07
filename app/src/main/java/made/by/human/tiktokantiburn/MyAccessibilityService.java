@@ -2,31 +2,28 @@ package made.by.human.tiktokantiburn;
 
 import android.accessibilityservice.AccessibilityService;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.util.Log;
+import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityWindowInfo;
+
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 public class MyAccessibilityService extends AccessibilityService {
 
-    public boolean isKeyboardActive() {
-        try {
-            List<AccessibilityWindowInfo> windows = getWindows();
-            if (windows == null) return false;
-            for (AccessibilityWindowInfo window : windows) {
-                if (window.getType() == AccessibilityWindowInfo.TYPE_INPUT_METHOD) {
-                    return true; // Если окно типа INPUT_METHOD активно, значит клавиатура открыта
-                }
-            }
-            return false;
-        } catch (Exception e) {
-            return false;
-        }
-    }
+
+
+
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
@@ -35,15 +32,17 @@ public class MyAccessibilityService extends AccessibilityService {
 
             Set<String> activePackages = new HashSet<>();
             for (AccessibilityWindowInfo window : windows) {
-                if (window.getRoot() != null && window.getRoot().getPackageName() != null) {
-                    String packageName = window.getRoot().getPackageName().toString();
-                    activePackages.add(packageName);
+                if (window.getRoot() != null) {
+                    if (window.getRoot().getPackageName() != null) {
+                        String packageName = window.getRoot().getPackageName().toString();
+                        activePackages.add(packageName);
+                    }
                 }
             }
 
-
             Intent serviceIntent = new Intent(this, FloatingWindowService.class);
-            if (!activePackages.contains("com.zhiliaoapp.musically") || isKeyboardActive()){
+            Log.w("TikTok is NOT opened: ", String.valueOf(!activePackages.contains("com.zhiliaoapp.musically")));
+            if (!activePackages.contains("com.zhiliaoapp.musically")){
                 serviceIntent.setAction("ACTION_CLOSE_WINDOW");
                 startService(serviceIntent);
             } else {
