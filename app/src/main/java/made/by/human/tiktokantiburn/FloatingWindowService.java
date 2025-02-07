@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,10 +76,14 @@ public class FloatingWindowService extends Service {
         params.gravity = Gravity.BOTTOM | Gravity.CENTER;
 
 
-        windowManager.addView(floatingView, params);
-        Animation fadeInAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
-
-        new Handler(Looper.getMainLooper()).post(() -> floatingView.startAnimation(fadeInAnimation));
+        try {
+            windowManager.addView(floatingView, params);
+            Animation fadeInAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
+            new Handler(Looper.getMainLooper()).post(() -> floatingView.startAnimation(fadeInAnimation));
+        } catch (Exception e) {
+            Log.w("Exception catched:", e);
+            return Service.START_STICKY;
+        }
 
 
 
