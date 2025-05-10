@@ -47,6 +47,11 @@
             android:exported="true" />
 
 
+        <service
+            android:name=".SetupFloatingWindows"
+            android:exported="false"
+            android:enabled="true" />
+
 
 
 

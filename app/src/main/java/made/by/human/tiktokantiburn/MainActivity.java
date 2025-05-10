@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -91,6 +93,31 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(this, "Request permission of USAGE ACCESS manually, please", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void OpenExtendedSetting(View view){
+        try{
+            Intent intent = new Intent();
+            intent.setComponent(new ComponentName(
+                    "com.zhiliaoapp.musically",
+                    "com.ss.android.ugc.aweme.splash.SplashActivity"
+            ));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            // startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(this, "Приложение TikTok не найдено", Toast.LENGTH_SHORT).show();
+        }
+
+        if (!Settings.canDrawOverlays(this)) {
+            Toast.makeText(this, "Приложению не выдано canDrawOverlays", Toast.LENGTH_SHORT).show();
+        }
+        Intent intent = new Intent(this, SetupFloatingWindows.class);
+        startService(intent);
+        Log.d("MyAccessibilityService", "Accessibility Service started");
+
+
+
+
     }
 
     public void openSpecificAccessibilityServiceSettings(View view) {

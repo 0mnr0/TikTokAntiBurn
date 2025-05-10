@@ -60,7 +60,6 @@ public class FloatingWindowService extends Service {
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
 
-        // Получаем ширину экрана и настраиваем параметры окна
         WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         Display display = windowManager.getDefaultDisplay();
         Point size = new Point();
