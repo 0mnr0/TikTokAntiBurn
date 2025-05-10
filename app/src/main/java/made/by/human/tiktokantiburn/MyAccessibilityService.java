@@ -20,7 +20,6 @@ public class MyAccessibilityService extends AccessibilityService {
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
-            if (!true) {return;}
             Intent serviceIntent = new Intent(this, FloatingWindowService.class);
             try {
                 List<AccessibilityWindowInfo> windows = getWindows();
