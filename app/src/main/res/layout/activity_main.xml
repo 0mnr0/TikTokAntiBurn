@@ -8,12 +8,37 @@
     android:background="@color/ButtonForeground"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:maxHeight="40dp"
+        android:onClick="OpenGithub"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/github_svgrepo_com"
+        app:tint="@color/ButtonBackdround" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TikTok AntiBurn"
+        android:textColor="@color/SeekBackdround"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="12dp"
-        app:layout_constraintBottom_toTopOf="@+id/slider"
+        app:layout_constraintBottom_toBottomOf="@+id/SomeSetting"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -77,64 +102,106 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/textView3"
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TikTok AntiBurn"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.66" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="Быстрая настройка"
         android:textColor="@color/SeekBackdround"
         android:textSize="34sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/SomeSetting"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/fast_setting_bg"
+        android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="14dp"
-        android:text="Высота основного окна:"
-        android:textColor="@color/ButtonBackdround"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/slider"
-        app:layout_constraintStart_toStartOf="@+id/slider" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:text="Высота основного окна:"
+            android:textColor="@color/ButtonBackdround"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/slider"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.slider.Slider
-        android:id="@+id/slider"
-        android:layout_width="match_parent"
+        <com.google.android.material.slider.Slider
+            android:id="@+id/slider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="Setup a height of popup"
+            android:value="20.0"
+            android:valueFrom="0.0"
+            android:valueTo="100.0"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:thumbColor="@color/SeekBackdroundFilled"
+            app:tickColorActive="#00000000"
+            app:tickColorInactive="#E41D1D"
+            app:tickVisible="false"
+            app:trackColorActive="@color/SeekBackdroundFilled"
+            app:trackColorInactive="@color/SeekBackdround"
+            tools:ignore="HardcodedText"
+            tools:layout_editor_absoluteX="20dp"
+            tools:tickColorInactive="#00000000" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/SomeSetting2"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="24dp"
-        android:contentDescription="Setup a height of popup"
-        android:value="20.0"
-        android:valueFrom="0.0"
-        android:valueTo="100.0"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/fast_setting_bg"
+        android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:thumbColor="@color/SeekBackdroundFilled"
-        app:tickColorActive="#00000000"
-        app:tickColorInactive="#E41D1D"
-        app:tickVisible="false"
-        app:trackColorActive="@color/SeekBackdroundFilled"
-        app:trackColorInactive="@color/SeekBackdround"
-        tools:ignore="HardcodedText"
-        tools:tickColorInactive="#00000000" />
+        app:layout_constraintTop_toBottomOf="@+id/SomeSetting">
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_margin="10dp"
-        android:maxHeight="40dp"
-        android:onClick="OpenGithub"
-        app:tint="@color/ButtonBackdround"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/github_svgrepo_com" />
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/Switcher"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:checked="false"
+            android:text="Убрать при нажатии"
+            android:textColor="@color/SeekBackdroundFilled"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:thumbTint="@color/SeekBackdroundFilled"
+            app:trackDecorationTint="@color/SeekBackdroundFilled"
+            app:trackTint="@color/MID" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
