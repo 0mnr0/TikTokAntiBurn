@@ -13,24 +13,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.175" />
+        app:layout_constraintGuide_percent="0.125" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.825" />
+        app:layout_constraintGuide_percent="0.875" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
+        android:animateLayoutChanges="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/ButtonBackdround"
+            android:padding="15dp"
+            android:text="Сохранить"
+            android:textColor="@color/ButtonForeground"
+            android:textStyle="bold"
+            app:cornerRadius="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/btnAdd"
+            app:layout_constraintTop_toBottomOf="@+id/btnAdd" />
 
         <Button
             android:id="@+id/btnAdd"
@@ -48,12 +62,13 @@
 
         <Button
             android:id="@+id/btnClose"
-            android:layout_width="40dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/ButtonBackdround"
             android:padding="15dp"
             android:text="X"
             android:textColor="@color/ButtonForeground"
+            android:textStyle="bold"
             app:cornerRadius="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -61,12 +76,83 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/BlockBurnSettings"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:animateLayoutChanges="true"
-            android:background="#FF0000"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="false"
+            android:background="@drawable/setuper"
+            android:padding="10dp"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/btnAdd"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnSave"
             tools:visibility="visible">
+
+            <Button
+                android:id="@+id/RemoveElement"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-4dp"
+                android:backgroundTint="@color/ButtonBackdround"
+                android:padding="15dp"
+                android:text="🗑️ Удалить элемент"
+                android:textColor="@color/ButtonForeground"
+                app:cornerRadius="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/elementWidth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Ширина: ?px"
+                android:textColor="@color/ButtonBackdround"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/RemoveElement" />
+
+            <SeekBar
+                android:id="@+id/widthBar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:progressBackgroundTint="@color/SeekBackdroundFilled"
+                android:progressTint="@color/SeekBackdroundFilled"
+                android:thumbTint="@color/SeekBackdroundFilled"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/elementWidth" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="@+id/widthBar"
+                app:layout_constraintStart_toStartOf="@+id/widthBar"
+                app:layout_constraintTop_toBottomOf="@+id/widthBar" />
+
+            <TextView
+                android:id="@+id/elementHeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Высота: ?px"
+                android:textColor="@color/ButtonBackdround"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+            <SeekBar
+                android:id="@+id/heightBar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:progressBackgroundTint="@color/SeekBackdroundFilled"
+                android:progressTint="@color/SeekBackdroundFilled"
+                android:thumbTint="@color/SeekBackdroundFilled"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/elementHeight" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

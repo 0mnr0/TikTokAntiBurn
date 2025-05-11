@@ -3,9 +3,10 @@ package made.by.human.tiktokantiburn;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
-import android.os.Build;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -14,10 +15,16 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.view.Gravity;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+
+import com.google.gson.Gson;
 
 
 public class FloatingWindowService extends Service {
@@ -26,6 +33,38 @@ public class FloatingWindowService extends Service {
     private View floatingView;
     private static final String PREFS_NAME = "SeekBarPrefs";
     private static final String PREF_VALUE = "seekBarValue";
+
+    private ArrayList<View> blockburnList = new ArrayList<>();
+
+    public void LoadSettings(){
+        SharedPreferences prefs = getSharedPreferences("blockPos", MODE_PRIVATE);
+        String json = prefs.getString("block_list", null);
+
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<BlockInfo>>(){}.getType();
+        List<BlockInfo> blockList = gson.fromJson(json, type);
+
+        if (blockList == null) {
+            return;
+        }
+        for (BlockInfo blockInfo : blockList) {
+
+            View blockburn = LayoutInflater.from(this).inflate(R.layout.blockburn, null);
+            WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+                    blockInfo.width, blockInfo.height,
+                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
+                            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                    PixelFormat.TRANSLUCENT);
+            params.x = blockInfo.x;
+            params.y = blockInfo.y;
+            params.gravity = Gravity.TOP | Gravity.START;
+            blockburn.setBackgroundResource(R.drawable.block_drawable_quad);
+            windowManager.addView(blockburn, params);
+            blockburnList.add(blockburn);
+        }
+
+    }
 
     @Override
     public void onCreate() {
@@ -40,6 +79,12 @@ public class FloatingWindowService extends Service {
                 if (floatingView != null) {
                     windowManager.removeView(floatingView);
                     floatingView = null;
+                }
+                if (blockburnList != null) {
+                    for (View view : blockburnList) {
+                        windowManager.removeView(view);
+                    }
+                    blockburnList.clear();
                 }
                 stopSelf();
                 return START_NOT_STICKY;
@@ -76,9 +121,13 @@ public class FloatingWindowService extends Service {
 
 
         try {
+            floatingView.setAlpha(0f);
             windowManager.addView(floatingView, params);
+            LoadSettings();
             Animation fadeInAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
-            new Handler(Looper.getMainLooper()).post(() -> floatingView.startAnimation(fadeInAnimation));
+
+
+
         } catch (Exception e) {
             Log.w("Exception catched:", e);
             return Service.START_STICKY;

@@ -116,10 +116,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SetupFloatingWindows.class);
         startService(intent);
         Log.d("MyAccessibilityService", "Accessibility Service started");
-
-
-
-
     }
 
     public void openSpecificAccessibilityServiceSettings(View view) {
@@ -131,10 +127,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
             Toast.makeText(this, "Cant reach accessibility setting. Request permission manually", Toast.LENGTH_SHORT).show();
         }
-    }
-    public String CalculateTrackInfo() {
-        float sliderValue = seekBar.getValue();
-        return String.valueOf(sliderValue);
     }
 
     @SuppressLint("SetTextI18n")
@@ -171,9 +163,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        Intent intent = new Intent(MainActivity.this, FloatingWindowService.class);
-        startService(intent);
-
         seekBar = findViewById(R.id.slider);
         progressText = findViewById(R.id.textView);
         sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
@@ -183,11 +172,11 @@ public class MainActivity extends AppCompatActivity {
         seekBar.setValueFrom(40);
         int savedValue = sharedPreferences.getInt(PREF_VALUE, 40);
         seekBar.setValue(savedValue);
-        progressText.setText("Popup height: " + savedValue + " px");
+        progressText.setText("Высота основного окна: " + savedValue + " px");
 
         seekBar.addOnChangeListener((slider, progress, fromUser) -> {
             int value = (int) Math.max(progress, 40);
-            progressText.setText("Popup height: " + value + " px");
+            progressText.setText("Высота основного окна: " + value + " px");
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt(PREF_VALUE, value);
             editor.apply();

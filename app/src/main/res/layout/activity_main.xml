@@ -95,7 +95,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="14dp"
-        android:text="Popup height:"
+        android:text="Высота основного окна:"
         android:textColor="@color/ButtonBackdround"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/slider"
