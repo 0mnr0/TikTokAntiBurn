@@ -105,7 +105,6 @@ public class SetupFloatingWindows extends Service {
         heightBar.setMin(70);
         heightBar.setMax(height/2);
         widthBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @SuppressLint("SetTextI18n")
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 WindowManager.LayoutParams layoutParams = (WindowManager.LayoutParams) lastBlockBurnElement.getLayoutParams();
@@ -119,7 +118,6 @@ public class SetupFloatingWindows extends Service {
             public void onStopTrackingTouch(SeekBar seekBar) { }
         });
         heightBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @SuppressLint("SetTextI18n")
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 WindowManager.LayoutParams layoutParams = (WindowManager.LayoutParams) lastBlockBurnElement.getLayoutParams();
@@ -181,8 +179,8 @@ public class SetupFloatingWindows extends Service {
             heightBar.setProgress(BurnHeight);
         }
 
-        elementWidth.setText("Ширина: " + BurnWidth + " px");
-        elementHeight.setText("Высота: " + BurnHeight + " px");
+        elementWidth.setText(getString(R.string.ExtendedSetting_Width) + BurnWidth + " px");
+        elementHeight.setText(getString(R.string.ExtendedSetting_Height) + BurnHeight + " px");
     }
 
     private void makeViewDraggable(View view, WindowManager.LayoutParams params) {

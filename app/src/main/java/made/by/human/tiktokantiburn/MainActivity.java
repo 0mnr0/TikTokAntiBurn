@@ -1,6 +1,5 @@
 package made.by.human.tiktokantiburn;
 
-import android.accessibilityservice.AccessibilityServiceInfo;
 import android.annotation.SuppressLint;
 import android.app.AppOpsManager;
 import android.content.ActivityNotFoundException;
@@ -9,29 +8,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.view.accessibility.AccessibilityManager;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.slider.Slider;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -72,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, 1234);
             }
         } catch (Exception e) {
-            Toast.makeText(this, "Failed to request Overlay permission. Request it manually", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.NoOverlayPermission), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -82,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                     Uri.parse("package:" + getPackageName()));
             startActivity(intent);
         } catch (Exception e) {
-            Toast.makeText(this, "Failed to request Overlay permission. Request it manually", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.NoOverlayPermission), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -96,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
             startActivity(intent);
         } catch (Exception e) {
-            Toast.makeText(this, "Request permission of USAGE ACCESS manually, please", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.UsageStatsPermessionIsNotGranted), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -108,14 +100,19 @@ public class MainActivity extends AppCompatActivity {
                     "com.ss.android.ugc.aweme.splash.SplashActivity"
             ));
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            // startActivity(intent);
+            //startActivity(intent);
         } catch (Exception e) {
-            Toast.makeText(this, "Приложение TikTok не найдено", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, getString(R.string.TikTokNotFound), Toast.LENGTH_SHORT).show();
         }
 
         Intent intent = new Intent(this, SetupFloatingWindows.class);
         startService(intent);
-        Log.d("MyAccessibilityService", "Accessibility Service started");
+
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            Intent serviceIntent = new Intent(this, FloatingWindowService.class);
+            serviceIntent.setAction("ACTION_CLOSE_WINDOW");
+            startService(serviceIntent);
+        }, 500);
     }
 
     public void openSpecificAccessibilityServiceSettings(View view) {
@@ -125,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(openSettings, 1000);
         } catch (ActivityNotFoundException e) {
             e.printStackTrace();
-            Toast.makeText(this, "Cant reach accessibility setting. Request permission manually", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.AcessabilitySettingNotReacheable), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -144,7 +141,6 @@ public class MainActivity extends AppCompatActivity {
 
         boolean isServiceEnabled = isAccessibilityServiceEnabled(this, MyAccessibilityService.class);
 
-        Log.d("isServiceEnabled:", String.valueOf(isServiceEnabled));
         if (!isServiceEnabled) {
             openSpecificAccessibilityServiceSettings(null);
         }
@@ -172,11 +168,11 @@ public class MainActivity extends AppCompatActivity {
         seekBar.setValueFrom(40);
         int savedValue = sharedPreferences.getInt(PREF_VALUE, 40);
         seekBar.setValue(savedValue);
-        progressText.setText("Высота основного окна: " + savedValue + " px");
+        progressText.setText(getString(R.string.fastSettingsMainFlowtingWindow) + savedValue + " px");
 
         seekBar.addOnChangeListener((slider, progress, fromUser) -> {
             int value = (int) Math.max(progress, 40);
-            progressText.setText("Высота основного окна: " + value + " px");
+            progressText.setText(getString(R.string.fastSettingsMainFlowtingWindow) + value + " px");
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt(PREF_VALUE, value);
             editor.apply();

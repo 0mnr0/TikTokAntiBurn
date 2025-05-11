@@ -8,200 +8,210 @@
     android:background="@color/ButtonForeground"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_margin="10dp"
-        android:maxHeight="40dp"
-        android:onClick="OpenGithub"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/github_svgrepo_com"
-        app:tint="@color/ButtonBackdround" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TikTok AntiBurn"
-        android:textColor="@color/SeekBackdround"
-        android:textSize="34sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:padding="12dp"
-        app:layout_constraintBottom_toBottomOf="@+id/SomeSetting"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/ButtonBackdround"
-            android:onClick="openRequestTopWindow"
-            android:padding="15dp"
-            android:text="Запрос &quot;Поверх других окон&quot;"
-            android:textColor="@color/ButtonForeground"
-            app:cornerRadius="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/ButtonBackdround"
-            android:onClick="UseDataRequest"
-            android:padding="15dp"
-            android:text='Запрос "Доступ об использовании"'
-            android:textColor="@color/ButtonForeground"
-            app:cornerRadius="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/ButtonBackdround"
-            android:onClick="openSpecificAccessibilityServiceSettings"
-            android:padding="15dp"
-            android:text="Запрос &quot;Спецаильные возможности&quot;"
-            android:textColor="@color/ButtonForeground"
-            app:cornerRadius="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button1" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="@color/ButtonBackdround"
-            android:onClick="OpenExtendedSetting"
-            android:padding="15dp"
-            android:text="Расширенная настройка AntiBurn"
-            android:textColor="@color/ButtonForeground"
-            app:cornerRadius="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button4" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <View
-        android:id="@+id/divider2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toTopOf="@+id/guideline4"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.66" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="Быстрая настройка"
-        android:textColor="@color/SeekBackdround"
-        android:textSize="34sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider2" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/SomeSetting"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/fast_setting_bg"
-        android:padding="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2">
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="14dp"
-            android:text="Высота основного окна:"
-            android:textColor="@color/ButtonBackdround"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/slider"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.slider.Slider
-            android:id="@+id/slider"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:contentDescription="Setup a height of popup"
-            android:value="20.0"
-            android:valueFrom="0.0"
-            android:valueTo="100.0"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            app:thumbColor="@color/SeekBackdroundFilled"
-            app:tickColorActive="#00000000"
-            app:tickColorInactive="#E41D1D"
-            app:tickVisible="false"
-            app:trackColorActive="@color/SeekBackdroundFilled"
-            app:trackColorInactive="@color/SeekBackdround"
-            tools:ignore="HardcodedText"
-            tools:layout_editor_absoluteX="20dp"
-            tools:tickColorInactive="#00000000" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/SomeSetting2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/fast_setting_bg"
-        android:padding="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SomeSetting">
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="10dp"
+                android:maxHeight="40dp"
+                android:onClick="OpenGithub"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/github_svgrepo_com"
+                app:tint="@color/ButtonBackdround" />
 
-        <com.google.android.material.materialswitch.MaterialSwitch
-            android:id="@+id/Switcher"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:checked="false"
-            android:text="Убрать при нажатии"
-            android:textColor="@color/SeekBackdroundFilled"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:thumbTint="@color/SeekBackdroundFilled"
-            app:trackDecorationTint="@color/SeekBackdroundFilled"
-            app:trackTint="@color/MID" />
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="112dp"
+                android:paddingBottom="112dp"
+                android:text="TikTok AntiBurn"
+                android:textColor="@color/SeekBackdround"
+                android:textSize="34sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-32dp"
+                android:padding="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+                <Button
+                    android:id="@+id/button1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/ButtonBackdround"
+                    android:onClick="openRequestTopWindow"
+                    android:padding="15dp"
+                    android:text="@string/Request_Floating"
+                    android:textColor="@color/ButtonForeground"
+                    app:cornerRadius="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/button4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/ButtonBackdround"
+                    android:onClick="UseDataRequest"
+                    android:padding="15dp"
+                    android:text='@string/Request_UsageStats'
+                    android:textColor="@color/ButtonForeground"
+                    app:cornerRadius="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/button" />
+
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/ButtonBackdround"
+                    android:onClick="openSpecificAccessibilityServiceSettings"
+                    android:padding="15dp"
+                    android:text="@string/Request_SpecialThings"
+                    android:textColor="@color/ButtonForeground"
+                    app:cornerRadius="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/button1" />
+
+                <Button
+                    android:id="@+id/button2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/ButtonBackdround"
+                    android:onClick="OpenExtendedSetting"
+                    android:padding="15dp"
+                    android:text="@string/ExtendedSettings"
+                    android:textColor="@color/ButtonForeground"
+                    app:cornerRadius="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/button4" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:padding="16dp"
+                android:text="@string/fastSettings"
+                android:textColor="@color/SeekBackdround"
+                android:textSize="34sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/divider2" />
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="40dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/SomeSetting"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:background="@drawable/fast_setting_bg"
+                android:padding="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="14dp"
+                    android:text="@string/fastSettingsMainFlowtingWindow"
+                    android:textColor="@color/ButtonBackdround"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/slider"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="Setup a height of popup"
+                    android:value="20.0"
+                    android:valueFrom="0.0"
+                    android:valueTo="100.0"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView"
+                    app:thumbColor="@color/SeekBackdroundFilled"
+                    app:tickColorActive="#00000000"
+                    app:tickColorInactive="#E41D1D"
+                    app:tickVisible="false"
+                    app:trackColorActive="@color/SeekBackdroundFilled"
+                    app:trackColorInactive="@color/SeekBackdround"
+                    tools:ignore="HardcodedText"
+                    tools:tickColorInactive="#00000000" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/SomeSetting2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="12dp"
+                android:background="@drawable/fast_setting_bg"
+                android:padding="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/SomeSetting">
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/Switcher"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:checked="false"
+                    android:text="@string/fastSettingsGoneOnclick"
+                    android:textColor="@color/SeekBackdroundFilled"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:thumbTint="@color/SeekBackdroundFilled"
+                    app:trackDecorationTint="@color/SeekBackdroundFilled"
+                    app:trackTint="@color/MID" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

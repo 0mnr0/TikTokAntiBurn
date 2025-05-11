@@ -1,3 +1,22 @@
 <resources>
-    <string name="app_name">TikTok AntiBurn</string>
+    <string name="app_name" translatable="false">TikTok AntiBurn</string>
+    <string name="fastSettingsGoneOnclick">Hide for a couple of seconds after clicking</string>
+    <string name="fastSettings">Fast Settings</string>
+    <string name="fastSettingsMainFlowtingWindow">"Height of the main element: "</string>
+    <string name="TikTokNotFound">TikTok not found</string>
+    <string name="UsageStatsPermessionIsNotGranted">Please, request permission of USAGE ACCESS manually</string>
+    <string name="NoOverlayPermission">Failed to request Overlay permission. Request it manually</string>
+    <string name="AcessabilitySettingNotReacheable">Cant reach accessibility setting. Request permission manually</string>
+    <string name="Request_Floating">"Request \"Floating windows\" "</string>
+    <string name="Request_UsageStats">Request \"Usage Stats\"</string>
+    <string name="Request_SpecialThings">Reqeust \"Accessibility\"</string>
+    <string name="ExtendedSettings">Advanced AntiBurn Settings</string>
+    <string name="ExtendedSetting_Create">Create Element</string>
+    <string name="close" translatable="false">X</string>
+    <string name="ExtendedSetting_Save">Save</string>
+    <string name="ExtendedSetting_Remove">🗑️ Remove Element</string>
+    <string name="ExtendedSetting_WidthUnknown">Width: ?px</string>
+    <string name="ExtendedSetting_HeightUnknwon">Height: ?px</string>
+    <string name="ExtendedSetting_Width">"Width: "</string>
+    <string name="ExtendedSetting_Height">"Height: "</string>
 </resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fastSettingsGoneOnclick">Скрыть на пару секунд после нажатия</string>
+    <string name="fastSettings">Быстрые настройки</string>
+    <string name="fastSettingsMainFlowtingWindow">"Высота главного элемента: "</string>
+    <string name="TikTokNotFound">Приложение TikTok не найдено</string>
+    <string name="UsageStatsPermessionIsNotGranted">Пожалуйста, выдайте разрешение \"Доступ об использовании\" самостоятельно</string>
+    <string name="NoOverlayPermission">Не удалось получить разрешение \"Поверх окон\", выдайте его самостоятельно</string>
+    <string name="AcessabilitySettingNotReacheable">Не удалось получить разрешение \"Доступ об использовании\", выдайте самостоятельно</string>
+    <string name="Request_Floating">Запрос \"Поверх других окон\"</string>
+    <string name="Request_UsageStats">Запрос \"Доступ об использовании\"</string>
+    <string name="Request_SpecialThings">Запрос \"Спецаильные возможности\"</string>
+    <string name="ExtendedSettings">Расширенная настройка AntiBurn</string>
+    <string name="ExtendedSetting_Create">Создать элемент</string>
+    <string name="ExtendedSetting_Save">Сохранить</string>
+    <string name="ExtendedSetting_Remove">🗑️ Удалить элемент</string>
+    <string name="ExtendedSetting_WidthUnknown">Ширина: ?px</string>
+    <string name="ExtendedSetting_HeightUnknwon">Высота: ?px</string>
+    <string name="ExtendedSetting_Width">"Ширина: "</string>
+    <string name="ExtendedSetting_Height">"Высота: "</string>
+</resources>
