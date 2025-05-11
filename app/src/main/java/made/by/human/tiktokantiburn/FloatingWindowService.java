@@ -60,8 +60,15 @@ public class FloatingWindowService extends Service {
             params.y = blockInfo.y;
             params.gravity = Gravity.TOP | Gravity.START;
             blockburn.setBackgroundResource(R.drawable.block_drawable_quad);
+            blockburn.setAlpha(0f);
             windowManager.addView(blockburn, params);
             blockburnList.add(blockburn);
+            new Handler(Looper.getMainLooper()).post(() -> {
+                blockburn.animate()
+                        .alpha(1f)
+                        .setDuration(200) // или сколько нужно
+                        .start();
+            });
         }
 
     }
@@ -74,21 +81,33 @@ public class FloatingWindowService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent != null && "ACTION_CLOSE_WINDOW".equals(intent.getAction())) {
+        boolean isClosed = intent != null && "ACTION_CLOSE_WINDOW".equals(intent.getAction());
+
+        if (isClosed) {
             try {
-                if (floatingView != null) {
-                    windowManager.removeView(floatingView);
-                    floatingView = null;
-                }
+                floatingView.animate() .alpha(0f) .setDuration(200) .start();
                 if (blockburnList != null) {
-                    for (View view : blockburnList) {
-                        windowManager.removeView(view);
-                    }
-                    blockburnList.clear();
+                    for (View view : blockburnList) { view.animate().alpha(0f).setDuration(200).start(); }
                 }
-                stopSelf();
+
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    if (floatingView != null) {
+                        windowManager.removeView(floatingView);
+                        floatingView = null;
+                    }
+                    if (blockburnList != null) {
+                        for (View view : blockburnList) {
+                            windowManager.removeView(view);
+                        }
+                        blockburnList.clear();
+                    }
+                    stopSelf();
+                }, 300);
+
+
                 return START_NOT_STICKY;
             } catch (Exception ignored) {}
+            return START_NOT_STICKY;
         }
 
         if (floatingView != null) {
@@ -124,8 +143,12 @@ public class FloatingWindowService extends Service {
             floatingView.setAlpha(0f);
             windowManager.addView(floatingView, params);
             LoadSettings();
-            Animation fadeInAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
-
+            new Handler(Looper.getMainLooper()).post(() -> {
+                floatingView.animate()
+                        .alpha(1f)
+                        .setDuration(200)
+                        .start();
+            });
 
 
         } catch (Exception e) {
