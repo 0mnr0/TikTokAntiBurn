@@ -13,13 +13,11 @@ import java.util.Set;
 
 public class MyAccessibilityService extends AccessibilityService {
 
-
-
-
-
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+        boolean ClosePopups;
+        if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED ||
+                event.getEventType() == AccessibilityEvent.TYPE_WINDOWS_CHANGED) {
             Intent serviceIntent = new Intent(this, FloatingWindowService.class);
             try {
                 List<AccessibilityWindowInfo> windows = getWindows();
@@ -33,9 +31,18 @@ public class MyAccessibilityService extends AccessibilityService {
                         }
                     }
                 }
+                if (activePackages.contains("com.android.launcher")
+                        || activePackages.contains("com.google.android.apps.nexuslauncher")
+                        || activePackages.contains("com.miui.home") // MIUI
+                        || activePackages.contains("com.huawei.android.launcher") // Huawei
+                        || activePackages.contains("com.samsung.android.launcher")) {
 
-                Log.w("TikTok is NOT opened: ", String.valueOf(!activePackages.contains("com.zhiliaoapp.musically")));
-                if (!activePackages.contains("com.zhiliaoapp.musically")) {
+                    ClosePopups = true;
+                } else {
+                    ClosePopups = !activePackages.contains("com.zhiliaoapp.musically");
+                }
+
+                if (ClosePopups) {
                     serviceIntent.setAction("ACTION_CLOSE_WINDOW");
                     startService(serviceIntent);
                 } else {
