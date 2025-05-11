@@ -21,22 +21,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.slider.Slider;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    private SeekBar seekBar;
+    private Slider seekBar;
     private TextView progressText;
     private SharedPreferences sharedPreferences;
     private static final String PREFS_NAME = "SeekBarPrefs";
     private static final String PREF_VALUE = "seekBarValue";
+
 
 
     public static boolean isAccessibilityServiceEnabled(Context context, Class<?> accessibilityService) {
@@ -108,9 +113,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Приложение TikTok не найдено", Toast.LENGTH_SHORT).show();
         }
 
-        if (!Settings.canDrawOverlays(this)) {
-            Toast.makeText(this, "Приложению не выдано canDrawOverlays", Toast.LENGTH_SHORT).show();
-        }
         Intent intent = new Intent(this, SetupFloatingWindows.class);
         startService(intent);
         Log.d("MyAccessibilityService", "Accessibility Service started");
@@ -129,6 +131,10 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
             Toast.makeText(this, "Cant reach accessibility setting. Request permission manually", Toast.LENGTH_SHORT).show();
         }
+    }
+    public String CalculateTrackInfo() {
+        float sliderValue = seekBar.getValue();
+        return String.valueOf(sliderValue);
     }
 
     @SuppressLint("SetTextI18n")
@@ -168,35 +174,27 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, FloatingWindowService.class);
         startService(intent);
 
-        seekBar = findViewById(R.id.seekBar2);
+        seekBar = findViewById(R.id.slider);
         progressText = findViewById(R.id.textView);
         sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         int screenHeight = getResources().getDisplayMetrics().heightPixels;
         int max = (int) (screenHeight * 0.1);
-        seekBar.setMax(max);
-        seekBar.setMin(40);
+        seekBar.setValueTo(max);
+        seekBar.setValueFrom(40);
         int savedValue = sharedPreferences.getInt(PREF_VALUE, 40);
-        seekBar.setProgress(savedValue);
+        seekBar.setValue(savedValue);
         progressText.setText("Popup height: " + savedValue + " px");
 
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int value = Math.max(progress, 40);
-                progressText.setText("Popup height: " + value + " px");
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                int value = Math.max(seekBar.getProgress(), 40);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putInt(PREF_VALUE, value);
-                editor.apply();
-            }
+        seekBar.addOnChangeListener((slider, progress, fromUser) -> {
+            int value = (int) Math.max(progress, 40);
+            progressText.setText("Popup height: " + value + " px");
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt(PREF_VALUE, value);
+            editor.apply();
         });
+
+        seekBar.setLabelFormatter(label -> ((int) Math.max(seekBar.getValue(), 40)) + " px");
+
 
     }
 
