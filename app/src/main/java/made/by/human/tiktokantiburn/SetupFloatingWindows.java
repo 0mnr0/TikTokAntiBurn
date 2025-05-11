@@ -189,6 +189,7 @@ public class SetupFloatingWindows extends Service {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         if (dragging) return true;
+                        if (NeedCloseSettings) CloseBurnSettings();
                         lastBlockBurnElement = v;
                         dragging = true;
                         initialX = params.x;
