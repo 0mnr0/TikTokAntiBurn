@@ -194,7 +194,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/SomeSetting">
 
                 <com.google.android.material.materialswitch.MaterialSwitch
-                    android:id="@+id/Switcher"
+                    android:id="@+id/TheSwitchingTool"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:checked="false"

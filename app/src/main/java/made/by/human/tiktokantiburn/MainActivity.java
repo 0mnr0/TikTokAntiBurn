@@ -23,6 +23,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.slider.Slider;
 
 
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private static final String PREFS_NAME = "SeekBarPrefs";
     private static final String PREF_VALUE = "seekBarValue";
+
+    MaterialSwitch TheSwitch;
 
 
 
@@ -126,7 +129,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("SetTextI18n")
+
+    public boolean GetClickableStatus(){
+        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
+        return prefs.getBoolean("Clickable", false);
+    }
+
+    public void SetClickableStatus(boolean status){
+        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("Clickable", status);
+        editor.apply();
+    }
+
+    @SuppressLint({"SetTextI18n", "MissingInflatedId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,6 +154,10 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         checkOverlayPermission();
+        TheSwitch = findViewById(R.id.TheSwitchingTool);
+        TheSwitch.setChecked(GetClickableStatus());
+        TheSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> SetClickableStatus(isChecked));
+
 
         boolean isServiceEnabled = isAccessibilityServiceEnabled(this, MyAccessibilityService.class);
 

@@ -36,7 +36,18 @@ public class FloatingWindowService extends Service {
 
     private ArrayList<View> blockburnList = new ArrayList<>();
 
-    public void LoadSettings(){
+    public void HideAndUnHide(View view) {
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            view.setVisibility(View.GONE);
+
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                view.setVisibility(View.VISIBLE);
+            }, 5000-150);
+
+        }, 150);
+    }
+
+    public void LoadSettings(boolean canBeHidden) {
         SharedPreferences prefs = getSharedPreferences("blockPos", MODE_PRIVATE);
         String json = prefs.getString("block_list", null);
 
@@ -63,6 +74,15 @@ public class FloatingWindowService extends Service {
             blockburn.setAlpha(0f);
             windowManager.addView(blockburn, params);
             blockburnList.add(blockburn);
+
+            if (canBeHidden) {
+                blockburn.setOnClickListener(v -> {
+                    HideAndUnHide(blockburn);
+                    blockburn.animate().alpha(0f).setDuration(100).start();
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> blockburn.animate().alpha(1f).setDuration(100).start(), 5000);
+                });
+            }
+
             new Handler(Looper.getMainLooper()).post(() -> {
                 blockburn.animate()
                         .alpha(1f)
@@ -79,9 +99,15 @@ public class FloatingWindowService extends Service {
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
     }
 
+    public boolean GetClickableStatus(){
+        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
+        return prefs.getBoolean("Clickable", false);
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         boolean isClosed = intent != null && "ACTION_CLOSE_WINDOW".equals(intent.getAction());
+        final boolean canBeHidden = GetClickableStatus();
 
         if (isClosed) {
             try {
@@ -137,12 +163,18 @@ public class FloatingWindowService extends Service {
         params.width = screenWidth / 5 - 20;
         params.height = savedValue;
         params.gravity = Gravity.BOTTOM | Gravity.CENTER;
-
+        if (canBeHidden) {
+            floatingView.setOnClickListener(v -> {
+                HideAndUnHide(v);
+                floatingView.animate().alpha(0f).setDuration(100).start();
+                new Handler(Looper.getMainLooper()).postDelayed(() -> floatingView.animate().alpha(1f).setDuration(100).start(), 5000);
+            });
+        }
 
         try {
             floatingView.setAlpha(0f);
             windowManager.addView(floatingView, params);
-            LoadSettings();
+            LoadSettings(canBeHidden);
             new Handler(Looper.getMainLooper()).post(() -> {
                 floatingView.animate()
                         .alpha(1f)
