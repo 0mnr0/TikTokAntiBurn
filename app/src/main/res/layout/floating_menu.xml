@@ -26,16 +26,17 @@
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:animateLayoutChanges="false"
+        android:animateLayoutChanges="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="parent">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSave"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
             android:backgroundTint="@color/ButtonBackdround"
             android:padding="15dp"
             android:text="Сохранить"
@@ -43,14 +44,14 @@
             android:textStyle="bold"
             app:cornerRadius="10dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/btnAdd"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnAdd" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAdd"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="3dp"
+            android:layout_marginRight="4dp"
             android:backgroundTint="@color/ButtonBackdround"
             android:padding="15dp"
             android:text="Создать элемент"
@@ -60,7 +61,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnClose"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
@@ -77,7 +78,7 @@
             android:id="@+id/BlockBurnSettings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:animateLayoutChanges="false"
+            android:animateLayoutChanges="true"
             android:background="@drawable/setuper"
             android:padding="10dp"
             android:visibility="gone"
@@ -86,11 +87,11 @@
             app:layout_constraintTop_toBottomOf="@+id/btnSave"
             tools:visibility="visible">
 
-            <Button
-                android:id="@+id/RemoveElement"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/removeElement"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-4dp"
+                android:layout_marginTop="-5dp"
                 android:backgroundTint="@color/ButtonBackdround"
                 android:padding="15dp"
                 android:text="🗑️ Удалить элемент"
@@ -104,12 +105,12 @@
                 android:id="@+id/elementWidth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="24dp"
                 android:text="Ширина: ?px"
                 android:textColor="@color/ButtonBackdround"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/RemoveElement" />
+                app:layout_constraintTop_toBottomOf="@+id/removeElement" />
 
             <SeekBar
                 android:id="@+id/widthBar"

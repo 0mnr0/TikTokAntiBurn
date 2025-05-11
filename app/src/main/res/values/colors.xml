@@ -9,4 +9,5 @@
     <color name="SeekBackdroundFilled">@color/material_dynamic_neutral_variant90</color>
     <color name="SeekBG">@color/material_dynamic_neutral_variant60</color>
     <color name="SeekFG">@color/material_dynamic_neutral_variant10</color>
+    <color name="MID">@color/material_dynamic_neutral_variant50</color>
 </resources>

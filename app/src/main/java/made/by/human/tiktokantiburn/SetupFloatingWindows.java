@@ -2,6 +2,7 @@ package made.by.human.tiktokantiburn;
 
 import android.annotation.SuppressLint;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.gson.Gson;
@@ -62,8 +64,10 @@ public class SetupFloatingWindows extends Service {
         super.onCreate();
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 
-        // Создаём главное окно с кнопками
-        floatingMenu = LayoutInflater.from(this).inflate(R.layout.floating_menu, null);
+        Context themedContext = new ContextThemeWrapper(getApplicationContext(), R.style.Theme_TikTokAntiBurn);
+        LayoutInflater inflater = LayoutInflater.from(themedContext);
+        floatingMenu = inflater.inflate(R.layout.floating_menu, null);
+
 
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
@@ -84,7 +88,7 @@ public class SetupFloatingWindows extends Service {
         elementHeight = floatingMenu.findViewById(R.id.elementHeight);
         widthBar = floatingMenu.findViewById(R.id.widthBar);
         heightBar = floatingMenu.findViewById(R.id.heightBar);
-        Button RemoveElement = floatingMenu.findViewById(R.id.RemoveElement);
+        Button RemoveElement = floatingMenu.findViewById(R.id.removeElement);
         Button btnSave = floatingMenu.findViewById(R.id.btnSave);
         RemoveElement.setOnClickListener(v -> RemoveElement());
         btnSave.setOnClickListener(v -> SaveSettings());
@@ -177,6 +181,7 @@ public class SetupFloatingWindows extends Service {
             public boolean onTouch(View v, MotionEvent event) {
                 GradientDrawable drawable = new GradientDrawable();
                 drawable.setColor(bgColor);
+                boolean NeedCloseSettings = (v != lastBlockBurnElement);
                 if (v != lastBlockBurnElement && dragging) {
                     return true;
                 }
@@ -184,7 +189,6 @@ public class SetupFloatingWindows extends Service {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         if (dragging) return true;
-                        CloseBurnSettings();
                         lastBlockBurnElement = v;
                         dragging = true;
                         initialX = params.x;
