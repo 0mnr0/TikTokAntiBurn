@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.view.ContextThemeWrapper;
@@ -32,7 +33,7 @@ import java.util.List;
 
 public class SetupFloatingWindows extends Service {
 
-    Boolean dragging = false;
+    boolean dragging = false;
 
     ConstraintLayout blockBurnSettings;
     final int bgColor = Color.parseColor("#272727");
@@ -59,6 +60,7 @@ public class SetupFloatingWindows extends Service {
     }
 
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onCreate() {
         super.onCreate();
@@ -132,7 +134,20 @@ public class SetupFloatingWindows extends Service {
         });
 
         //Add on click event
-        constraintLayout.setOnClickListener(v -> CloseBurnSettings());
+        constraintLayout.setOnTouchListener((v, event) -> {
+            int[] location = new int[2];
+            blockBurnSettings.getLocationOnScreen(location);
+            int x = (int) event.getRawX();
+            int y = (int) event.getRawY();
+
+            int left = location[0];
+            int top = location[1];
+            int right = left + blockBurnSettings.getWidth();
+            int bottom = top + blockBurnSettings.getHeight();
+
+            return x < left || x > right || y < top || y > bottom;
+        });
+
         LoadSettings();
     }
 
