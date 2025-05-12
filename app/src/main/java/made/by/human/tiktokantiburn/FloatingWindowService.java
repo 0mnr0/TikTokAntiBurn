@@ -119,22 +119,23 @@ public class FloatingWindowService extends Service {
 
         if (isClosed) {
             try {
-                floatingView.animate() .alpha(0f) .setDuration(200) .start();
+                try{ floatingView.animate() .alpha(0f) .setDuration(200) .start(); } catch (Exception ignored) {}
                 if (blockburnList != null) {
                     for (View view : blockburnList) { view.animate().alpha(0f).setDuration(200).start(); }
                 }
 
                 new Handler(Looper.getMainLooper()).postDelayed(() -> {
                     try{
-                        if (floatingView != null) {
-                             windowManager.removeView(floatingView);
-                            floatingView = null;
-                        }
                         if (blockburnList != null) {
                             for (View view : blockburnList) {
                                 windowManager.removeView(view);
                             }
                             blockburnList.clear();
+                        }
+
+                        if (floatingView != null) {
+                            windowManager.removeView(floatingView);
+                            floatingView = null;
                         }
                     } catch (Exception ignored) {}
                     stopSelf();
