@@ -37,14 +37,16 @@ public class FloatingWindowService extends Service {
     private ArrayList<View> blockburnList = new ArrayList<>();
 
     public void HideAndUnHide(View view) {
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            view.setVisibility(View.GONE);
-
+        try {
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                view.setVisibility(View.VISIBLE);
-            }, 5000-150);
+                view.setVisibility(View.GONE);
 
-        }, 150);
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    view.setVisibility(View.VISIBLE);
+                }, 5000 - 150);
+
+            }, 150);
+        } catch (Exception ignored) {}
     }
 
     public void LoadSettings(boolean canBeHidden) {
@@ -123,17 +125,20 @@ public class FloatingWindowService extends Service {
                 }
 
                 new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                    if (floatingView != null) {
-                        windowManager.removeView(floatingView);
-                        floatingView = null;
-                    }
-                    if (blockburnList != null) {
-                        for (View view : blockburnList) {
-                            windowManager.removeView(view);
+                    try{
+                        if (floatingView != null) {
+                             windowManager.removeView(floatingView);
+                            floatingView = null;
                         }
-                        blockburnList.clear();
-                    }
+                        if (blockburnList != null) {
+                            for (View view : blockburnList) {
+                                windowManager.removeView(view);
+                            }
+                            blockburnList.clear();
+                        }
+                    } catch (Exception ignored) {}
                     stopSelf();
+
                 }, 300);
 
 
@@ -206,7 +211,7 @@ public class FloatingWindowService extends Service {
     public void onDestroy() {
         super.onDestroy();
         if (floatingView != null) {
-            windowManager.removeView(floatingView);
+            try{ windowManager.removeView(floatingView); } catch (Exception ignored) {}
             floatingView = null;
         }
     }
