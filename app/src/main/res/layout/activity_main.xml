@@ -21,6 +21,30 @@
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true">
 
+            <Button
+                android:id="@+id/SaveLogs"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/ButtonBackdround"
+                android:onClick="ExportLogs"
+                android:padding="15dp"
+                android:text="@string/ExtendedSettings"
+                android:textColor="@color/ButtonForeground"
+                app:cornerRadius="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="parent" />
+
+            <TextView
+                android:id="@+id/VersionCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textColor="@color/DarkABit"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <ImageView
                 android:id="@+id/imageView3"
                 android:layout_width="40dp"

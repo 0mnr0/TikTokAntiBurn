@@ -1,14 +1,19 @@
 package made.by.human.tiktokantiburn;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AppOpsManager;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
@@ -20,12 +25,16 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.slider.Slider;
+
+import org.w3c.dom.Text;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -36,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String PREFS_NAME = "SeekBarPrefs";
     private static final String PREF_VALUE = "seekBarValue";
 
-    public ConstraintLayout SomeSetting, SomeSetting2;
+    public ConstraintLayout SomeSetting;
 
     MaterialSwitch TheSwitch;
 
@@ -145,6 +154,27 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
     }
 
+
+
+    public void ExportLogs(View view) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (!Environment.isExternalStorageManager()) {
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                    this.startActivity(intent);
+                }
+            }
+        }
+
+
+    }
+
     public void SaveSettings(String settingName, Object value) {
         SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -174,9 +204,16 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
         return prefs.getString(settingName, "");
     }
-    public void CheckSomeSettings(){
-        if (GetBoolean("DisableMainFloatingWindow")) { SomeSetting.setVisibility(View.GONE); SomeSetting2.setVisibility(View.GONE); } else { SomeSetting.setVisibility(View.VISIBLE); SomeSetting2.setVisibility(View.VISIBLE); }
+
+    public boolean isSettingKeyExists(String CollectionName, String settingName) {
+        SharedPreferences prefs = getSharedPreferences(CollectionName, MODE_PRIVATE);
+        return prefs.contains(settingName);
     }
+    public void CheckSomeSettings(){
+        if (GetBoolean("DisableMainFloatingWindow")) { SomeSetting.setVisibility(View.GONE); } else { SomeSetting.setVisibility(View.VISIBLE); }
+    }
+
+
 
     @SuppressLint({"SetTextI18n", "MissingInflatedId"})
     @Override
@@ -190,7 +227,9 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         checkOverlayPermission();
-        SomeSetting = findViewById(R.id.SomeSetting); SomeSetting2 = findViewById(R.id.SomeSetting2);
+        SomeSetting = findViewById(R.id.SomeSetting);
+        TextView VersionCode = findViewById(R.id.VersionCode);
+        VersionCode.setText(LogSystem.LoggerVersion);
         TheSwitch = findViewById(R.id.TheSwitchingTool);
         TheSwitch.setChecked(GetClickableStatus());
         TheSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> SetClickableStatus(isChecked));
@@ -229,6 +268,12 @@ public class MainActivity extends AppCompatActivity {
         seekBar.setValueTo(max);
         seekBar.setValueFrom(40);
         int savedValue = sharedPreferences.getInt(PREF_VALUE, 40);
+        if (!isSettingKeyExists(PREFS_NAME, PREF_VALUE)) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            savedValue = (max+40)/2;
+            editor.putInt(PREF_VALUE, savedValue);
+            editor.apply();
+        }
         seekBar.setValue(savedValue);
         progressText.setText(getString(R.string.fastSettingsMainFlowtingWindow) + savedValue + " px");
 
