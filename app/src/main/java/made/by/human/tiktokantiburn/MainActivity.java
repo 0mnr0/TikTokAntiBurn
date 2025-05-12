@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -34,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private static final String PREFS_NAME = "SeekBarPrefs";
     private static final String PREF_VALUE = "seekBarValue";
+
+    public ConstraintLayout SomeSetting, SomeSetting2;
 
     MaterialSwitch TheSwitch;
 
@@ -142,6 +145,39 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
     }
 
+    public void SaveSettings(String settingName, Object value) {
+        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        if (value instanceof String) {
+            editor.putString(settingName, (String) value);
+        } else if (value instanceof Integer) {
+            editor.putInt(settingName, (Integer) value);
+        } else if (value instanceof Boolean) {
+            editor.putBoolean(settingName, (Boolean) value);
+        } else {
+            throw new IllegalArgumentException("Unsupported value type: " + value.getClass().getName());
+        }
+        editor.apply();
+    }
+
+    public boolean GetBoolean(String settingName) {
+        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
+        return prefs.getBoolean(settingName, false);
+    }
+
+    public int GetInt(String settingName) {
+        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
+        return prefs.getInt(settingName, 0);
+    }
+
+    public String GetString(String settingName) {
+        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
+        return prefs.getString(settingName, "");
+    }
+    public void CheckSomeSettings(){
+        if (GetBoolean("DisableMainFloatingWindow")) { SomeSetting.setVisibility(View.GONE); SomeSetting2.setVisibility(View.GONE); } else { SomeSetting.setVisibility(View.VISIBLE); SomeSetting2.setVisibility(View.VISIBLE); }
+    }
+
     @SuppressLint({"SetTextI18n", "MissingInflatedId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         checkOverlayPermission();
+        SomeSetting = findViewById(R.id.SomeSetting); SomeSetting2 = findViewById(R.id.SomeSetting2);
         TheSwitch = findViewById(R.id.TheSwitchingTool);
         TheSwitch.setChecked(GetClickableStatus());
         TheSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> SetClickableStatus(isChecked));
@@ -173,10 +210,15 @@ public class MainActivity extends AppCompatActivity {
         AppOpsManager appOps = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
         int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
                 android.os.Process.myUid(), getPackageName());
+        MaterialSwitch MainFloatingWindowEnabled = findViewById(R.id.MinifiedVersion);
 
         if (mode != AppOpsManager.MODE_ALLOWED) {
             UseDataRequest(null);
         }
+
+        MainFloatingWindowEnabled.setChecked(GetBoolean("DisableMainFloatingWindow")); CheckSomeSettings();
+        MainFloatingWindowEnabled.setOnCheckedChangeListener((buttonView, isChecked) -> {SaveSettings("DisableMainFloatingWindow", isChecked); CheckSomeSettings();});
+
 
 
         seekBar = findViewById(R.id.slider);

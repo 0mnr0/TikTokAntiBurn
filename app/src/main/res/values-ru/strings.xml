@@ -18,4 +18,5 @@
     <string name="ExtendedSetting_HeightUnknwon">Высота: ?px</string>
     <string name="ExtendedSetting_Width">"Ширина: "</string>
     <string name="ExtendedSetting_Height">"Высота: "</string>
+    <string name="MinifiedStatus">Отключить базовый элемент перекрытия</string>
 </resources>

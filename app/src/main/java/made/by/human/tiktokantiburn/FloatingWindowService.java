@@ -93,6 +93,12 @@ public class FloatingWindowService extends Service {
 
     }
 
+
+    public boolean GetBoolean(String settingName) {
+        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
+        return prefs.getBoolean(settingName, false);
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -142,7 +148,7 @@ public class FloatingWindowService extends Service {
 
         floatingView = LayoutInflater.from(this).inflate(R.layout.blockburn, null);
 
-        WindowManager.LayoutParams params = null;
+        WindowManager.LayoutParams params;
         params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -172,15 +178,18 @@ public class FloatingWindowService extends Service {
         }
 
         try {
-            floatingView.setAlpha(0f);
-            windowManager.addView(floatingView, params);
             LoadSettings(canBeHidden);
-            new Handler(Looper.getMainLooper()).post(() -> {
-                floatingView.animate()
-                        .alpha(1f)
-                        .setDuration(200)
-                        .start();
-            });
+
+            if (!GetBoolean("DisableMainFloatingWindow")) {
+                floatingView.setAlpha(0f);
+                windowManager.addView(floatingView, params);
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    floatingView.animate()
+                            .alpha(1f)
+                            .setDuration(200)
+                            .start();
+                });
+            }
 
 
         } catch (Exception e) {

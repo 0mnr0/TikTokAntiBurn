@@ -117,6 +117,7 @@ public class SetupFloatingWindows extends Service {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) { }
         });
+
         heightBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {

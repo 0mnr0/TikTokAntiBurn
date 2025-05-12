@@ -18,7 +18,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true">
 
             <ImageView
                 android:id="@+id/imageView3"
@@ -137,7 +138,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/SomeSetting"
+                android:id="@+id/SomeSetting3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
@@ -147,6 +148,37 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/MinifiedVersion"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:checked="true"
+                    android:text="@string/MinifiedStatus"
+                    android:textColor="@color/SeekBackdroundFilled"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:thumbTint="@color/SeekBackdroundFilled"
+                    app:trackDecorationTint="@color/SeekBackdroundFilled"
+                    app:trackTint="@color/MID" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/SomeSetting"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="12dp"
+                android:background="@drawable/fast_setting_bg"
+                android:padding="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/SomeSetting3">
 
                 <TextView
                     android:id="@+id/textView"
@@ -210,6 +242,7 @@
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

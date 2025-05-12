@@ -19,4 +19,5 @@
     <string name="ExtendedSetting_HeightUnknwon">Height: ?px</string>
     <string name="ExtendedSetting_Width">"Width: "</string>
     <string name="ExtendedSetting_Height">"Height: "</string>
+    <string name="MinifiedStatus">Disable the basic overlap element</string>
 </resources>
