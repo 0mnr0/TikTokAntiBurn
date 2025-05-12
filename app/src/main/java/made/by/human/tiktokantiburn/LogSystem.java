@@ -9,6 +9,8 @@ import android.os.Handler;
 import android.os.HandlerThread;
 
 import java.io.FileWriter;
+import java.util.Date;
+
 import android.app.Application;
 import android.util.Log;
 
@@ -49,6 +51,8 @@ public class LogSystem {
 
     public void Save(String key, Object data, boolean DivideTop, boolean DivideBottom) {
         String content = "[(" + LoggerVersion + ") " + key + "] - " + data.toString() + "\n";
+        Date date = new Date();
+        content =  date.toLocaleString() + "  " + content;
         if (DivideTop) {content = "\n" + content;}
         if (DivideBottom) {content = content + "\n";}
 
@@ -69,5 +73,8 @@ public class LogSystem {
         if (logFile.exists() && logFile.length() > MAX_FILE_SIZE) {
             logFile.delete();
         }
+    }
+    public void clear() {
+        if (logFile.exists()) { logFile.delete();}
     }
 }

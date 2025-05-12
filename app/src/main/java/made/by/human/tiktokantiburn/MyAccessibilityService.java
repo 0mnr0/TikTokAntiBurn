@@ -3,10 +3,13 @@ package made.by.human.tiktokantiburn;
 import android.accessibilityservice.AccessibilityService;
 import android.app.Application;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityWindowInfo;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,6 +20,18 @@ public class MyAccessibilityService extends AccessibilityService {
     LogSystem logger;
 
     // в любой точке приложения
+
+    public String GetApplicationName(String packageName) {
+        try {
+            PackageManager packageManager = this.getPackageManager();
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, 0);
+            return packageManager.getApplicationLabel(applicationInfo).toString();
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return "?";
+
+    }
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
@@ -29,16 +44,18 @@ public class MyAccessibilityService extends AccessibilityService {
                 List<AccessibilityWindowInfo> windows = getWindows();
 
                 Set<String> activePackages = new HashSet<>();
+                ArrayList<String> ApplicationNames = new ArrayList<>();
                 for (AccessibilityWindowInfo window : windows) {
                     if (window.getRoot() != null) {
                         if (window.getRoot().getPackageName() != null) {
                             String packageName = window.getRoot().getPackageName().toString();
                             activePackages.add(packageName);
+                            ApplicationNames.add(packageName + " ("+GetApplicationName(packageName) + ")");
                         }
                     }
                 }
 
-                logger.Save("MyAccessibilityService - [Active Packages]", "ActivePackages: "+activePackages, false, false);
+                logger.Save("MyAccessibilityService - [Active Packages]", "ActivePackages: "+ApplicationNames, false, false);
 
                 if (activePackages.contains("com.android.launcher")
                         || activePackages.contains("com.google.android.apps.nexuslauncher")

@@ -19,4 +19,6 @@
     <string name="ExtendedSetting_Width">"Ширина: "</string>
     <string name="ExtendedSetting_Height">"Высота: "</string>
     <string name="MinifiedStatus">Отключить базовый элемент перекрытия</string>
+    <string name="ExportLogs">Сохранить логи</string>
+    <string name="ClearLogs">Очистить логи</string>
 </resources>

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AppOpsManager;
+import android.app.Application;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     public ConstraintLayout SomeSetting;
 
     MaterialSwitch TheSwitch;
+
 
 
 
@@ -156,21 +158,30 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    public void CleanLogs(View view) {
+        if (LogSystem.getInstanceOrNull() == null) {
+            LogSystem.init((Application) getApplicationContext());
+        }
+        LogSystem logger = LogSystem.getInstance();
+        logger.clear();
+        Toast.makeText(this, "Cleared!", Toast.LENGTH_SHORT).show();
+    }
     public void ExportLogs(View view) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            LogExportHelper.exportLogs(this);
+        } else {
+            // Android 8.0 — 9.0 (API 26 - 28)
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
+
                 ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-            }
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                if (!Environment.isExternalStorageManager()) {
-                    Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-                    this.startActivity(intent);
-                }
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        123);
+            } else {
+                LogExportHelper.exportLogs(this);
             }
         }
+
 
 
     }

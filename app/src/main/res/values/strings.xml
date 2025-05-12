@@ -20,4 +20,6 @@
     <string name="ExtendedSetting_Width">"Width: "</string>
     <string name="ExtendedSetting_Height">"Height: "</string>
     <string name="MinifiedStatus">Disable the basic overlap element</string>
+    <string name="ExportLogs">Export logs</string>
+    <string name="ClearLogs">Clear logs</string>
 </resources>
