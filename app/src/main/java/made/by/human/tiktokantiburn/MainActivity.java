@@ -2,7 +2,6 @@ package made.by.human.tiktokantiburn;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AppOpsManager;
 import android.app.Application;
 import android.content.ActivityNotFoundException;
@@ -15,7 +14,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
@@ -36,8 +34,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.slider.Slider;
-
-import org.w3c.dom.Text;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -316,9 +312,7 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             AboveAllWindows.setCompoundDrawablesWithIntrinsicBounds(Settings.canDrawOverlays(this) ? done : none, null, null, null);
-            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                AboveAllWindows.setCompoundDrawablesWithIntrinsicBounds(Settings.canDrawOverlays(this) ? done : none, null, null, null);
-            }, 500);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> AboveAllWindows.setCompoundDrawablesWithIntrinsicBounds(Settings.canDrawOverlays(this) ? done : none, null, null, null), 500);
         } catch (Exception ignored) {
             AboveAllWindows.setCompoundDrawablesWithIntrinsicBounds(unknown, null, null, null);
         }
