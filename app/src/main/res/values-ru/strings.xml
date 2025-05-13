@@ -9,7 +9,7 @@
     <string name="AcessabilitySettingNotReacheable">Не удалось получить разрешение \"Доступ об использовании\", выдайте самостоятельно</string>
     <string name="Request_Floating">Запрос \"Поверх других окон\"</string>
     <string name="Request_UsageStats">Запрос \"Доступ об использовании\"</string>
-    <string name="Request_SpecialThings">Запрос \"Спецаильные возможности\"</string>
+    <string name="Request_SpecialThings">Запрос \"Специальные возможности\"</string>
     <string name="ExtendedSettings">Расширенная настройка AntiBurn</string>
     <string name="ExtendedSetting_Create">Создать элемент</string>
     <string name="ExtendedSetting_Save">Сохранить</string>
