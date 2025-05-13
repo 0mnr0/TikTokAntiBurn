@@ -305,6 +305,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void refreshPermissionStatuses() {
+        Toast.makeText(this, "Refreshed!", Toast.LENGTH_SHORT).show();
         Button AboveAllWindows, UsagePermission, SpecialAbilities;
         AboveAllWindows = findViewById(R.id.AboveAllWindows);
         UsagePermission = findViewById(R.id.UsagePermission);
@@ -315,6 +316,9 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             AboveAllWindows.setCompoundDrawablesWithIntrinsicBounds(Settings.canDrawOverlays(this) ? done : none, null, null, null);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                AboveAllWindows.setCompoundDrawablesWithIntrinsicBounds(Settings.canDrawOverlays(this) ? done : none, null, null, null);
+            }, 500);
         } catch (Exception ignored) {
             AboveAllWindows.setCompoundDrawablesWithIntrinsicBounds(unknown, null, null, null);
         }
