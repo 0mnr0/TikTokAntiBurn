@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -297,8 +299,49 @@ public class MainActivity extends AppCompatActivity {
         });
 
         seekBar.setLabelFormatter(label -> ((int) Math.max(seekBar.getValue(), 40)) + " px");
-
+        refreshPermissionStatuses();
 
     }
+
+
+    public void refreshPermissionStatuses() {
+        Button AboveAllWindows, UsagePermission, SpecialAbilities;
+        AboveAllWindows = findViewById(R.id.AboveAllWindows);
+        UsagePermission = findViewById(R.id.UsagePermission);
+        SpecialAbilities = findViewById(R.id.SpecialAbilities);
+        Drawable done = ContextCompat.getDrawable(this, R.drawable.check_circle);
+        Drawable none = ContextCompat.getDrawable(this, R.drawable.x_circle);
+        Drawable unknown = ContextCompat.getDrawable(this, R.drawable.patch_question);
+
+        try {
+            AboveAllWindows.setCompoundDrawablesWithIntrinsicBounds(Settings.canDrawOverlays(this) ? done : none, null, null, null);
+        } catch (Exception ignored) {
+            AboveAllWindows.setCompoundDrawablesWithIntrinsicBounds(unknown, null, null, null);
+        }
+
+        try {
+            AppOpsManager appOps = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
+            int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, android.os.Process.myUid(), getPackageName());
+            boolean UsagePermissionAllowed = mode == AppOpsManager.MODE_ALLOWED;
+            UsagePermission.setCompoundDrawablesWithIntrinsicBounds(UsagePermissionAllowed ? done : none, null, null, null);
+        } catch (Exception ignored) {
+            UsagePermission.setCompoundDrawablesWithIntrinsicBounds(unknown, null, null, null);
+        }
+
+        try {
+            boolean isServiceEnabled = isAccessibilityServiceEnabled(this, MyAccessibilityService.class);
+            SpecialAbilities.setCompoundDrawablesWithIntrinsicBounds(isServiceEnabled ? done : none, null, null, null);
+        } catch (Exception ignored) {
+            SpecialAbilities.setCompoundDrawablesWithIntrinsicBounds(unknown, null, null, null);
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshPermissionStatuses();
+    }
+
 
 }

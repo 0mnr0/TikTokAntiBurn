@@ -70,7 +70,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView3">
 
                 <Button
-                    android:id="@+id/button1"
+                    android:id="@+id/AboveAllWindows"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/ButtonBackdround"
@@ -84,21 +84,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
-                    android:id="@+id/button4"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/ButtonBackdround"
-                    android:onClick="UseDataRequest"
-                    android:padding="15dp"
-                    android:text='@string/Request_UsageStats'
-                    android:textColor="@color/ButtonForeground"
-                    app:cornerRadius="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/button" />
-
-                <Button
-                    android:id="@+id/button"
+                    android:id="@+id/SpecialAbilities"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/ButtonBackdround"
@@ -109,10 +95,24 @@
                     app:cornerRadius="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/button1" />
+                    app:layout_constraintTop_toBottomOf="@+id/AboveAllWindows" />
 
                 <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/UsagePermission"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/ButtonBackdround"
+                    android:onClick="UseDataRequest"
+                    android:padding="15dp"
+                    android:text='@string/Request_UsageStats'
+                    android:textColor="@color/ButtonForeground"
+                    app:cornerRadius="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/SpecialAbilities" />
+
+                <Button
+                    android:id="@+id/ExtendedSetting"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/ButtonBackdround"
@@ -123,7 +123,7 @@
                     app:cornerRadius="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/button4" />
+                    app:layout_constraintTop_toBottomOf="@+id/UsagePermission" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -259,12 +259,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginRight="2dp"
-                android:backgroundTint="@color/ButtonBackdround"
+                android:backgroundTint="@color/MID"
                 android:onClick="ExportLogs"
                 android:padding="15dp"
                 android:text="@string/ExportLogs"
-                android:textColor="@color/ButtonForeground"
+                android:textColor="@color/SeekBackdroundFilled"
                 app:cornerRadius="10dp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintStart_toStartOf="parent"
@@ -276,11 +277,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="12dp"
-                android:backgroundTint="@color/ButtonBackdround"
+                android:backgroundTint="@color/MID"
                 android:onClick="CleanLogs"
                 android:padding="15dp"
                 android:text="@string/ClearLogs"
-                android:textColor="@color/ButtonForeground"
+                android:textColor="@color/SeekBackdroundFilled"
                 app:cornerRadius="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline4"
