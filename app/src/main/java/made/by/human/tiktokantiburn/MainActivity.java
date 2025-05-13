@@ -35,6 +35,8 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.slider.Slider;
 
+import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     public ConstraintLayout SomeSetting;
 
     MaterialSwitch TheSwitch;
+    LogSystem logger;
 
 
 
@@ -157,14 +160,13 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void CleanLogs(View view) {
-        if (LogSystem.getInstanceOrNull() == null) {
-            LogSystem.init((Application) getApplicationContext());
-        }
-        LogSystem logger = LogSystem.getInstance();
         logger.clear();
         Toast.makeText(this, "Cleared!", Toast.LENGTH_SHORT).show();
     }
     public void ExportLogs(View view) {
+        logger.Append("\n\n\n[ Permission OverlayGranted ] - " + PermissionOverlayGranted());
+        logger.Append("\n[ Permission PermissionUsageGranted ] - " + PermissionUsageGranted());
+        logger.Append("\n[ Permission SpecialAbilitiesGranted ] - " + PermissionSpecialAbilitiesGranted()+"\n");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             LogExportHelper.exportLogs(this);
         } else {
@@ -228,6 +230,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (LogSystem.getInstanceOrNull() == null) {
+            LogSystem.init((Application) getApplicationContext());
+        }
+        logger = LogSystem.getInstance();
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -300,6 +306,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public boolean PermissionOverlayGranted(){
+        return Settings.canDrawOverlays(this);
+    }
+
+    public boolean PermissionUsageGranted(){
+        AppOpsManager appOps = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
+        int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
+                android.os.Process.myUid(), getPackageName());
+        return mode == AppOpsManager.MODE_ALLOWED;
+    }
+
+    public boolean PermissionSpecialAbilitiesGranted(){
+        return isAccessibilityServiceEnabled(this, MyAccessibilityService.class);
+    }
+
     public void refreshPermissionStatuses() {
         Button AboveAllWindows, UsagePermission, SpecialAbilities;
         AboveAllWindows = findViewById(R.id.AboveAllWindows);
@@ -310,24 +331,20 @@ public class MainActivity extends AppCompatActivity {
         Drawable unknown = ContextCompat.getDrawable(this, R.drawable.patch_question);
 
         try {
-            AboveAllWindows.setCompoundDrawablesWithIntrinsicBounds(Settings.canDrawOverlays(this) ? done : none, null, null, null);
-            new Handler(Looper.getMainLooper()).postDelayed(() -> AboveAllWindows.setCompoundDrawablesWithIntrinsicBounds(Settings.canDrawOverlays(this) ? done : none, null, null, null), 500);
+            AboveAllWindows.setCompoundDrawablesWithIntrinsicBounds(PermissionOverlayGranted() ? done : none, null, null, null);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> AboveAllWindows.setCompoundDrawablesWithIntrinsicBounds(PermissionOverlayGranted() ? done : none, null, null, null), 500);
         } catch (Exception ignored) {
             AboveAllWindows.setCompoundDrawablesWithIntrinsicBounds(unknown, null, null, null);
         }
 
         try {
-            AppOpsManager appOps = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
-            int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, android.os.Process.myUid(), getPackageName());
-            boolean UsagePermissionAllowed = mode == AppOpsManager.MODE_ALLOWED;
-            UsagePermission.setCompoundDrawablesWithIntrinsicBounds(UsagePermissionAllowed ? done : none, null, null, null);
+            UsagePermission.setCompoundDrawablesWithIntrinsicBounds(PermissionUsageGranted() ? done : none, null, null, null);
         } catch (Exception ignored) {
             UsagePermission.setCompoundDrawablesWithIntrinsicBounds(unknown, null, null, null);
         }
 
         try {
-            boolean isServiceEnabled = isAccessibilityServiceEnabled(this, MyAccessibilityService.class);
-            SpecialAbilities.setCompoundDrawablesWithIntrinsicBounds(isServiceEnabled ? done : none, null, null, null);
+            SpecialAbilities.setCompoundDrawablesWithIntrinsicBounds(PermissionSpecialAbilitiesGranted() ? done : none, null, null, null);
         } catch (Exception ignored) {
             SpecialAbilities.setCompoundDrawablesWithIntrinsicBounds(unknown, null, null, null);
         }

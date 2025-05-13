@@ -57,16 +57,25 @@ public class LogSystem {
         if (DivideBottom) {content = content + "\n";}
 
         String finalContent = content;
+        SaveOperation(finalContent);
+
+    }
+
+    private void SaveOperation(String text){
         backgroundHandler.post(() -> {
             try {
                 manageFileSize(); // Проверяем размер до записи
                 FileWriter writer = new FileWriter(logFile, true);
-                writer.write(finalContent);
+                writer.write(text);
                 writer.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
+    }
+
+    public void Append(String content) {
+        SaveOperation(content);
     }
 
     private void manageFileSize() {
