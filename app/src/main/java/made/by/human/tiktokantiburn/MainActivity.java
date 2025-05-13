@@ -301,7 +301,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void refreshPermissionStatuses() {
-        Toast.makeText(this, "Refreshed!", Toast.LENGTH_SHORT).show();
         Button AboveAllWindows, UsagePermission, SpecialAbilities;
         AboveAllWindows = findViewById(R.id.AboveAllWindows);
         UsagePermission = findViewById(R.id.UsagePermission);
