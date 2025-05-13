@@ -3,10 +3,8 @@ package made.by.human.tiktokantiburn;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -21,8 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.view.Gravity;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 import com.google.gson.Gson;
 
@@ -37,16 +33,14 @@ public class FloatingWindowService extends Service {
     private ArrayList<View> blockburnList = new ArrayList<>();
 
     public void HideAndUnHide(View view) {
-        try {
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            view.setVisibility(View.GONE);
+
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                view.setVisibility(View.GONE);
+                view.setVisibility(View.VISIBLE);
+            }, 5000-150);
 
-                new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                    view.setVisibility(View.VISIBLE);
-                }, 5000 - 150);
-
-            }, 150);
-        } catch (Exception ignored) {}
+        }, 150);
     }
 
     public void LoadSettings(boolean canBeHidden) {
@@ -95,16 +89,16 @@ public class FloatingWindowService extends Service {
 
     }
 
-
-    public boolean GetBoolean(String settingName) {
-        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
-        return prefs.getBoolean(settingName, false);
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+    }
+
+
+    public boolean GetBoolean(String settingName) {
+        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
+        return prefs.getBoolean(settingName, false);
     }
 
     public boolean GetClickableStatus(){
@@ -119,27 +113,23 @@ public class FloatingWindowService extends Service {
 
         if (isClosed) {
             try {
-                try{ floatingView.animate() .alpha(0f) .setDuration(200) .start(); } catch (Exception ignored) {}
+                floatingView.animate() .alpha(0f) .setDuration(200) .start();
                 if (blockburnList != null) {
                     for (View view : blockburnList) { view.animate().alpha(0f).setDuration(200).start(); }
                 }
 
                 new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                    try{
-                        if (blockburnList != null) {
-                            for (View view : blockburnList) {
-                                windowManager.removeView(view);
-                            }
-                            blockburnList.clear();
+                    if (floatingView != null) {
+                        windowManager.removeView(floatingView);
+                        floatingView = null;
+                    }
+                    if (blockburnList != null) {
+                        for (View view : blockburnList) {
+                            windowManager.removeView(view);
                         }
-
-                        if (floatingView != null) {
-                            windowManager.removeView(floatingView);
-                            floatingView = null;
-                        }
-                    } catch (Exception ignored) {}
+                        blockburnList.clear();
+                    }
                     stopSelf();
-
                 }, 300);
 
 
@@ -154,7 +144,7 @@ public class FloatingWindowService extends Service {
 
         floatingView = LayoutInflater.from(this).inflate(R.layout.blockburn, null);
 
-        WindowManager.LayoutParams params;
+        WindowManager.LayoutParams params = null;
         params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -174,6 +164,13 @@ public class FloatingWindowService extends Service {
 
         params.width = screenWidth / 5 - 20;
         params.height = savedValue;
+
+        if (GetBoolean("DisableMainFloatingWindow")) {
+            params.x = -1000;
+            params.width = 0;
+            params.height = 0;
+        }
+
         params.gravity = Gravity.BOTTOM | Gravity.CENTER;
         if (canBeHidden) {
             floatingView.setOnClickListener(v -> {
@@ -184,18 +181,15 @@ public class FloatingWindowService extends Service {
         }
 
         try {
+            floatingView.setAlpha(0f);
+            windowManager.addView(floatingView, params);
             LoadSettings(canBeHidden);
-
-            if (!GetBoolean("DisableMainFloatingWindow")) {
-                floatingView.setAlpha(0f);
-                windowManager.addView(floatingView, params);
-                new Handler(Looper.getMainLooper()).post(() -> {
-                    floatingView.animate()
-                            .alpha(1f)
-                            .setDuration(200)
-                            .start();
-                });
-            }
+            new Handler(Looper.getMainLooper()).post(() -> {
+                floatingView.animate()
+                        .alpha(1f)
+                        .setDuration(200)
+                        .start();
+            });
 
 
         } catch (Exception e) {
@@ -212,7 +206,7 @@ public class FloatingWindowService extends Service {
     public void onDestroy() {
         super.onDestroy();
         if (floatingView != null) {
-            try{ windowManager.removeView(floatingView); } catch (Exception ignored) {}
+            windowManager.removeView(floatingView);
             floatingView = null;
         }
     }
