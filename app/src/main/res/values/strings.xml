@@ -22,4 +22,6 @@
     <string name="MinifiedStatus">Disable the basic overlap element</string>
     <string name="ExportLogs">Export logs</string>
     <string name="ClearLogs">Clear logs</string>
+    <string name="OptimalSwitchTitle">Compatibility mode</string>
+    <string name="OptimalSwitchDescription">Enable it if you have granted all permissions, but the item has not appeared. When enabled - TikTok closing event will have to wait a little longer than usual.</string>
 </resources>

@@ -3,11 +3,14 @@ package made.by.human.tiktokantiburn;
 import android.accessibilityservice.AccessibilityService;
 import android.app.Application;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityWindowInfo;
+
+import androidx.compose.ui.graphics.vector.PathNode;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -18,7 +21,7 @@ import java.util.Set;
 public class MyAccessibilityService extends AccessibilityService {
 
     LogSystem logger;
-
+    boolean CompatibilityMode = false;
     // в любой точке приложения
 
     public String GetApplicationName(String packageName) {
@@ -33,11 +36,17 @@ public class MyAccessibilityService extends AccessibilityService {
 
     }
 
+    public boolean GetBoolean(String settingName, boolean defaultValue) {
+        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
+        return prefs.getBoolean(settingName, defaultValue);
+    }
+
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         final boolean isWindowsChanged = event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED || event.getEventType() == AccessibilityEvent.TYPE_WINDOWS_CHANGED;
         logger.Save("[MyAccessibilityService] - onAccessibilityEvent received", "Is WindowsChanged: "+isWindowsChanged, true, false);
         boolean ClosePopups;
+        CompatibilityMode = GetBoolean("CompatibilityMode", false);
         if (isWindowsChanged) {
             Intent serviceIntent = new Intent(this, FloatingWindowService.class);
             try {
@@ -55,7 +64,9 @@ public class MyAccessibilityService extends AccessibilityService {
                     }
                 }
 
-                logger.Save("MyAccessibilityService - [Active Packages]", "ActivePackages: "+ApplicationNames, false, false);
+                logger.Save("MyAccessibilityService - [Active Packages]", "ActivePackages: "+ApplicationNames + "   (CompatibilityMode: "+CompatibilityMode+")", false, false);
+
+                boolean TikTokOpened = activePackages.contains("com.zhiliaoapp.musically");
 
                 if (activePackages.contains("com.android.launcher")
                         || activePackages.contains("com.google.android.apps.nexuslauncher")
@@ -65,10 +76,15 @@ public class MyAccessibilityService extends AccessibilityService {
 
                     ClosePopups = true;
                 } else {
-                    ClosePopups = !activePackages.contains("com.zhiliaoapp.musically");
+                    ClosePopups = !TikTokOpened;
                 }
 
-                logger.Save("TikTok Opened", activePackages.contains("com.zhiliaoapp.musically"), false, false);
+                if (CompatibilityMode) {
+                    ClosePopups = !TikTokOpened;
+                    logger.Save("CompatibilityMode", "ClosePopup now = "+ClosePopups, false, false);
+                }
+
+                logger.Save("TikTok Opened", TikTokOpened, false, false);
 
                 if (ClosePopups) {
                     serviceIntent.setAction("ACTION_CLOSE_WINDOW");

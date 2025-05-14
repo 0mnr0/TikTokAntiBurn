@@ -201,9 +201,9 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
     }
 
-    public boolean GetBoolean(String settingName) {
+    public boolean GetBoolean(String settingName, boolean defaultValue) {
         SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
-        return prefs.getBoolean(settingName, false);
+        return prefs.getBoolean(settingName, defaultValue);
     }
 
     public int GetInt(String settingName) {
@@ -221,12 +221,12 @@ public class MainActivity extends AppCompatActivity {
         return prefs.contains(settingName);
     }
     public void CheckSomeSettings(){
-        if (GetBoolean("DisableMainFloatingWindow")) { SomeSetting.setVisibility(View.GONE); } else { SomeSetting.setVisibility(View.VISIBLE); }
+        if (GetBoolean("DisableMainFloatingWindow", false)) { SomeSetting.setVisibility(View.GONE); } else { SomeSetting.setVisibility(View.VISIBLE); }
     }
 
 
 
-    @SuppressLint({"SetTextI18n", "MissingInflatedId"})
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -248,7 +248,9 @@ public class MainActivity extends AppCompatActivity {
         TheSwitch = findViewById(R.id.TheSwitchingTool);
         TheSwitch.setChecked(GetClickableStatus());
         TheSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> SetClickableStatus(isChecked));
-
+        MaterialSwitch OptimalSwitcher = findViewById(R.id.OptimalSwitcher);
+        OptimalSwitcher.setChecked(GetBoolean("CompatibilityMode", false));
+        OptimalSwitcher.setOnCheckedChangeListener((buttonView, isChecked) -> SaveSettings("CompatibilityMode", isChecked));
 
         boolean isServiceEnabled = isAccessibilityServiceEnabled(this, MyAccessibilityService.class);
 
@@ -270,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
             UseDataRequest(null);
         }
 
-        MainFloatingWindowEnabled.setChecked(GetBoolean("DisableMainFloatingWindow")); CheckSomeSettings();
+        MainFloatingWindowEnabled.setChecked(GetBoolean("DisableMainFloatingWindow", false)); CheckSomeSettings();
         MainFloatingWindowEnabled.setOnCheckedChangeListener((buttonView, isChecked) -> {SaveSettings("DisableMainFloatingWindow", isChecked); CheckSomeSettings();});
 
 

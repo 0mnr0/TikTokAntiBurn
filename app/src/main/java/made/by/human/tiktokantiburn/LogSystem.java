@@ -15,7 +15,7 @@ import android.app.Application;
 import android.util.Log;
 
 public class LogSystem {
-    public static final String LoggerVersion = "1.2.1";
+    public static final String LoggerVersion = "1.2.2";
     private static final long MAX_FILE_SIZE = 35L * 1024 * 1024; // 35 MB
     private static final String LOG_FILE_NAME = "logs.txt";
     private static LogSystem instance;
@@ -50,7 +50,7 @@ public class LogSystem {
     }
 
     public void Save(String key, Object data, boolean DivideTop, boolean DivideBottom) {
-        String content = "[(" + LoggerVersion + ") " + key + "] - " + data.toString() + "\n";
+        String content = "(" + LoggerVersion + ") [" + key + "] - " + data.toString() + "\n";
         Date date = new Date();
         content =  date.toLocaleString() + "  " + content;
         if (DivideTop) {content = "\n" + content;}

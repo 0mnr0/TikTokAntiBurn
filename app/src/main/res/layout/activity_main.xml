@@ -167,6 +167,8 @@
                     android:checked="true"
                     android:text="@string/MinifiedStatus"
                     android:textColor="@color/SeekBackdroundFilled"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -186,7 +188,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginRight="12dp"
                 android:background="@drawable/fast_setting_bg"
-                android:padding="12dp"
+                android:paddingTop="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/SomeSetting3">
@@ -198,6 +200,7 @@
                     android:layout_marginLeft="14dp"
                     android:text="@string/fastSettingsMainFlowtingWindow"
                     android:textColor="@color/ButtonBackdround"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="@+id/slider"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -214,12 +217,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView"
                     app:thumbColor="@color/SeekBackdroundFilled"
-                    app:tickColorActive="#00000000"
-                    app:tickColorInactive="#E41D1D"
-                    app:tickVisible="false"
                     app:trackColorActive="@color/SeekBackdroundFilled"
                     app:trackColorInactive="@color/SeekBackdround"
-                    tools:ignore="HardcodedText"
                     tools:tickColorInactive="#00000000" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -243,6 +242,8 @@
                     android:checked="false"
                     android:text="@string/fastSettingsGoneOnclick"
                     android:textColor="@color/SeekBackdroundFilled"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -254,12 +255,56 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/SomeSetting4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="12dp"
+                android:background="@drawable/fast_setting_bg"
+                android:padding="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/SomeSetting2">
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/OptimalSwitcher"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="@string/OptimalSwitchTitle"
+                    android:textColor="@color/SeekBackdroundFilled"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:thumbTint="@color/SeekBackdroundFilled"
+                    app:trackDecorationTint="@color/SeekBackdroundFilled"
+                    app:trackTint="@color/MID" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.75"
+                    android:paddingBottom="6dp"
+                    android:text="@string/OptimalSwitchDescription"
+                    android:textColor="@color/SeekBackdroundFilled"
+                    app:layout_constraintStart_toStartOf="@+id/OptimalSwitcher"
+                    app:layout_constraintTop_toBottomOf="@+id/OptimalSwitcher" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <Button
                 android:id="@+id/SaveLogs"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginRight="2dp"
                 android:backgroundTint="@color/MID"
                 android:onClick="ExportLogs"
@@ -269,7 +314,7 @@
                 app:cornerRadius="10dp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/SomeSetting2" />
+                app:layout_constraintTop_toBottomOf="@+id/SomeSetting4" />
 
             <Button
                 android:id="@+id/clearLogs"

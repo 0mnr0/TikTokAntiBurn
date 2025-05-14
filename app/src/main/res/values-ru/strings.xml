@@ -18,7 +18,9 @@
     <string name="ExtendedSetting_HeightUnknwon">Высота: ?px</string>
     <string name="ExtendedSetting_Width">"Ширина: "</string>
     <string name="ExtendedSetting_Height">"Высота: "</string>
-    <string name="MinifiedStatus">Отключить базовый элемент перекрытия</string>
+    <string name="MinifiedStatus">Отключить базовый элемент</string>
     <string name="ExportLogs">Сохранить логи</string>
     <string name="ClearLogs">Очистить логи</string>
+    <string name="OptimalSwitchTitle">Режим совместимости</string>
+    <string name="OptimalSwitchDescription">Включите, если вы выдали все разрешения, но элемент так и не появился. При включении - события закрытия TikTok придется ждать немного дольше, чем обычно.</string>
 </resources>
