@@ -181,9 +181,6 @@ public class MainActivity extends AppCompatActivity {
                 LogExportHelper.exportLogs(this);
             }
         }
-
-
-
     }
 
     public void SaveSettings(String settingName, Object value) {

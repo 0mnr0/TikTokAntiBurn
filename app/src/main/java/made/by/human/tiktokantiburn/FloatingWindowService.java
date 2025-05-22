@@ -1,5 +1,6 @@
 package made.by.human.tiktokantiburn;
 
+import android.app.Application;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,6 +18,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import android.view.Gravity;
 
@@ -26,6 +28,7 @@ import com.google.gson.Gson;
 public class FloatingWindowService extends Service {
 
     private WindowManager windowManager;
+    LogSystem logger;
     private View floatingView;
     private static final String PREFS_NAME = "SeekBarPrefs";
     private static final String PREF_VALUE = "seekBarValue";
@@ -54,9 +57,19 @@ public class FloatingWindowService extends Service {
         if (blockList == null) {
             return;
         }
-        for (BlockInfo blockInfo : blockList) {
 
+        int i = 0;
+        for (BlockInfo blockInfo : blockList) {
             View blockburn = LayoutInflater.from(this).inflate(R.layout.blockburn, null);
+            if (blockburn == null) {
+                logger.Save("FloatingWindowService", "popupView = null", true, true);
+                return;
+            }
+            if (blockburn.getWindowToken() != null) {
+                Log.d("FloatingWindowService", "popupView already exists");
+                return;
+            }
+
             WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                     blockInfo.width, blockInfo.height,
                     WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
@@ -79,12 +92,12 @@ public class FloatingWindowService extends Service {
                 });
             }
 
-            new Handler(Looper.getMainLooper()).post(() -> {
-                blockburn.animate()
-                        .alpha(1f)
-                        .setDuration(200) // или сколько нужно
-                        .start();
-            });
+            new Handler(Looper.getMainLooper()).post(() -> blockburn.animate()
+                    .alpha(1f)
+                    .setDuration(200)
+                    .start());
+            logger.Save("System_FloatingWindowService", "Sucsesfully added blockburn! ("+i+"/"+blockList.size()+")", true, true);
+            i += 1;
         }
 
     }
@@ -92,6 +105,10 @@ public class FloatingWindowService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        if (LogSystem.getInstanceOrNull() == null) {
+            LogSystem.init((Application) getApplicationContext());
+        }
+        logger = LogSystem.getInstance();
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
     }
 
@@ -176,7 +193,7 @@ public class FloatingWindowService extends Service {
             floatingView.setOnClickListener(v -> {
                 HideAndUnHide(v);
                 floatingView.animate().alpha(0f).setDuration(100).start();
-                new Handler(Looper.getMainLooper()).postDelayed(() -> floatingView.animate().alpha(1f).setDuration(100).start(), 5000);
+                try{ new Handler(Looper.getMainLooper()).postDelayed(() -> floatingView.animate().alpha(1f).setDuration(100).start(), 5000); } catch (Exception ignored) {}
             });
         }
 
@@ -184,15 +201,17 @@ public class FloatingWindowService extends Service {
             floatingView.setAlpha(0f);
             windowManager.addView(floatingView, params);
             LoadSettings(canBeHidden);
-            new Handler(Looper.getMainLooper()).post(() -> {
+            try { new Handler(Looper.getMainLooper()).post(() -> {
                 floatingView.animate()
                         .alpha(1f)
                         .setDuration(200)
                         .start();
-            });
+            }); } catch (Exception ignored) {} // Я испорльзую try только если пользователь выйдет из ТТ а после произойдёт анимация для уже несуществуюшего View
+
 
 
         } catch (Exception e) {
+            logger.Save("System_FloatingWindowService", "Exception catched: " + e, true, true);
             Log.w("Exception catched:", e);
             return Service.START_STICKY;
         }

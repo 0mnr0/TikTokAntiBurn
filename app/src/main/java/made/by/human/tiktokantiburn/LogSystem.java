@@ -16,13 +16,11 @@ import android.util.Log;
 
 public class LogSystem {
     public static final String LoggerVersion = "1.2.2";
-    private static final long MAX_FILE_SIZE = 35L * 1024 * 1024; // 35 MB
+    private static final long MAX_FILE_SIZE = 15L * 1024 * 1024; // 35 MB
     private static final String LOG_FILE_NAME = "logs.txt";
     private static LogSystem instance;
     private final File logFile;
     private final Handler backgroundHandler;
-
-    // Получаем доступ к внутреннему хранилищу приложения через Application
     public static LogSystem getInstanceOrNull() {
         return instance;
     }
