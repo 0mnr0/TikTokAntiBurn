@@ -15,8 +15,8 @@ import android.app.Application;
 import android.util.Log;
 
 public class LogSystem {
-    public static final String LoggerVersion = "1.2.2";
-    private static final long MAX_FILE_SIZE = 15L * 1024 * 1024; // 35 MB
+    public static final String LoggerVersion = "1.2.3";
+    private static final long MAX_FILE_SIZE = 15L * 1024 * 1024; // 15 MB
     private static final String LOG_FILE_NAME = "logs.txt";
     private static LogSystem instance;
     private final File logFile;

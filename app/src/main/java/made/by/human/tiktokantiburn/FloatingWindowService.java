@@ -206,7 +206,11 @@ public class FloatingWindowService extends Service {
                         .alpha(1f)
                         .setDuration(200)
                         .start();
-            }); } catch (Exception ignored) {} // Я испорльзую try только если пользователь выйдет из ТТ а после произойдёт анимация для уже несуществуюшего View
+                logger.Save("Main Blockburn", "Sucsesfully added main blockburn!", false, true);
+            }); } catch (Exception e) {
+                logger.Save("Main Blockburn", "Failed to add a main blockburn!: "+e, true, true);
+                // Я испорльзую try только если пользователь выйдет из ТТ а после произойдёт анимация для уже несуществуюшего View
+            }
 
 
 
