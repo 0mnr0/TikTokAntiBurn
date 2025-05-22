@@ -41,6 +41,11 @@ public class MyAccessibilityService extends AccessibilityService {
         return prefs.getBoolean(settingName, defaultValue);
     }
 
+    public String GetString(String settingName, String defValue) {
+        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
+        return prefs.getString(settingName, defValue);
+    }
+
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         final boolean isWindowsChanged = event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED || event.getEventType() == AccessibilityEvent.TYPE_WINDOWS_CHANGED;
@@ -66,7 +71,7 @@ public class MyAccessibilityService extends AccessibilityService {
 
                 logger.Save("MyAccessibilityService - [Active Packages]", "ActivePackages: "+ApplicationNames + "   (CompatibilityMode: "+CompatibilityMode+")", false, false);
 
-                boolean TikTokOpened = activePackages.contains("com.zhiliaoapp.musically");
+                boolean TikTokOpened = activePackages.contains(GetString("TriggerPacketName", "com.zhiliaoapp.musically"));
 
                 if (activePackages.contains("com.android.launcher")
                         || activePackages.contains("com.google.android.apps.nexuslauncher")

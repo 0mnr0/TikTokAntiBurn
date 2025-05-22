@@ -17,8 +17,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,8 +37,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.slider.Slider;
-
-import java.util.ArrayList;
+import com.google.android.material.textfield.TextInputEditText;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     MaterialSwitch TheSwitch;
     LogSystem logger;
+    TextInputEditText TriggerPacketName;
 
 
 
@@ -208,9 +211,9 @@ public class MainActivity extends AppCompatActivity {
         return prefs.getInt(settingName, 0);
     }
 
-    public String GetString(String settingName) {
+    public String GetString(String settingName, String defValue) {
         SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
-        return prefs.getString(settingName, "");
+        return prefs.getString(settingName, defValue);
     }
 
     public boolean isSettingKeyExists(String CollectionName, String settingName) {
@@ -221,6 +224,12 @@ public class MainActivity extends AppCompatActivity {
         if (GetBoolean("DisableMainFloatingWindow", false)) { SomeSetting.setVisibility(View.GONE); } else { SomeSetting.setVisibility(View.VISIBLE); }
     }
 
+
+    public void HideTextInputFocus() {
+        TriggerPacketName.clearFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(TriggerPacketName.getWindowToken(), 0);
+    }
 
 
     @SuppressLint("MissingInflatedId")
@@ -269,9 +278,12 @@ public class MainActivity extends AppCompatActivity {
             UseDataRequest(null);
         }
 
-        MainFloatingWindowEnabled.setChecked(GetBoolean("DisableMainFloatingWindow", false)); CheckSomeSettings();
-        MainFloatingWindowEnabled.setOnCheckedChangeListener((buttonView, isChecked) -> {SaveSettings("DisableMainFloatingWindow", isChecked); CheckSomeSettings();});
-
+        MainFloatingWindowEnabled.setChecked(GetBoolean("DisableMainFloatingWindow", false));
+        CheckSomeSettings();
+        MainFloatingWindowEnabled.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SaveSettings("DisableMainFloatingWindow", isChecked);
+            CheckSomeSettings();
+        });
 
 
         seekBar = findViewById(R.id.slider);
@@ -284,7 +296,7 @@ public class MainActivity extends AppCompatActivity {
         int savedValue = sharedPreferences.getInt(PREF_VALUE, 40);
         if (!isSettingKeyExists(PREFS_NAME, PREF_VALUE)) {
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            savedValue = (max+40)/2;
+            savedValue = (max + 40) / 2;
             editor.putInt(PREF_VALUE, savedValue);
             editor.apply();
         }
@@ -302,7 +314,26 @@ public class MainActivity extends AppCompatActivity {
         seekBar.setLabelFormatter(label -> ((int) Math.max(seekBar.getValue(), 40)) + " px");
         refreshPermissionStatuses();
 
+        TriggerPacketName = findViewById(R.id.TriggerPacketName);
+        TriggerPacketName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                SaveSettings("TriggerPacketName", s.toString());
+            }
+        });
+        TriggerPacketName.setText(GetString("TriggerPacketName", "com.zhiliaoapp.musically"));
+        TriggerPacketName.setOnEditorActionListener((v, actionId, event) -> {
+            HideTextInputFocus();
+            return true;
+        });
     }
+
 
 
     public boolean PermissionOverlayGranted(){
@@ -356,5 +387,13 @@ public class MainActivity extends AppCompatActivity {
         refreshPermissionStatuses();
     }
 
+    @Override
+    public void onBackPressed() {
+        if (TriggerPacketName.isFocused()) {
+            HideTextInputFocus();
+        } else {
+            super.onBackPressed();
+        }
+    }
 
 }

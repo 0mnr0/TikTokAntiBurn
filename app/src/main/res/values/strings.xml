@@ -24,4 +24,6 @@
     <string name="ClearLogs">Clear logs</string>
     <string name="OptimalSwitchTitle">Compatibility mode</string>
     <string name="OptimalSwitchDescription">Enable it if you have granted all permissions, but the item has not appeared. When enabled - TikTok closing event will have to wait a little longer than usual.</string>
+    <string name="PacketName">TikTok Package Name</string>
+    <string name="packetnamedescription">Specify the standard TikTok package name</string>
 </resources>
