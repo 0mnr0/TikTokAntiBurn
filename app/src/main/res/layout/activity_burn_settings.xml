@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ButtonForeground"
+    tools:context=".BurnSettings">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:text="@string/fastSettings"
+                android:textColor="@color/ButtonBackdround"
+                android:textSize="34sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="20dp"
+                android:paddingBottom="4dp"
+                android:text="@string/GlobalSettingsDivide"
+                android:textColor="@color/SeekBackdround"
+                android:textSize="18sp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/fast_setting_bg"
+                android:padding="12dp">
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/packetnamedescription"
+                    android:textColor="@color/ButtonBackdround"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/PacketName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/MID"
+                    app:boxBackgroundColor="@color/DarkABit"
+                    app:boxCornerRadiusBottomEnd="8dp"
+                    app:boxCornerRadiusBottomStart="8dp"
+                    app:boxCornerRadiusTopEnd="8dp"
+                    app:boxCornerRadiusTopStart="8dp"
+                    app:boxStrokeColor="@color/SeekBackdround"
+                    app:boxStrokeWidth="0dp"
+                    app:cursorColor="@color/ButtonBackdround"
+                    app:helperTextEnabled="false"
+                    app:hintTextColor="@color/ButtonBackdround"
+                    app:layout_constraintTop_toBottomOf="@+id/textView5"
+                    tools:layout_editor_absoluteX="12dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/TriggerPacketName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="com.zhiliaoapp.musically"
+                        android:imeOptions="actionDone|actionNext"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:textColor="@color/ButtonBackdround" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/SomeSetting4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/fast_setting_bg"
+                android:padding="12dp">
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/OptimalSwitcher"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="@string/OptimalSwitchTitle"
+                    android:textColor="@color/SeekBackdroundFilled"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:thumbTint="@color/SeekBackdroundFilled"
+                    app:trackDecorationTint="@color/SeekBackdroundFilled"
+                    app:trackTint="@color/MID" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.75"
+                    android:paddingBottom="6dp"
+                    android:text="@string/OptimalSwitchDescription"
+                    android:textColor="@color/SeekBackdroundFilled"
+                    app:layout_constraintStart_toStartOf="@+id/OptimalSwitcher"
+                    app:layout_constraintTop_toBottomOf="@+id/OptimalSwitcher" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="32dp"
+                android:paddingBottom="4dp"
+                android:text="@string/MainElementSettingsDivide"
+                android:textColor="@color/SeekBackdround"
+                android:textSize="18sp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/SomeSetting3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/fast_setting_bg"
+                android:padding="12dp">
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/MinifiedVersion"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:checked="false"
+                    android:text="@string/MinifiedStatus"
+                    android:textColor="@color/SeekBackdroundFilled"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:thumbTint="@color/SeekBackdroundFilled"
+                    app:trackDecorationTint="@color/SeekBackdroundFilled"
+                    app:trackTint="@color/MID" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/SomeSetting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:animateLayoutChanges="true"
+                android:background="@drawable/fast_setting_bg"
+                android:paddingTop="12dp">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="14dp"
+                    android:text="@string/fastSettingsMainFlowtingWindow"
+                    android:textColor="@color/ButtonBackdround"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/slider"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="Setup a height of popup"
+                    android:value="20.0"
+                    android:valueFrom="0.0"
+                    android:valueTo="100.0"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView"
+                    app:thumbColor="@color/SeekBackdroundFilled"
+                    app:trackColorActive="@color/SeekBackdroundFilled"
+                    app:trackColorInactive="@color/SeekBackdround"
+                    tools:tickColorInactive="#00000000" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/SomeSetting2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/fast_setting_bg"
+                android:padding="12dp">
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/TheSwitchingTool"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:checked="false"
+                    android:text="@string/fastSettingsGoneOnclick"
+                    android:textColor="@color/SeekBackdroundFilled"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:thumbTint="@color/SeekBackdroundFilled"
+                    app:trackDecorationTint="@color/SeekBackdroundFilled"
+                    app:trackTint="@color/MID" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

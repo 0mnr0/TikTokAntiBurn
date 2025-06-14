@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="fastSettingsGoneOnclick">Скрыть на пару секунд после нажатия</string>
-    <string name="fastSettings">Быстрые настройки</string>
+    <string name="fastSettingsGoneOnclick">Скрыть элементы на пару секунд после нажатия</string>
+    <string name="fastSettings">Настройки</string>
     <string name="fastSettingsMainFlowtingWindow">"Высота главного элемента: "</string>
     <string name="TikTokNotFound">Приложение TikTok не найдено</string>
     <string name="UsageStatsPermessionIsNotGranted">Пожалуйста, выдайте разрешение \"Доступ об использовании\" самостоятельно</string>
@@ -27,4 +27,8 @@
     <string name="packetnamedescription">Укажите стандартное имя пакета TikTok</string>
     <string name="LSPosedDescription">Используйте Root метод для нахождения TikTok</string>
     <string name="LSPosedHookButtonByText">Создать</string>
+    <string name="GlobalSettingsDivide">Глобальные настройки</string>
+    <string name="MainElementSettingsDivide">Настройки главного элемента</string>
+    <string name="OpenSettingsButton">Перейти в настройки</string>
+    <string name="Additional">"Дополнительно: "</string>
 </resources>

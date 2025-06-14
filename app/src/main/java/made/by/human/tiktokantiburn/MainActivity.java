@@ -42,18 +42,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 
 public class MainActivity extends AppCompatActivity {
-
-    private Slider seekBar;
-    private TextView progressText;
-    private SharedPreferences sharedPreferences;
-    private static final String PREFS_NAME = "SeekBarPrefs";
-    private static final String PREF_VALUE = "seekBarValue";
-
-    public ConstraintLayout SomeSetting;
-
-    MaterialSwitch TheSwitch;
     LogSystem logger;
-    TextInputEditText TriggerPacketName;
 
 
 
@@ -74,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
             if (enabledService != null && enabledService.equals(expectedComponentName))
                 return true;
         }
-
         return false;
     }
 
@@ -147,19 +135,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    public boolean GetClickableStatus(){
-        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
-        return prefs.getBoolean("Clickable", false);
+    public void openAppSettings(View view) {
+        Intent intent = new Intent(this, BurnSettings.class);
+        startActivity(intent);
     }
-
-    public void SetClickableStatus(boolean status){
-        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean("Clickable", status);
-        editor.apply();
-    }
-
 
 
     public void CleanLogs(View view) {
@@ -211,25 +190,13 @@ public class MainActivity extends AppCompatActivity {
         return prefs.getInt(settingName, 0);
     }
 
-    public String GetString(String settingName, String defValue) {
-        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
-        return prefs.getString(settingName, defValue);
-    }
 
-    public boolean isSettingKeyExists(String CollectionName, String settingName) {
-        SharedPreferences prefs = getSharedPreferences(CollectionName, MODE_PRIVATE);
-        return prefs.contains(settingName);
-    }
+
     public void CheckSomeSettings(){
-        if (GetBoolean("DisableMainFloatingWindow", false)) { SomeSetting.setVisibility(View.GONE); } else { SomeSetting.setVisibility(View.VISIBLE); }
+        //if (GetBoolean("DisableMainFloatingWindow", false)) { SomeSetting.setVisibility(View.GONE); } else { SomeSetting.setVisibility(View.VISIBLE); }
     }
 
 
-    public void HideTextInputFocus() {
-        TriggerPacketName.clearFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(TriggerPacketName.getWindowToken(), 0);
-    }
 
 
     @SuppressLint("MissingInflatedId")
@@ -248,15 +215,9 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         checkOverlayPermission();
-        SomeSetting = findViewById(R.id.SomeSetting);
         TextView VersionCode = findViewById(R.id.VersionCode);
         VersionCode.setText(LogSystem.LoggerVersion);
-        TheSwitch = findViewById(R.id.TheSwitchingTool);
-        TheSwitch.setChecked(GetClickableStatus());
-        TheSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> SetClickableStatus(isChecked));
-        MaterialSwitch OptimalSwitcher = findViewById(R.id.OptimalSwitcher);
-        OptimalSwitcher.setChecked(GetBoolean("CompatibilityMode", false));
-        OptimalSwitcher.setOnCheckedChangeListener((buttonView, isChecked) -> SaveSettings("CompatibilityMode", isChecked));
+
 
         boolean isServiceEnabled = isAccessibilityServiceEnabled(this, MyAccessibilityService.class);
 
@@ -272,66 +233,13 @@ public class MainActivity extends AppCompatActivity {
         AppOpsManager appOps = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
         int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
                 android.os.Process.myUid(), getPackageName());
-        MaterialSwitch MainFloatingWindowEnabled = findViewById(R.id.MinifiedVersion);
 
         if (mode != AppOpsManager.MODE_ALLOWED) {
             UseDataRequest(null);
         }
 
-        MainFloatingWindowEnabled.setChecked(GetBoolean("DisableMainFloatingWindow", false));
-        CheckSomeSettings();
-        MainFloatingWindowEnabled.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            SaveSettings("DisableMainFloatingWindow", isChecked);
-            CheckSomeSettings();
-        });
 
-
-        seekBar = findViewById(R.id.slider);
-        progressText = findViewById(R.id.textView);
-        sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        int screenHeight = getResources().getDisplayMetrics().heightPixels;
-        int max = (int) (screenHeight * 0.1);
-        seekBar.setValueTo(max);
-        seekBar.setValueFrom(40);
-        int savedValue = sharedPreferences.getInt(PREF_VALUE, 40);
-        if (!isSettingKeyExists(PREFS_NAME, PREF_VALUE)) {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            savedValue = (max + 40) / 2;
-            editor.putInt(PREF_VALUE, savedValue);
-            editor.apply();
-        }
-        seekBar.setValue(savedValue);
-        progressText.setText(getString(R.string.fastSettingsMainFlowtingWindow) + savedValue + " px");
-
-        seekBar.addOnChangeListener((slider, progress, fromUser) -> {
-            int value = (int) Math.max(progress, 40);
-            progressText.setText(getString(R.string.fastSettingsMainFlowtingWindow) + value + " px");
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putInt(PREF_VALUE, value);
-            editor.apply();
-        });
-
-        seekBar.setLabelFormatter(label -> ((int) Math.max(seekBar.getValue(), 40)) + " px");
         refreshPermissionStatuses();
-
-        TriggerPacketName = findViewById(R.id.TriggerPacketName);
-        TriggerPacketName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                SaveSettings("TriggerPacketName", s.toString());
-            }
-        });
-        TriggerPacketName.setText(GetString("TriggerPacketName", "com.zhiliaoapp.musically"));
-        TriggerPacketName.setOnEditorActionListener((v, actionId, event) -> {
-            HideTextInputFocus();
-            return true;
-        });
     }
 
 
@@ -387,13 +295,6 @@ public class MainActivity extends AppCompatActivity {
         refreshPermissionStatuses();
     }
 
-    @Override
-    public void onBackPressed() {
-        if (TriggerPacketName.isFocused()) {
-            HideTextInputFocus();
-        } else {
-            super.onBackPressed();
-        }
-    }
+
 
 }

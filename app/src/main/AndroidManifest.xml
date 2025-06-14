@@ -2,48 +2,52 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS"
+    <uses-permission
+        android:name="android.permission.INTERACT_ACROSS_USERS"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE" tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission
+        android:name="android.permission.BIND_ACCESSIBILITY_SERVICE"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission
+        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
 
-
-
-
-
     <application
-
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:description="@string/LSPosedDescription"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:description="@string/LSPosedDescription"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TikTokAntiBurn"
-        tools:targetApi="31"
-        tools:ignore="HardcodedDebugMode">
-
-
+        tools:ignore="HardcodedDebugMode"
+        tools:targetApi="31">
+        <activity
+            android:name=".BurnSettings"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <service
             android:name=".MyAccessibilityService"
-            android:exported="true"
             android:enabled="true"
+            android:exported="true"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
@@ -53,18 +57,14 @@
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibility_service_config" />
         </service>
-
         <service
             android:name=".FloatingWindowService"
             android:enabled="true"
             android:exported="true" />
-
         <service
             android:name=".SetupFloatingWindows"
-            android:exported="false"
-            android:enabled="true" />
-
-
+            android:enabled="true"
+            android:exported="false" />
 
         <meta-data
             android:name="xposedmodule"
@@ -78,11 +78,6 @@
         <meta-data
             android:name="xposedscope"
             android:resource="@array/xposed_scope" />
-
-
-
-
     </application>
-
 
 </manifest>

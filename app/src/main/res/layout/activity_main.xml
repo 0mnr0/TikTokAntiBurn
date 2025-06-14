@@ -18,7 +18,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:animateLayoutChanges="true"
             android:paddingBottom="16dp">
 
@@ -127,19 +127,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:padding="16dp"
-                android:text="@string/fastSettings"
-                android:textColor="@color/SeekBackdround"
-                android:textSize="34sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/divider2" />
-
             <View
                 android:id="@+id/divider2"
                 android:layout_width="match_parent"
@@ -148,234 +135,58 @@
                 android:background="?android:attr/listDivider"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout2"
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="14dp"
+                android:text="@string/Additional"
+                android:textColor="@color/MID"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+            <Button
+                android:id="@+id/OpenSettings"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
-                android:background="@drawable/fast_setting_bg"
-                android:padding="12dp"
+                android:backgroundTint="@color/ButtonBackdround"
+                android:onClick="openAppSettings"
+                android:padding="15dp"
+                android:paddingBottom="32dp"
+                android:text="@string/OpenSettingsButton"
+                android:textColor="@color/ButtonForeground"
+                app:cornerRadius="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2">
-
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/packetnamedescription"
-                    android:textColor="@color/ButtonBackdround"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/PacketName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/MID"
-                    app:boxBackgroundColor="@color/DarkABit"
-                    app:boxCornerRadiusBottomEnd="8dp"
-                    app:boxCornerRadiusBottomStart="8dp"
-                    app:boxCornerRadiusTopEnd="8dp"
-                    app:boxCornerRadiusTopStart="8dp"
-                    app:boxStrokeColor="@color/SeekBackdround"
-                    app:boxStrokeWidth="0dp"
-                    app:cursorColor="@color/ButtonBackdround"
-                    app:helperTextEnabled="false"
-                    app:hintTextColor="@color/ButtonBackdround"
-                    app:layout_constraintTop_toBottomOf="@+id/textView5"
-                    tools:layout_editor_absoluteX="12dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/TriggerPacketName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="com.zhiliaoapp.musically"
-                        android:imeOptions="actionDone|actionNext"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:textColor="@color/ButtonBackdround" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/SomeSetting3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginRight="12dp"
-                android:background="@drawable/fast_setting_bg"
-                android:padding="12dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
-
-                <com.google.android.material.materialswitch.MaterialSwitch
-                    android:id="@+id/MinifiedVersion"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:checked="true"
-                    android:text="@string/MinifiedStatus"
-                    android:textColor="@color/SeekBackdroundFilled"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:thumbTint="@color/SeekBackdroundFilled"
-                    app:trackDecorationTint="@color/SeekBackdroundFilled"
-                    app:trackTint="@color/MID" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/SomeSetting"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginRight="12dp"
-                android:background="@drawable/fast_setting_bg"
-                android:paddingTop="12dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/SomeSetting3">
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="14dp"
-                    android:text="@string/fastSettingsMainFlowtingWindow"
-                    android:textColor="@color/ButtonBackdround"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="@+id/slider"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <com.google.android.material.slider.Slider
-                    android:id="@+id/slider"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="Setup a height of popup"
-                    android:value="20.0"
-                    android:valueFrom="0.0"
-                    android:valueTo="100.0"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView"
-                    app:thumbColor="@color/SeekBackdroundFilled"
-                    app:trackColorActive="@color/SeekBackdroundFilled"
-                    app:trackColorInactive="@color/SeekBackdround"
-                    tools:tickColorInactive="#00000000" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/SomeSetting2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginRight="12dp"
-                android:background="@drawable/fast_setting_bg"
-                android:padding="12dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/SomeSetting">
-
-                <com.google.android.material.materialswitch.MaterialSwitch
-                    android:id="@+id/TheSwitchingTool"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:checked="false"
-                    android:text="@string/fastSettingsGoneOnclick"
-                    android:textColor="@color/SeekBackdroundFilled"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:thumbTint="@color/SeekBackdroundFilled"
-                    app:trackDecorationTint="@color/SeekBackdroundFilled"
-                    app:trackTint="@color/MID" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/SomeSetting4"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginRight="12dp"
-                android:background="@drawable/fast_setting_bg"
-                android:padding="12dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/SomeSetting2">
-
-                <com.google.android.material.materialswitch.MaterialSwitch
-                    android:id="@+id/OptimalSwitcher"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:text="@string/OptimalSwitchTitle"
-                    android:textColor="@color/SeekBackdroundFilled"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:thumbTint="@color/SeekBackdroundFilled"
-                    app:trackDecorationTint="@color/SeekBackdroundFilled"
-                    app:trackTint="@color/MID" />
-
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:alpha="0.75"
-                    android:paddingBottom="6dp"
-                    android:text="@string/OptimalSwitchDescription"
-                    android:textColor="@color/SeekBackdroundFilled"
-                    app:layout_constraintStart_toStartOf="@+id/OptimalSwitcher"
-                    app:layout_constraintTop_toBottomOf="@+id/OptimalSwitcher" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
             <Button
                 android:id="@+id/SaveLogs"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginRight="3dp"
                 android:backgroundTint="@color/MID"
                 android:onClick="ExportLogs"
                 android:padding="15dp"
                 android:text="@string/ExportLogs"
                 android:textColor="@color/SeekBackdroundFilled"
                 app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/SomeSetting4" />
+                app:layout_constraintTop_toBottomOf="@+id/OpenSettings" />
 
             <Button
                 android:id="@+id/clearLogs"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
+                android:layout_marginLeft="3dp"
                 android:layout_marginRight="12dp"
                 android:backgroundTint="@color/MID"
                 android:onClick="CleanLogs"

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">TikTok AntiBurn</string>
-    <string name="fastSettingsGoneOnclick">Hide for a couple of seconds after clicking</string>
-    <string name="fastSettings">Fast Settings</string>
+    <string name="fastSettingsGoneOnclick">Hide elements for a couple of seconds after clicking</string>
+    <string name="fastSettings">Settings</string>
     <string name="fastSettingsMainFlowtingWindow">"Height of the main element: "</string>
     <string name="TikTokNotFound">TikTok not found</string>
     <string name="UsageStatsPermessionIsNotGranted">Please, request permission of USAGE ACCESS manually</string>
@@ -28,4 +28,8 @@
     <string name="packetnamedescription">Specify the standard TikTok package name</string>
     <string name="LSPosedDescription">Use Root to detect TikTok</string>
     <string name="LSPosedHookButtonByText">Create</string>
+    <string name="GlobalSettingsDivide">Global Settings</string>
+    <string name="MainElementSettingsDivide">Main Element Settings</string>
+    <string name="OpenSettingsButton">Open App Settings</string>
+    <string name="Additional">Additional:</string>
 </resources>
