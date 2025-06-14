@@ -2,6 +2,7 @@ package made.by.human.tiktokantiburn;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AndroidAppHelper;
 import android.app.AppOpsManager;
 import android.app.Application;
 import android.content.ActivityNotFoundException;
@@ -53,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
     MaterialSwitch TheSwitch;
     LogSystem logger;
     TextInputEditText TriggerPacketName;
-
 
 
 

@@ -18,18 +18,29 @@ android {
 
     buildTypes {
         release {
+            isDebuggable = false
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
+
+
+    sourceSets {
+        getByName("main") {
+            assets.srcDirs("src/main/assets")
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
+
 
 dependencies {
 
@@ -38,10 +49,17 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation("com.google.android.material:material:1.12.0")
-    implementation ("com.google.code.gson:gson:2.10.1")
+    implementation ("com.google.code.gson:gson:2.11.0")
     implementation(libs.ui.android)
+    implementation(libs.rendering)
+    compileOnly("de.robv.android.xposed:api:82")
     implementation (libs.material.v190)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+}
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }

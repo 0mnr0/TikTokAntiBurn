@@ -26,4 +26,6 @@
     <string name="OptimalSwitchDescription">Enable it if you have granted all permissions, but the item has not appeared. When enabled - TikTok closing event will have to wait a little longer than usual.</string>
     <string name="PacketName">TikTok Package Name</string>
     <string name="packetnamedescription">Specify the standard TikTok package name</string>
+    <string name="LSPosedDescription">Use Root to detect TikTok</string>
+    <string name="LSPosedHookButtonByText">Create</string>
 </resources>

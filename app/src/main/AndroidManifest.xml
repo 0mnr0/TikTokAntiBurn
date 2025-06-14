@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE" tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions" />
@@ -20,10 +23,14 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:description="@string/LSPosedDescription"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TikTokAntiBurn"
-        tools:targetApi="31">
+        tools:targetApi="31"
+        tools:ignore="HardcodedDebugMode">
+
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -52,11 +59,25 @@
             android:enabled="true"
             android:exported="true" />
 
-
         <service
             android:name=".SetupFloatingWindows"
             android:exported="false"
             android:enabled="true" />
+
+
+
+        <meta-data
+            android:name="xposedmodule"
+            android:value="true" />
+        <meta-data
+            android:name="xposeddescription"
+            android:value="Blocks TikTok usage burnout!" />
+        <meta-data
+            android:name="xposedminversion"
+            android:value="82" />
+        <meta-data
+            android:name="xposedscope"
+            android:resource="@array/xposed_scope" />
 
 
 
