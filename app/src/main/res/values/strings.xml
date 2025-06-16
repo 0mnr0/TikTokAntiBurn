@@ -32,4 +32,6 @@
     <string name="MainElementSettingsDivide">Main Element Settings</string>
     <string name="OpenSettingsButton">Open App Settings</string>
     <string name="Additional">Additional:</string>
+    <string name="LSPosedSettingTitle">LSPosed Module Settings</string>
+    <string name="LSPosedEnableModule">Allow TikTok modification in real time using the module</string>
 </resources>

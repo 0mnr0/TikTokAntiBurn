@@ -6,6 +6,7 @@
     <color name="MonetViewDarkBG">@color/material_dynamic_neutral_variant10</color>
     <color name="ButtonForeground">@color/material_dynamic_neutral_variant10</color>
     <color name="ButtonBackdround">@color/material_dynamic_neutral_variant80</color>
+    <color name="SheetForeground">@color/material_dynamic_neutral_variant90</color>
     <color name="SeekBackdround">@color/material_dynamic_neutral_variant70</color>
     <color name="SeekBackdroundFilled">@color/material_dynamic_neutral_variant90</color>
     <color name="SeekBG">@color/material_dynamic_neutral_variant60</color>

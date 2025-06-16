@@ -31,4 +31,6 @@
     <string name="MainElementSettingsDivide">Настройки главного элемента</string>
     <string name="OpenSettingsButton">Перейти в настройки</string>
     <string name="Additional">"Дополнительно: "</string>
+    <string name="LSPosedSettingTitle">Настройки модуля LSPosed</string>
+    <string name="LSPosedEnableModule">Разрешить модификацию TikTok в реальном времени с помощью модуля</string>
 </resources>

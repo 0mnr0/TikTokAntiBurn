@@ -6,6 +6,7 @@
     <color name="MonetViewDarkBG">#191b23</color>
     <color name="ButtonForeground">#191b23</color>
     <color name="ButtonBackdround">#c5c6d0</color>
+    <color name="SheetForeground">#D1D2DD</color>
     <color name="SeekBackdround">#a9abb4</color>
     <color name="SeekBackdroundFilled">#e1e2ec</color>
     <color name="SeekBG">#8f9099</color>

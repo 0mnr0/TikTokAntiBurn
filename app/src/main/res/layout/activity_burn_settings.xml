@@ -5,19 +5,33 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ButtonForeground"
-    tools:context=".BurnSettings">
+    android:background="@drawable/rounded_bottom_sheet">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
             android:orientation="vertical"
             android:padding="16dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="5dp">
+
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="40dp"
+                    android:layout_height="5dp"
+                    android:background="@drawable/drag_handle_bg"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:ignore="MissingConstraints" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:id="@+id/textView6"
@@ -231,6 +245,90 @@
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/LSPosedSettings"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="32dp"
+                    android:paddingBottom="4dp"
+                    android:text="@string/LSPosedSettingTitle"
+                    android:textColor="@color/ButtonBackdround"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/LSSetting"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/fast_setting_bg"
+                    android:padding="12dp"
+                    app:layout_constraintTop_toBottomOf="@+id/textView9">
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/AllowModuleSwitch"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:checked="false"
+                        android:text="@string/LSPosedEnableModule"
+                        android:textColor="@color/SeekBackdroundFilled"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:thumbTint="@color/SeekBackdroundFilled"
+                        app:trackDecorationTint="@color/SeekBackdroundFilled"
+                        app:trackTint="@color/MID" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/LSSetting2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/fast_setting_bg"
+                    android:padding="12dp"
+                    app:layout_constraintTop_toBottomOf="@+id/LSSetting">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/menu_text_input_layout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Выберите элемент"
+                        android:textColorHint="@color/ButtonBackdround"
+                        app:boxBackgroundColor="#00000000"
+                        app:boxStrokeColor="@color/ButtonBackdround"
+                        tools:layout_editor_absoluteX="12dp"
+                        tools:layout_editor_absoluteY="12dp">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/exposed_dropdown"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            app:dropDownBackgroundTint="@color/ButtonForeground" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
         </LinearLayout>
     </ScrollView>

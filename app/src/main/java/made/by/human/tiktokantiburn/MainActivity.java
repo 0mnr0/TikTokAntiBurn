@@ -18,27 +18,19 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
-import com.google.android.material.materialswitch.MaterialSwitch;
-import com.google.android.material.slider.Slider;
-import com.google.android.material.textfield.TextInputEditText;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -136,8 +128,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openAppSettings(View view) {
-        Intent intent = new Intent(this, BurnSettings.class);
-        startActivity(intent);
+        BottomSheetDialog sheet = new BottomSheetDialog();
+        sheet.pushContext(this);
+        sheet.show(getSupportFragmentManager(), "BottomSettingsSheet");
     }
 
 
@@ -164,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
 
     public void SaveSettings(String settingName, Object value) {
         SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
