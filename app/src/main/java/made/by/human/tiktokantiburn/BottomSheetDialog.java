@@ -239,7 +239,7 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
 
         // Main Element Height Text
         int screenHeight = getResources().getDisplayMetrics().heightPixels;
-        int max = (int) (screenHeight * 0.1);
+        int max = (int) (screenHeight * 0.09);
         sharedPreferences = context.getSharedPreferences("SeekBarPrefs", MODE_PRIVATE);
         int savedValue = sharedPreferences.getInt("seekBarValue", 40);
         if (!isSettingKeyExists("SeekBarPrefs", "seekBarValue")) {
