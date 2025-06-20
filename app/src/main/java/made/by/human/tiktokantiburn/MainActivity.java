@@ -84,14 +84,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(browserIntent);
     }
 
-    public void UseDataRequest(View view){
-        try {
-            Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-            startActivity(intent);
-        } catch (Exception e) {
-            Toast.makeText(this, getString(R.string.UsageStatsPermessionIsNotGranted), Toast.LENGTH_SHORT).show();
-        }
-    }
 
     public void OpenExtendedSetting(View view){
         try{
@@ -224,15 +216,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
-        AppOpsManager appOps = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
-        int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
-                android.os.Process.myUid(), getPackageName());
-
-        if (mode != AppOpsManager.MODE_ALLOWED) {
-            UseDataRequest(null);
-        }
-
-
         refreshPermissionStatuses();
     }
 
@@ -254,9 +237,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void refreshPermissionStatuses() {
-        Button AboveAllWindows, UsagePermission, SpecialAbilities;
+        Button AboveAllWindows, SpecialAbilities;
         AboveAllWindows = findViewById(R.id.AboveAllWindows);
-        UsagePermission = findViewById(R.id.UsagePermission);
         SpecialAbilities = findViewById(R.id.SpecialAbilities);
         Drawable done = ContextCompat.getDrawable(this, R.drawable.check_circle);
         Drawable none = ContextCompat.getDrawable(this, R.drawable.x_circle);
@@ -267,12 +249,6 @@ public class MainActivity extends AppCompatActivity {
             new Handler(Looper.getMainLooper()).postDelayed(() -> AboveAllWindows.setCompoundDrawablesWithIntrinsicBounds(PermissionOverlayGranted() ? done : none, null, null, null), 500);
         } catch (Exception ignored) {
             AboveAllWindows.setCompoundDrawablesWithIntrinsicBounds(unknown, null, null, null);
-        }
-
-        try {
-            UsagePermission.setCompoundDrawablesWithIntrinsicBounds(PermissionUsageGranted() ? done : none, null, null, null);
-        } catch (Exception ignored) {
-            UsagePermission.setCompoundDrawablesWithIntrinsicBounds(unknown, null, null, null);
         }
 
         try {

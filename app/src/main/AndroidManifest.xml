@@ -2,15 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission
-        android:name="android.permission.INTERACT_ACROSS_USERS"
-        tools:ignore="ProtectedPermissions" />
+
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission
         android:name="android.permission.BIND_ACCESSIBILITY_SERVICE"
-        tools:ignore="ProtectedPermissions" />
-    <uses-permission
-        android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
@@ -42,7 +37,6 @@
         </activity>
 
 
-
         <service
             android:name=".MyAccessibilityService"
             android:enabled="true"
@@ -56,15 +50,6 @@
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibility_service_config" />
         </service>
-
-        <service
-            android:name=".SettingsService"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="made.by.human.tiktokantiburn.REMOTE_CONNECTION" />
-            </intent-filter>
-        </service>
-
 
         <service
             android:name=".FloatingWindowService"
