@@ -5,17 +5,16 @@ import static android.content.Context.MODE_PRIVATE;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,19 +29,16 @@ import com.google.android.material.slider.Slider;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import de.robv.android.xposed.XSharedPreferences;
-
 public class BottomSheetDialog extends BottomSheetDialogFragment {
     private View view;
     private Context context;
-    private MaterialSwitch HideForACoupleSeconds, CompatibilityMode, MainFloatingWindowEnabled, AllowModuleSwitch;
+    private MaterialSwitch HideForACoupleSeconds, CompatibilityMode, MainFloatingWindowEnabled, AllowModuleSwitch, MakeInvisibleInstead;
     private ConstraintLayout SomeSetting;
     private Slider seekBar;
     private SharedPreferences sharedPreferences;
@@ -75,14 +71,6 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
         }
 
         editor.commit();
-        File prefsDir = new File(context.getApplicationInfo().dataDir + "/shared_prefs");
-        File prefsFile = new File(prefsDir, "Preferences.xml");
-        prefsDir.setReadable(true, false);
-        prefsFile.setReadable(true, false);
-        File dataDir = new File(context.getApplicationInfo().dataDir);
-        dataDir.setExecutable(true, false);
-        dataDir.setReadable(true, false);
-
     }
 
 
@@ -124,86 +112,99 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
     public void pushContext(Context context) {
         this.context = context;
     }
-    public void setPreferenceWithRoot(String packageName, String prefsFile, String key, String value) {
-        String dirPath = "/data/data/" + packageName + "/shared_prefs/";
-        String fullPath = dirPath + prefsFile + ".xml";
 
-        // Полноценная XML-строка
-        String newEntry = String.format("<string name=\"%s\">%s</string>", key, value);
+    public boolean SaveLSPosed(String key, boolean value) {
+        final String packageName = "com.zhiliaoapp.musically";
+        String prefsPath = "/data/data/" + packageName + "/shared_prefs/LSPrefs.xml";
 
-        String command = String.format(
-                "mkdir -p '%s'; " +
-                        "if [ ! -f '%s' ]; then " +
-                        "echo '<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<map>\n%s\n</map>' > '%s'; " +
-                        "else " +
-                        "if grep -q '<string name=\"%s\">' '%s'; then " +
-                        "sed -i 's|<string name=\"%s\">.*</string>|%s|' '%s'; " +
-                        "else " +
-                        "sed -i '/<map>/a\\    %s' '%s'; " +
-                        "fi; " +
-                        "fi; " +
-                        "chmod 660 '%s'; " +
-                        "chown %s.%s '%s';",
-                dirPath,
-                fullPath,
-                newEntry,
-                fullPath,
-                key, fullPath,
-                key, newEntry, fullPath,
-                newEntry, fullPath,
-                fullPath,
-                packageName, packageName, fullPath
-        );
+        String xmlContent = "<?xml version='1.0' encoding='utf-8' standalone='yes' ?>\n" +
+                "<map>\n" +
+                "    <boolean name=\"" + key + "\" value=\"" + (value ? "true" : "false") + "\" />\n" +
+                "</map>\n";
+
+        try {
+            ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo(packageName, 0);
+            int uid = appInfo.uid;
+
+            Process su = Runtime.getRuntime().exec("su");
+            DataOutputStream os = new DataOutputStream(su.getOutputStream());
+
+            os.writeBytes("mkdir -p /data/data/" + packageName + "/shared_prefs\n");
+
+            os.writeBytes("cat > " + prefsPath + " << EOF\n");
+            os.writeBytes(xmlContent);
+            os.writeBytes("EOF\n");
+
+            os.writeBytes("chown " + uid + ":" + uid + " " + prefsPath + "\n");
+            os.writeBytes("chmod 660 " + prefsPath + "\n");
+            os.writeBytes("am force-stop com.zhiliaoapp.musically\n");
+
+            os.writeBytes("exit\n");
+            os.flush();
+
+            int exitCode = su.waitFor();
+            return exitCode == 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public Boolean ReadLSPosedSetting(String key, Boolean defaultValue) {
+        final String prefsPath = "/data/data/com.zhiliaoapp.musically/shared_prefs/LSPrefs.xml";
 
         try {
             Process su = Runtime.getRuntime().exec("su");
             DataOutputStream os = new DataOutputStream(su.getOutputStream());
-            os.writeBytes(command + "\n");
+            os.writeBytes("cat " + prefsPath + "\n");
             os.writeBytes("exit\n");
             os.flush();
-            su.waitFor();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(su.getInputStream()));
+            StringBuilder xmlContent = new StringBuilder(); String line;
+
+            while ((line = reader.readLine()) != null) { xmlContent.append(line).append("\n"); } su.waitFor();
+
+            Pattern pattern = Pattern.compile("<boolean name=\"" + Pattern.quote(key) + "\" value=\"(true|false)\"\\s*/>");
+            Matcher matcher = pattern.matcher(xmlContent.toString());
+
+            return matcher.find() ? Boolean.parseBoolean(matcher.group(1)) : defaultValue;
+
         } catch (Exception e) {
-            e.printStackTrace();
+            return defaultValue;
         }
     }
 
 
-    public String getPreferenceWithRoot(String packageName, String prefsFile, String key, Object defaultValue) {
-        String fullPath = "/data/data/" + packageName + "/shared_prefs/" + prefsFile + ".xml";
-        String grepCommand = "grep '<string name=\"" + key + "\">' " + fullPath;
-
+    public boolean CheckLSPosedAvaiable() {
         try {
-            Process su = Runtime.getRuntime().exec("su");
-            DataOutputStream os = new DataOutputStream(su.getOutputStream());
-            DataInputStream is = new DataInputStream(su.getInputStream());
-
-            os.writeBytes(grepCommand + "\n");
-            os.writeBytes("exit\n");
-            os.flush();
-
-            su.waitFor();
-
-            StringBuilder output = new StringBuilder();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                output.append(line);
+            String[] paths = {
+                    "/system/app/Superuser.apk",
+                    "/sbin/su",
+                    "/system/bin/su",
+                    "/system/xbin/su",
+                    "/data/local/xbin/su",
+                    "/data/local/bin/su",
+                    "/system/sd/xbin/su",
+                    "/system/bin/failsafe/su",
+                    "/data/local/su"
+            };
+            for (String path : paths) {
+                File file = new File(path);
+                if (file.exists()) {
+                    Log.d("LSPosed", "LSPosed is installed!");
+                    return true;
+                }
             }
-
-            // Пример строки: <string name="ROOT:EnablePlusStatus">true</string>
-            Pattern pattern = Pattern.compile(">(.*?)<");
-            Matcher matcher = pattern.matcher(output.toString());
-            if (matcher.find()) {
-                return matcher.group(1);
-            } else {
-                return null;
-            }
-
+            return false;
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            Log.e("LSPosed", "Error checking LSPosed availability", e);
+            return true;
         }
     }
+
+
 
 
 
@@ -288,27 +289,18 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
         });
 
 
-        AllowModuleSwitch = view.findViewById(R.id.AllowModuleSwitch);
-        AllowModuleSwitch.setChecked(GetBoolean("ROOT:EnablePlusModule", false));
-        AllowModuleSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            SaveSettings("ROOT:EnablePlusModule", isChecked);
-        });
 
-        AutoCompleteTextView dropdown = view.findViewById(R.id.exposed_dropdown);
-        String[] items = new String[] {"Убрать из меню", "Сделать невидимым"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                context,
-                android.R.layout.simple_dropdown_item_1line,
-                items
-        );
-        dropdown.setAdapter(adapter);
-        dropdown.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                SaveSettings("ExposedDropdown", i);
+        MakeInvisibleInstead = view.findViewById(R.id.MakeInvisibleInstead);
+        MakeInvisibleInstead.setChecked(ReadLSPosedSetting("XPOSED:MakeInvisibleInstead", false));
+        MakeInvisibleInstead.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (!SaveLSPosed("XPOSED:MakeInvisibleInstead", isChecked)) {
+                Toast.makeText(context, "Failed to save preferences to TikTok", Toast.LENGTH_SHORT).show();
             }
         });
-        dropdown.setText(GetString("ExposedDropdown", "0"));
+        if (!CheckLSPosedAvaiable()) {
+            ConstraintLayout LSPosedSettings = view.findViewById(R.id.LSPosedSettings);
+            LSPosedSettings.setVisibility(View.GONE);
+        }
 
         return view;
     }

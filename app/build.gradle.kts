@@ -29,6 +29,7 @@ android {
     }
 
 
+    sourceSets["main"].aidl.srcDir("src/main/aidl")
     sourceSets {
         getByName("main") {
             assets.srcDirs("src/main/assets")

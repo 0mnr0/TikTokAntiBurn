@@ -32,9 +32,6 @@
         tools:ignore="HardcodedDebugMode"
         tools:targetApi="31">
         <activity
-            android:name=".BurnSettings"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -43,6 +40,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
 
         <service
             android:name=".MyAccessibilityService"
@@ -57,10 +56,21 @@
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibility_service_config" />
         </service>
+
+        <service
+            android:name=".SettingsService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="made.by.human.tiktokantiburn.REMOTE_CONNECTION" />
+            </intent-filter>
+        </service>
+
+
         <service
             android:name=".FloatingWindowService"
             android:enabled="true"
             android:exported="true" />
+
         <service
             android:name=".SetupFloatingWindows"
             android:enabled="true"
@@ -79,5 +89,10 @@
             android:name="xposedscope"
             android:resource="@array/xposed_scope" />
     </application>
+
+    <queries>
+        <package android:name="com.zhiliaoapp.musically" />
+    </queries>
+
 
 </manifest>
