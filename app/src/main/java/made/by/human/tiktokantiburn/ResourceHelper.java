@@ -3,10 +3,8 @@ package made.by.human.tiktokantiburn;
 import android.app.AndroidAppHelper;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.util.Log;
-import de.robv.android.xposed.XposedHelpers;
+
 import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 public class ResourceHelper {
 

@@ -10,8 +10,6 @@ import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityWindowInfo;
 
-import androidx.compose.ui.graphics.vector.PathNode;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;

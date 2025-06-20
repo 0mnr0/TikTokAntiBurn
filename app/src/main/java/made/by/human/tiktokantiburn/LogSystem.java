@@ -3,8 +3,6 @@ package made.by.human.tiktokantiburn;
 import java.io.File;
 import java.io.IOException;
 
-import android.content.pm.PackageInfo;
-import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 
@@ -12,7 +10,6 @@ import java.io.FileWriter;
 import java.util.Date;
 
 import android.app.Application;
-import android.util.Log;
 
 public class LogSystem {
     public static final String LoggerVersion = "1.2.3";
