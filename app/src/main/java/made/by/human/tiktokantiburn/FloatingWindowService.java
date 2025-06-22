@@ -27,6 +27,7 @@ public class FloatingWindowService extends Service {
     private WindowManager windowManager;
     private LayoutInflater inflater;
     private final List<View> floatingViews = new ArrayList<>();
+    private boolean WindowsOpened = false;
 
 
 
@@ -117,15 +118,16 @@ public class FloatingWindowService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        boolean isClosed = intent != null && "ACTION_CLOSE_WINDOW".equals(intent.getAction());
-        if (isClosed) { onDestroy(); return START_NOT_STICKY; }
+        boolean CloseAll = intent != null && "ACTION_CLOSE_WINDOW".equals(intent.getAction()); // Detecting if popups must be closed
+        if (CloseAll) { onDestroy(); WindowsOpened = false; return START_NOT_STICKY; } // Remove all popups and set "Multi-Open" defend to non active
+        if (WindowsOpened) {return START_NOT_STICKY;} else {WindowsOpened = true;} // Some systems can call event more than one time, its defend to prevent "multi" popups on same places
         final boolean canBeHidden = GetBoolean("Clickable");
 
         if (!GetBoolean("DisableMainFloatingWindow")) {
             Display display = windowManager.getDefaultDisplay();
             Point size = new Point();
             display.getSize(size);
-            final int elementWidth = (size.x) / 5 - 60;
+            final int elementWidth = (size.x) / 5 - 30;
             SharedPreferences sharedPreferences = getSharedPreferences("SeekBarPrefs", MODE_PRIVATE);
             int savedValue = sharedPreferences.getInt("seekBarValue", 40);
 
