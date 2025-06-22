@@ -11,7 +11,7 @@ android {
         minSdk = 26
         targetSdk = 35
         versionCode = 1
-        versionName = "1.2.3"
+        versionName = "1.3.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -29,7 +29,6 @@ android {
     }
 
 
-    sourceSets["main"].aidl.srcDir("src/main/aidl")
     sourceSets {
         getByName("main") {
             assets.srcDirs("src/main/assets")
