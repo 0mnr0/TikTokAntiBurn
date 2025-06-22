@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -33,6 +34,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 
 public class MainActivity extends AppCompatActivity {
+    ConstraintLayout MainLayout;
     LogSystem logger;
 
 
@@ -119,9 +121,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openAppSettings(View view) {
-        BottomSheetDialog sheet = new BottomSheetDialog();
-        sheet.pushContext(this);
-        sheet.show(getSupportFragmentManager(), "BottomSettingsSheet");
+        Intent serviceIntent = new Intent(this, AppSettings.class);
+        startActivity(serviceIntent);
     }
 
 
@@ -191,10 +192,12 @@ public class MainActivity extends AppCompatActivity {
         if (LogSystem.getInstanceOrNull() == null) {
             LogSystem.init((Application) getApplicationContext());
         }
+        MainLayout = findViewById(R.id.MainAppLayout);
+
         logger = LogSystem.getInstance();
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.MainAppLayout), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;

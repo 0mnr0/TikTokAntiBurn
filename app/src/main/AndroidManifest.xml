@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission
         android:name="android.permission.BIND_ACCESSIBILITY_SERVICE"
@@ -13,6 +12,10 @@
     <uses-permission
         android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
+
+    <queries>
+        <package android:name="com.zhiliaoapp.musically" />
+    </queries>
 
     <application
         android:allowBackup="true"
@@ -27,6 +30,9 @@
         tools:ignore="HardcodedDebugMode"
         tools:targetApi="31">
         <activity
+            android:name=".AppSettings"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -35,7 +41,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
 
         <service
             android:name=".MyAccessibilityService"
@@ -74,10 +79,5 @@
             android:name="xposedscope"
             android:resource="@array/xposed_scope" />
     </application>
-
-    <queries>
-        <package android:name="com.zhiliaoapp.musically" />
-    </queries>
-
 
 </manifest>

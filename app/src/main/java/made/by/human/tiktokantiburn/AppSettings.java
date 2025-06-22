@@ -1,29 +1,25 @@
 package made.by.human.tiktokantiburn;
 
-import static android.content.Context.MODE_PRIVATE;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.textfield.TextInputEditText;
@@ -35,9 +31,8 @@ import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class BottomSheetDialog extends BottomSheetDialogFragment {
+public class AppSettings extends AppCompatActivity {
     private View view;
-    private Context context;
     private MaterialSwitch HideForACoupleSeconds, CompatibilityMode, MainFloatingWindowEnabled, AllowModuleSwitch, MakeInvisibleInstead;
     private ConstraintLayout SomeSetting;
     private Slider seekBar;
@@ -45,19 +40,10 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
     private TextView progressText;
     private TextInputEditText TriggerPacketName;
 
-    boolean isLSPosedInstalled(Context context) {
-        try {
-            context.getPackageManager().getPackageInfo("org.lsposed.manager", 0);
-            return true;
-        } catch (PackageManager.NameNotFoundException e) {
-            return false;
-        }
-    }
-
 
     @SuppressLint({"SetWorldReadable", "ApplySharedPref"})
     public void SaveSettings(String settingName, Object value) {
-        SharedPreferences prefs = context.getSharedPreferences("Preferences", Context.MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
         if (value instanceof String) {
@@ -78,18 +64,18 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
 
 
     public boolean GetBoolean(String settingName, boolean defaultValue) {
-        SharedPreferences prefs = context.getSharedPreferences("Preferences", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
         return prefs.getBoolean(settingName, defaultValue);
     }
 
 
     public boolean GetClickableStatus(){
-        SharedPreferences prefs = context.getSharedPreferences("Preferences", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
         return prefs.getBoolean("Clickable", false);
     }
 
     public void SetClickableStatus(boolean status){
-        SharedPreferences prefs = context.getSharedPreferences("Preferences", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("Clickable", status);
         editor.apply();
@@ -100,17 +86,13 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
     }
 
     public boolean isSettingKeyExists(String CollectionName, String settingName) {
-        SharedPreferences prefs = context.getSharedPreferences(CollectionName, MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences(CollectionName, MODE_PRIVATE);
         return prefs.contains(settingName);
     }
 
     public String GetString(String settingName, String defValue) {
-        SharedPreferences prefs = context.getSharedPreferences("Preferences", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
         return prefs.getString(settingName, defValue);
-    }
-
-    public void pushContext(Context context) {
-        this.context = context;
     }
 
     public boolean SaveLSPosed(String key, boolean value) {
@@ -123,7 +105,7 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
                 "</map>\n";
 
         try {
-            ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo(packageName, 0);
+            ApplicationInfo appInfo = getPackageManager().getApplicationInfo(packageName, 0);
             int uid = appInfo.uid;
 
             Process su = Runtime.getRuntime().exec("su");
@@ -205,31 +187,33 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
     }
 
 
-
-
-
-    @SuppressLint("SetTextI18n")
-    @Nullable
+    @SuppressLint("MissingInflatedId")
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.activity_burn_settings, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_appsettings);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.MainAppLayout), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
-        SomeSetting = view.findViewById(R.id.SomeSetting);
+
+        SomeSetting = findViewById(R.id.SomeSetting);
 
         // Hide elements for a couple seconds
-        HideForACoupleSeconds = view.findViewById(R.id.TheSwitchingTool);
+        HideForACoupleSeconds = findViewById(R.id.TheSwitchingTool);
         HideForACoupleSeconds.setChecked(GetClickableStatus());
         HideForACoupleSeconds.setOnCheckedChangeListener((buttonView, isChecked) -> SetClickableStatus(isChecked));
 
         // Compatibility mode
-        CompatibilityMode = view.findViewById(R.id.OptimalSwitcher);
+        CompatibilityMode = findViewById(R.id.OptimalSwitcher);
         CompatibilityMode.setChecked(GetBoolean("CompatibilityMode", false));
         CompatibilityMode.setOnCheckedChangeListener((buttonView, isChecked) -> SaveSettings("CompatibilityMode", isChecked));
 
         // Main Floating Window Disabled
-        MainFloatingWindowEnabled = view.findViewById(R.id.MinifiedVersion);
+        MainFloatingWindowEnabled = findViewById(R.id.MinifiedVersion);
         MainFloatingWindowEnabled.setChecked(GetBoolean("DisableMainFloatingWindow", false));
         CheckSomeSettings();
         MainFloatingWindowEnabled.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -241,7 +225,7 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
         // Main Element Height Text
         int screenHeight = getResources().getDisplayMetrics().heightPixels;
         int max = (int) (screenHeight * 0.09);
-        sharedPreferences = context.getSharedPreferences("SeekBarPrefs", MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("SeekBarPrefs", MODE_PRIVATE);
         int savedValue = sharedPreferences.getInt("seekBarValue", 40);
         if (!isSettingKeyExists("SeekBarPrefs", "seekBarValue")) {
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -249,11 +233,11 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
             editor.putInt("seekBarValue", savedValue);
             editor.apply();
         }
-        progressText = view.findViewById(R.id.textView);
+        progressText = findViewById(R.id.textView);
         progressText.setText(getString(R.string.fastSettingsMainFlowtingWindow) + savedValue + " px");
 
         // Main Element Height
-        seekBar = view.findViewById(R.id.slider);
+        seekBar = findViewById(R.id.slider);
         seekBar.setValueTo(max);
         seekBar.setValueFrom(40);
 
@@ -270,7 +254,7 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
         seekBar.setLabelFormatter(label -> ((int) Math.max(seekBar.getValue(), 40)) + " px");
 
 
-        TriggerPacketName = view.findViewById(R.id.TriggerPacketName);
+        TriggerPacketName = findViewById(R.id.TriggerPacketName);
         TriggerPacketName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -291,51 +275,25 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
 
 
 
-        MakeInvisibleInstead = view.findViewById(R.id.MakeInvisibleInstead);
+        MakeInvisibleInstead = findViewById(R.id.MakeInvisibleInstead);
         MakeInvisibleInstead.setChecked(ReadLSPosedSetting("XPOSED:MakeInvisibleInstead", false));
         MakeInvisibleInstead.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (!SaveLSPosed("XPOSED:MakeInvisibleInstead", isChecked)) {
-                Toast.makeText(context, "Failed to save preferences to TikTok", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Failed to save preferences to TikTok", Toast.LENGTH_SHORT).show();
             }
         });
         if (!CheckLSPosedAvaiable()) {
-            ConstraintLayout LSPosedSettings = view.findViewById(R.id.LSPosedSettings);
+            ConstraintLayout LSPosedSettings = findViewById(R.id.LSPosedSettings);
             LSPosedSettings.setVisibility(View.GONE);
         }
 
-        return view;
+
     }
+
 
     private void HideTextInputFocus() {
-        if (TriggerPacketName != null) {
-            TriggerPacketName.clearFocus();
-
-            InputMethodManager imm = (InputMethodManager) requireContext()
-                    .getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm != null) {
-                imm.hideSoftInputFromWindow(TriggerPacketName.getWindowToken(), 0);
-            }
-        }
+        TriggerPacketName.clearFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(TriggerPacketName.getWindowToken(), 0);
     }
-
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(),
-                new OnBackPressedCallback(true) {
-                    @Override
-                    public void handleOnBackPressed() {
-                        if (TriggerPacketName != null && TriggerPacketName.isFocused()) {
-                            HideTextInputFocus();
-                        } else {
-                            setEnabled(false);
-                            requireActivity().onBackPressed();
-                        }
-                    }
-                });
-    }
-
 }
-
