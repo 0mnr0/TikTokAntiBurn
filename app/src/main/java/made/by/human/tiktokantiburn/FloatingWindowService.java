@@ -1,6 +1,5 @@
 package made.by.human.tiktokantiburn;
 
-import android.app.Application;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,44 +7,90 @@ import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+
+import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.view.Gravity;
-
-import com.google.gson.Gson;
-
-
 public class FloatingWindowService extends Service {
-
+    final int AnimationLength = 250;
+    final int HiddenActionLength = 5000;
     private WindowManager windowManager;
-    LogSystem logger;
-    private View floatingView;
-    private static final String PREFS_NAME = "SeekBarPrefs";
-    private static final String PREF_VALUE = "seekBarValue";
+    private LayoutInflater inflater;
+    private final List<View> floatingViews = new ArrayList<>();
 
-    private ArrayList<View> blockburnList = new ArrayList<>();
 
-    public void HideAndUnHide(View view) {
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            view.setVisibility(View.GONE);
 
-            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                view.setVisibility(View.VISIBLE);
-            }, 5000-150);
+    public void CreateElement(int x, int y, int width, int height, boolean rounded, boolean canBeHidden) {
+        View floatingView = inflater.inflate(rounded ? R.layout.blockburn : R.layout.blockburn_quad, null);
 
-        }, 150);
+
+        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                        | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
+                        | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                PixelFormat.TRANSLUCENT
+        );
+
+        params.gravity = Gravity.TOP | Gravity.START;
+        params.x = x;
+        params.y = y;
+        params.width = width;
+        params.height = height;
+
+        floatingView.setAlpha(0f);
+        floatingView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+        windowManager.addView(floatingView, params);
+        floatingViews.add(floatingView);
+        floatingView.animate().alpha(1f).setDuration(AnimationLength).start();
+
+        if (canBeHidden) {
+            floatingView.setOnClickListener(v -> {
+                floatingView.animate().alpha(0f).setDuration(AnimationLength).start();
+                new Handler().postDelayed(() ->
+                                floatingView.setVisibility(View.GONE),
+                AnimationLength);
+
+                new Handler().postDelayed(() -> {
+                    if (floatingView != null && floatingView.getParent() != null) {
+                        floatingView.setVisibility(View.VISIBLE);
+                        floatingView.animate().alpha(1f).setDuration(AnimationLength).start();
+                    }
+                }, HiddenActionLength);
+            });
+        }
     }
 
-    public void LoadSettings(boolean canBeHidden) {
+
+    public void DestroyAll(){
+        for (View view : floatingViews) {
+            if (view != null) {
+                view.animate().alpha(0f).setDuration(AnimationLength).start();
+                new Handler().postDelayed(() -> windowManager.removeView(view), AnimationLength);
+            }
+        }
+        floatingViews.clear();
+    }
+
+    public boolean GetBoolean(String settingName) {
+        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
+        return prefs.getBoolean(settingName, false);
+    }
+
+
+    public void LoadCustomBurns(boolean canBeHidden) {
         SharedPreferences prefs = getSharedPreferences("blockPos", MODE_PRIVATE);
         String json = prefs.getString("block_list", null);
 
@@ -53,50 +98,12 @@ public class FloatingWindowService extends Service {
         Type type = new TypeToken<List<BlockInfo>>(){}.getType();
         List<BlockInfo> blockList = gson.fromJson(json, type);
 
-        if (blockList == null) {
+        if (blockList == null || blockList.isEmpty()) {
             return;
         }
-
-        int i = 0;
-        for (BlockInfo blockInfo : blockList) {
-            View blockburn = LayoutInflater.from(this).inflate(R.layout.blockburn, null);
-            if (blockburn == null) {
-                logger.Save("FloatingWindowService", "popupView = null", true, true);
-                return;
-            }
-            if (blockburn.getWindowToken() != null) {
-                Log.d("FloatingWindowService", "popupView already exists");
-                return;
-            }
-
-            WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-                    blockInfo.width, blockInfo.height,
-                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
-                            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                    PixelFormat.TRANSLUCENT);
-            params.x = blockInfo.x;
-            params.y = blockInfo.y;
-            params.gravity = Gravity.TOP | Gravity.START;
-            blockburn.setBackgroundResource(R.drawable.block_drawable_quad);
-            blockburn.setAlpha(0f);
-            windowManager.addView(blockburn, params);
-            blockburnList.add(blockburn);
-
-            if (canBeHidden) {
-                blockburn.setOnClickListener(v -> {
-                    HideAndUnHide(blockburn);
-                    blockburn.animate().alpha(0f).setDuration(100).start();
-                    new Handler(Looper.getMainLooper()).postDelayed(() -> blockburn.animate().alpha(1f).setDuration(100).start(), 5000);
-                });
-            }
-
-            new Handler(Looper.getMainLooper()).post(() -> blockburn.animate()
-                    .alpha(1f)
-                    .setDuration(200)
-                    .start());
-            logger.Save("System_FloatingWindowService", "Sucsesfully added blockburn! ("+i+"/"+blockList.size()+")", true, true);
-            i += 1;
+        for (int i = 0; i < blockList.size(); i++) {
+            BlockInfo blockInfo = blockList.get(i);
+            CreateElement(blockInfo.x, blockInfo.y, blockInfo.width, blockInfo.height, false, canBeHidden);
         }
 
     }
@@ -104,134 +111,42 @@ public class FloatingWindowService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        if (LogSystem.getInstanceOrNull() == null) {
-            LogSystem.init((Application) getApplicationContext());
-        }
-        logger = LogSystem.getInstance();
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-    }
-
-
-    public boolean GetBoolean(String settingName) {
-        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
-        return prefs.getBoolean(settingName, false);
-    }
-
-    public boolean GetClickableStatus(){
-        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
-        return prefs.getBoolean("Clickable", false);
+        inflater = LayoutInflater.from(this);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         boolean isClosed = intent != null && "ACTION_CLOSE_WINDOW".equals(intent.getAction());
-        final boolean canBeHidden = GetClickableStatus();
+        if (isClosed) { onDestroy(); return START_NOT_STICKY; }
+        final boolean canBeHidden = GetBoolean("Clickable");
 
-        if (isClosed) {
-            try {
-                floatingView.animate() .alpha(0f) .setDuration(200) .start();
-                if (blockburnList != null) {
-                    for (View view : blockburnList) { view.animate().alpha(0f).setDuration(200).start(); }
-                }
+        if (!GetBoolean("DisableMainFloatingWindow")) {
+            Display display = windowManager.getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            final int elementWidth = (size.x) / 5 - 60;
+            SharedPreferences sharedPreferences = getSharedPreferences("SeekBarPrefs", MODE_PRIVATE);
+            int savedValue = sharedPreferences.getInt("seekBarValue", 40);
 
-                new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                    if (floatingView != null) {
-                        windowManager.removeView(floatingView);
-                        floatingView = null;
-                    }
-                    if (blockburnList != null) {
-                        for (View view : blockburnList) {
-                            windowManager.removeView(view);
-                        }
-                        blockburnList.clear();
-                    }
-                    stopSelf();
-                }, 300);
-
-
-                return START_NOT_STICKY;
-            } catch (Exception ignored) {}
-            return START_NOT_STICKY;
+            CreateElement((size.x / 2) - (elementWidth / 2), size.y - savedValue, elementWidth, savedValue, true, canBeHidden);
         }
-
-        if (floatingView != null) {
-            return START_STICKY;
-        }
-
-        floatingView = LayoutInflater.from(this).inflate(R.layout.blockburn, null);
-
-        WindowManager.LayoutParams params = null;
-        params = new WindowManager.LayoutParams(
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                PixelFormat.TRANSLUCENT);
-
-        WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-        Display display = windowManager.getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int screenWidth = size.x;
-
-        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        int savedValue = sharedPreferences.getInt(PREF_VALUE, 40); // 40 - значение по умолчанию
-
-
-        params.width = screenWidth / 5 - 20;
-        params.height = savedValue;
-
-        if (GetBoolean("DisableMainFloatingWindow")) {
-            params.x = -1000;
-            params.width = 0;
-            params.height = 0;
-        }
-
-        params.gravity = Gravity.BOTTOM | Gravity.CENTER;
-        if (canBeHidden) {
-            floatingView.setOnClickListener(v -> {
-                HideAndUnHide(v);
-                floatingView.animate().alpha(0f).setDuration(100).start();
-                try{ new Handler(Looper.getMainLooper()).postDelayed(() -> floatingView.animate().alpha(1f).setDuration(100).start(), 5000); } catch (Exception ignored) {}
-            });
-        }
-
-        try {
-            floatingView.setAlpha(0f);
-            windowManager.addView(floatingView, params);
-            LoadSettings(canBeHidden);
-            try { new Handler(Looper.getMainLooper()).post(() -> {
-                floatingView.animate()
-                        .alpha(1f)
-                        .setDuration(200)
-                        .start();
-                logger.Save("Main Blockburn", "Sucsesfully added main blockburn!", false, true);
-            }); } catch (Exception e) {
-                logger.Save("Main Blockburn", "Failed to add a main blockburn!: "+e, true, true);
-                // Я испорльзую try только если пользователь выйдет из ТТ а после произойдёт анимация для уже несуществуюшего View
-            }
+        LoadCustomBurns(canBeHidden);
 
 
 
-        } catch (Exception e) {
-            logger.Save("System_FloatingWindowService", "Exception catched: " + e, true, true);
-            Log.w("Exception catched:", e);
-            return Service.START_STICKY;
-        }
 
-
-
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
+
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (floatingView != null) {
-            windowManager.removeView(floatingView);
-            floatingView = null;
-        }
+        DestroyAll();
     }
+
+
 
     @Override
     public IBinder onBind(Intent intent) {

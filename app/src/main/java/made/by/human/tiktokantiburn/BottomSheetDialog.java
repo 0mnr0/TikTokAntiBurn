@@ -208,6 +208,7 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
 
 
 
+    @SuppressLint("SetTextI18n")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
