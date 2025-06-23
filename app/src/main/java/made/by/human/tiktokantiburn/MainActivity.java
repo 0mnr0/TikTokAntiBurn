@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         PeriodicWorkRequest checkRequest =
-                new PeriodicWorkRequest.Builder(VersionCheckWorker.class, 1, TimeUnit.DAYS)
+                new PeriodicWorkRequest.Builder(VersionCheckWorker.class, 2, TimeUnit.DAYS)
                         .build();
 
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
