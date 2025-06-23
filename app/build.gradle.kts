@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation("com.google.android.material:material:1.14.0-alpha01")
     implementation ("com.google.code.gson:gson:2.11.0")
+    implementation ("androidx.work:work-runtime:2.10.2") // или последнюю
     implementation(libs.ui.android)
     implementation(libs.rendering)
     compileOnly("de.robv.android.xposed:api:82")

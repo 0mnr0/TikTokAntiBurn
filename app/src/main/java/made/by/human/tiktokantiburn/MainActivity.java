@@ -31,10 +31,16 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+
+import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends AppCompatActivity {
-    ConstraintLayout MainLayout;
+    boolean AskedForUpdate = false;
     LogSystem logger;
 
 
@@ -171,18 +177,9 @@ public class MainActivity extends AppCompatActivity {
         return prefs.getBoolean(settingName, defaultValue);
     }
 
-    public int GetInt(String settingName) {
-        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
-        return prefs.getInt(settingName, 0);
+    public void AskForUpdate(){
+
     }
-
-
-
-    public void CheckSomeSettings(){
-        //if (GetBoolean("DisableMainFloatingWindow", false)) { SomeSetting.setVisibility(View.GONE); } else { SomeSetting.setVisibility(View.VISIBLE); }
-    }
-
-
 
 
     @SuppressLint("MissingInflatedId")
@@ -192,7 +189,6 @@ public class MainActivity extends AppCompatActivity {
         if (LogSystem.getInstanceOrNull() == null) {
             LogSystem.init((Application) getApplicationContext());
         }
-        MainLayout = findViewById(R.id.MainAppLayout);
 
         logger = LogSystem.getInstance();
         EdgeToEdge.enable(this);
@@ -219,6 +215,30 @@ public class MainActivity extends AppCompatActivity {
         }
 
         refreshPermissionStatuses();
+
+
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.POST_NOTIFICATIONS}, 101);
+            }
+        }
+        PeriodicWorkRequest checkRequest =
+                new PeriodicWorkRequest.Builder(VersionCheckWorker.class, 15, TimeUnit.MINUTES)
+                        .build();
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+                "daily_version_check",
+                ExistingPeriodicWorkPolicy.KEEP,
+                checkRequest
+        );
+
+
+
+
     }
 
 
