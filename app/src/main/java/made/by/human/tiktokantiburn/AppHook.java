@@ -3,8 +3,12 @@ package made.by.human.tiktokantiburn;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
@@ -41,6 +45,56 @@ public class AppHook implements IXposedHookLoadPackage {
     }
 
 
+    private View foundedButton = null;
+
+    private View findViewByEnumeration(View root) {
+        if (foundedButton != null) {
+            return foundedButton;
+        }
+
+        if (root instanceof LinearLayout) {
+            LinearLayout possibleLinearLayout = (LinearLayout) root;
+            int possibleLinearChildren = possibleLinearLayout.getChildCount();
+
+            if (possibleLinearChildren == 5) {
+                int possibleWeight = 0;
+
+                for (int i = 0; i < possibleLinearChildren; i++) {
+                    View child = possibleLinearLayout.getChildAt(i);
+
+                    if (i != 2 && child instanceof FrameLayout) {
+                        possibleWeight += 1;
+                    }
+
+                    if (i == 2 && child instanceof Button) {
+                        possibleWeight += 1;
+                    }
+                }
+
+                if (possibleWeight >= 4) {
+                    foundedButton = possibleLinearLayout.getChildAt(2);
+                    return foundedButton;
+                }
+            }
+        }
+
+
+        if (root instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) root;
+            for (int i = 0; i < group.getChildCount(); i++) {
+                View child = group.getChildAt(i);
+                View result = findViewByEnumeration(child);
+                if (result != null) {
+                    return result;
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+
     public void RealUpdate(boolean statement, View targetButton) {
         if (statement) {
             targetButton.setAlpha(0f);
@@ -54,6 +108,11 @@ public class AppHook implements IXposedHookLoadPackage {
         SharedPreferences prefs = context.getSharedPreferences("LSPrefs", Context.MODE_PRIVATE);
         boolean someSetting = prefs.getBoolean("XPOSED:MakeInvisibleInstead", false);
         RealUpdate(someSetting, targetButton);
+    }
+
+    public boolean IsOldHookMethod(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("LSPrefs", Context.MODE_PRIVATE);
+        return prefs.getBoolean("XPOSED:OldHookMethod", false);
     }
 
 
@@ -73,13 +132,21 @@ public class AppHook implements IXposedHookLoadPackage {
                 activity.runOnUiThread(() -> {
                     new android.os.Handler().postDelayed(() -> {
                         View root = activity.getWindow().getDecorView().getRootView();
-                        View targetButton = findViewByContentDescription(root, ResourceHelper.getString(R.string.LSPosedHookButtonByText));
+                        View targetButton = null;
+                        if (IsOldHookMethod(activity)) {
+                            targetButton = findViewByContentDescription(root, ResourceHelper.getString(R.string.LSPosedHookButtonByText));
+                        }
+                        if (targetButton == null) {
+                            targetButton = findViewByEnumeration(root);
+                        }
+
 
 
                         if (targetButton != null) {
                             UpdateViewByRules(activity, targetButton);
+                            View finalTargetButton = targetButton;
                             targetButton.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) ->
-                                    UpdateViewByRules(activity, targetButton));
+                                    UpdateViewByRules(activity, finalTargetButton));
                         }
                     }, 500);
                 });

@@ -33,12 +33,13 @@ import java.util.regex.Pattern;
 
 public class AppSettings extends AppCompatActivity {
     private View view;
-    private MaterialSwitch HideForACoupleSeconds, CompatibilityMode, MainFloatingWindowEnabled, AllowModuleSwitch, MakeInvisibleInstead;
+    private MaterialSwitch HideForACoupleSeconds, CompatibilityMode, MainFloatingWindowEnabled, UseOldDetectionMethod, MakeInvisibleInstead;
     private ConstraintLayout SomeSetting;
     private Slider seekBar;
     private SharedPreferences sharedPreferences;
     private TextView progressText;
     private TextInputEditText TriggerPacketName;
+    boolean LSPosed_INVISIBLE, LSPosed_OLD_METHOD;
 
 
     @SuppressLint({"SetWorldReadable", "ApplySharedPref"})
@@ -95,13 +96,14 @@ public class AppSettings extends AppCompatActivity {
         return prefs.getString(settingName, defValue);
     }
 
-    public boolean SaveLSPosed(String key, boolean value) {
+    public boolean SaveLSPosed() {
         final String packageName = "com.zhiliaoapp.musically";
         String prefsPath = "/data/data/" + packageName + "/shared_prefs/LSPrefs.xml";
 
         String xmlContent = "<?xml version='1.0' encoding='utf-8' standalone='yes' ?>\n" +
                 "<map>\n" +
-                "    <boolean name=\"" + key + "\" value=\"" + (value ? "true" : "false") + "\" />\n" +
+                "    <boolean name=\"" + "XPOSED:MakeInvisibleInstead" + "\" value=\"" + LSPosed_INVISIBLE + "\" />\n" +
+                "    <boolean name=\"" + "XPOSED:OldHookMethod" + "\" value=\"" + LSPosed_OLD_METHOD + "\" />\n" +
                 "</map>\n";
 
         try {
@@ -278,7 +280,17 @@ public class AppSettings extends AppCompatActivity {
         MakeInvisibleInstead = findViewById(R.id.MakeInvisibleInstead);
         MakeInvisibleInstead.setChecked(ReadLSPosedSetting("XPOSED:MakeInvisibleInstead", false));
         MakeInvisibleInstead.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (!SaveLSPosed("XPOSED:MakeInvisibleInstead", isChecked)) {
+            LSPosed_INVISIBLE = isChecked;
+            if (!SaveLSPosed()) {
+                Toast.makeText(this, "Failed to save preferences to TikTok", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        UseOldDetectionMethod = findViewById(R.id.UseOldDetectionMethod);
+        UseOldDetectionMethod.setChecked(ReadLSPosedSetting("XPOSED:OldHookMethod", false));
+        UseOldDetectionMethod.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            LSPosed_OLD_METHOD = isChecked;
+            if (!SaveLSPosed()) {
                 Toast.makeText(this, "Failed to save preferences to TikTok", Toast.LENGTH_SHORT).show();
             }
         });
