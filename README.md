@@ -1,4 +1,4 @@
-# [TikTok AntiBurn](https://github.com/0mnr0/TikTokAntiBurn/releases)
+# [Download TikTok AntiBurn](https://github.com/0mnr0/TikTokAntiBurn/releases)
 The purpose of the app is simple - to overlap the TikTok app elements to prevent the screen from burning out. <br>
 <br>
 ### Preview of AntiBurn
