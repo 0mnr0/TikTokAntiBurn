@@ -3,7 +3,6 @@ package made.by.human.tiktokantiburn;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -127,8 +126,6 @@ public class AppHook implements IXposedHookLoadPackage {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 final Activity activity = (Activity) param.thisObject;
-
-
                 activity.runOnUiThread(() -> {
                     new android.os.Handler().postDelayed(() -> {
                         View root = activity.getWindow().getDecorView().getRootView();
@@ -152,6 +149,16 @@ public class AppHook implements IXposedHookLoadPackage {
                 });
             }
         });
+
+
+        XposedHelpers.findAndHookMethod("com.ss.android.ugc.aweme.main.MainActivity",
+            lpparam.classLoader, "onStop", new XC_MethodHook() {
+            @Override
+            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                foundedButton = null;
+            }
+        });
+
     }
 
 
