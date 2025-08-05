@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -20,6 +22,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.loadingindicator.LoadingIndicator;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.textfield.TextInputEditText;
@@ -28,6 +31,8 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,7 +45,7 @@ public class AppSettings extends AppCompatActivity {
     private TextView progressText;
     private TextInputEditText TriggerPacketName;
     boolean LSPosed_INVISIBLE, LSPosed_OLD_METHOD;
-
+    private LoadingIndicator loadingIndicator;
 
     @SuppressLint({"SetWorldReadable", "ApplySharedPref"})
     public void SaveSettings(String settingName, Object value) {
@@ -238,6 +243,8 @@ public class AppSettings extends AppCompatActivity {
         progressText = findViewById(R.id.textView);
         progressText.setText(getString(R.string.fastSettingsMainFlowtingWindow) + savedValue + " px");
 
+        loadingIndicator = findViewById(R.id.loadingIndicator);
+
         // Main Element Height
         seekBar = findViewById(R.id.slider);
         seekBar.setValueTo(max);
@@ -276,28 +283,50 @@ public class AppSettings extends AppCompatActivity {
         });
 
 
+        loadingIndicator.setVisibility(View.VISIBLE);
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
 
-        MakeInvisibleInstead = findViewById(R.id.MakeInvisibleInstead);
-        MakeInvisibleInstead.setChecked(ReadLSPosedSetting("XPOSED:MakeInvisibleInstead", false));
-        MakeInvisibleInstead.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            LSPosed_INVISIBLE = isChecked;
-            if (!SaveLSPosed()) {
-                Toast.makeText(this, "Failed to save preferences to TikTok", Toast.LENGTH_SHORT).show();
-            }
+        executor.execute(() -> {
+            boolean invisible = ReadLSPosedSetting("XPOSED:MakeInvisibleInstead", false);
+            boolean oldMethod = ReadLSPosedSetting("XPOSED:OldHookMethod", false);
+            boolean available = CheckLSPosedAvaiable();
+
+            handler.post(() -> {
+                MakeInvisibleInstead = findViewById(R.id.MakeInvisibleInstead);
+                MakeInvisibleInstead.setChecked(invisible);
+                MakeInvisibleInstead.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    LSPosed_INVISIBLE = isChecked;
+
+                    executor.execute(() -> {
+                        boolean saved = SaveLSPosed();
+                        if (!saved) {
+                            handler.post(() -> Toast.makeText(this, "Failed to save preferences to TikTok", Toast.LENGTH_SHORT).show());
+                        }
+                    });
+                });
+
+                UseOldDetectionMethod = findViewById(R.id.UseOldDetectionMethod);
+                UseOldDetectionMethod.setChecked(oldMethod);
+                UseOldDetectionMethod.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    LSPosed_OLD_METHOD = isChecked;
+
+                    executor.execute(() -> {
+                        boolean saved = SaveLSPosed();
+                        if (!saved) {
+                            handler.post(() -> Toast.makeText(this, "Failed to save preferences to TikTok", Toast.LENGTH_SHORT).show());
+                        }
+                    });
+                });
+
+                if (!available) {
+                    ConstraintLayout LSPosedSettings = findViewById(R.id.LSPosedSettings);
+                    LSPosedSettings.setVisibility(View.GONE);
+                }
+                loadingIndicator.setVisibility(View.GONE);
+            });
         });
 
-        UseOldDetectionMethod = findViewById(R.id.UseOldDetectionMethod);
-        UseOldDetectionMethod.setChecked(ReadLSPosedSetting("XPOSED:OldHookMethod", false));
-        UseOldDetectionMethod.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            LSPosed_OLD_METHOD = isChecked;
-            if (!SaveLSPosed()) {
-                Toast.makeText(this, "Failed to save preferences to TikTok", Toast.LENGTH_SHORT).show();
-            }
-        });
-        if (!CheckLSPosedAvaiable()) {
-            ConstraintLayout LSPosedSettings = findViewById(R.id.LSPosedSettings);
-            LSPosedSettings.setVisibility(View.GONE);
-        }
 
 
     }

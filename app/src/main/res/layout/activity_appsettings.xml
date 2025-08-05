@@ -252,6 +252,17 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
 
+                <com.google.android.material.loadingindicator.LoadingIndicator
+                    android:id="@+id/loadingIndicator"
+                    style="@style/Widget.Material3.LoadingIndicator.Contained"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <TextView
                     android:id="@+id/textView12"
                     android:layout_width="0dp"
@@ -377,13 +388,11 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </LinearLayout>
     </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
