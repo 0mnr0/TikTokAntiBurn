@@ -11,6 +11,7 @@ import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
 import android.os.IBinder;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -31,7 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SetupFloatingWindows extends Service {
-
     boolean dragging = false;
 
     ConstraintLayout blockBurnSettings;
@@ -41,10 +41,11 @@ public class SetupFloatingWindows extends Service {
     WindowManager windowManager;
     View floatingMenu;
     List<View> blockburnList = new ArrayList<>();
+    List<Long> blockburnRadiusesList = new ArrayList<>();
     List<Point> savedPositions = new ArrayList<>();
 
-    TextView elementWidth, elementHeight;
-    SeekBar widthBar, heightBar;
+    TextView elementWidth, elementHeight, elementRadius;
+    SeekBar widthBar, heightBar, radiusBar;
 
     @Override
     public IBinder onBind(Intent intent) { return null; }
@@ -52,6 +53,7 @@ public class SetupFloatingWindows extends Service {
     public void RemoveElement() {
         if (lastBlockBurnElement != null) {
             windowManager.removeView(lastBlockBurnElement);
+            blockburnRadiusesList.remove(blockburnList.indexOf(lastBlockBurnElement));
             blockburnList.remove(lastBlockBurnElement);
             lastBlockBurnElement = null;
             CloseBurnSettings();
@@ -87,8 +89,10 @@ public class SetupFloatingWindows extends Service {
         ConstraintLayout constraintLayout = floatingMenu.findViewById(R.id.linearLayout);
         elementWidth = floatingMenu.findViewById(R.id.elementWidth);
         elementHeight = floatingMenu.findViewById(R.id.elementHeight);
+        elementRadius = floatingMenu.findViewById(R.id.elementRadius);
         widthBar = floatingMenu.findViewById(R.id.widthBar);
         heightBar = floatingMenu.findViewById(R.id.heightBar);
+        radiusBar = floatingMenu.findViewById(R.id.radiusBar);
         Button RemoveElement = floatingMenu.findViewById(R.id.removeElement);
         Button btnSave = floatingMenu.findViewById(R.id.btnSave);
         RemoveElement.setOnClickListener(v -> RemoveElement());
@@ -103,6 +107,7 @@ public class SetupFloatingWindows extends Service {
         widthBar.setMax(width+(width/4));
         heightBar.setMin(70);
         heightBar.setMax(height/2);
+        radiusBar.setMax(Math.max(widthBar.getProgress(), heightBar.getProgress()) /2);
         widthBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -110,6 +115,7 @@ public class SetupFloatingWindows extends Service {
                 layoutParams.width = i;
                 windowManager.updateViewLayout(lastBlockBurnElement, layoutParams);
                 RefreshSettings(false);
+                radiusBar.setMax(Math.max(widthBar.getProgress(), heightBar.getProgress()) / 2);
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {}
@@ -124,12 +130,33 @@ public class SetupFloatingWindows extends Service {
                 layoutParams.height = i;
                 windowManager.updateViewLayout(lastBlockBurnElement, layoutParams);
                 RefreshSettings(false);
+                radiusBar.setMax(Math.max(widthBar.getProgress(), heightBar.getProgress()) / 2);
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) { }
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) { }
         });
+
+        radiusBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                if (dragging) {return;}
+                GradientDrawable drawable = new GradientDrawable();
+                drawable.setShape(GradientDrawable.RECTANGLE);
+                drawable.setColor(bgColor);
+                drawable.setStroke(1, Color.RED);
+                drawable.setCornerRadius(radiusBar.getProgress());
+                lastBlockBurnElement.setBackground(drawable);
+                blockburnRadiusesList.set(blockburnList.indexOf(lastBlockBurnElement), (long) radiusBar.getProgress());
+                RefreshSettings(false);
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) { }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) { }
+        });
+
 
         //Add on click event
         constraintLayout.setOnTouchListener((v, event) -> {
@@ -166,8 +193,11 @@ public class SetupFloatingWindows extends Service {
         makeViewDraggable(blockburn, params);
         windowManager.addView(blockburn, params);
         blockburnList.add(blockburn);
+        blockburnRadiusesList.add(0L);
         CloseBurnSettings();
     }
+
+
 
 
     @SuppressLint("SetTextI18n")
@@ -177,10 +207,12 @@ public class SetupFloatingWindows extends Service {
         if (force) {
             widthBar.setProgress(BurnWidth);
             heightBar.setProgress(BurnHeight);
+            radiusBar.setProgress(Math.toIntExact(blockburnRadiusesList.get(blockburnList.indexOf(lastBlockBurnElement))));
         }
 
         elementWidth.setText(getString(R.string.ExtendedSetting_Width) + BurnWidth + " px");
         elementHeight.setText(getString(R.string.ExtendedSetting_Height) + BurnHeight + " px");
+        elementRadius.setText(getString(R.string.borderRadiusSetting) + (blockburnRadiusesList.get(blockburnList.indexOf(lastBlockBurnElement))) + " px");
     }
 
     private void makeViewDraggable(View view, WindowManager.LayoutParams params) {
@@ -192,12 +224,11 @@ public class SetupFloatingWindows extends Service {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                GradientDrawable drawable = new GradientDrawable();
-                drawable.setColor(bgColor);
                 boolean NeedCloseSettings = (v != lastBlockBurnElement);
                 if (v != lastBlockBurnElement && dragging) {
                     return true;
                 }
+                Log.d("blockburnRadiusesList", blockburnRadiusesList.toString());
 
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
@@ -209,11 +240,17 @@ public class SetupFloatingWindows extends Service {
                         initialY = params.y;
                         initialTouchX = event.getRawX();
                         initialTouchY = event.getRawY();
+
+                        GradientDrawable drawable = new GradientDrawable();
+                        drawable.setShape(GradientDrawable.RECTANGLE);
+                        drawable.setColor(bgColor);
+                        drawable.setCornerRadius(blockburnRadiusesList.get(blockburnList.indexOf(lastBlockBurnElement)));
                         drawable.setStroke(dpToPx(1), Color.RED);
-                        v.setBackground(drawable);
+                        lastBlockBurnElement.setBackground(drawable);
                         blockBurnSettings.setVisibility(View.VISIBLE);
                         draggingObject = v;
                         RefreshSettings(true);
+                        windowManager.updateViewLayout(view, params);
                         return true;
 
                     case MotionEvent.ACTION_MOVE:
@@ -237,10 +274,12 @@ public class SetupFloatingWindows extends Service {
     private void CloseBurnSettings() {
         if (dragging) return;
         blockBurnSettings.setVisibility(View.GONE);
-        GradientDrawable drawable = new GradientDrawable();
-        drawable.setColor(bgColor);
-        drawable.setStroke(0, Color.TRANSPARENT);
+
         for (View view : blockburnList) {
+            GradientDrawable drawable = new GradientDrawable();
+            drawable.setColor(bgColor);
+            drawable.setStroke(dpToPx(1), Color.TRANSPARENT);
+            drawable.setCornerRadius(blockburnRadiusesList.get(blockburnList.indexOf(view)));
             view.setBackground(drawable);
         }
     }
@@ -254,6 +293,7 @@ public class SetupFloatingWindows extends Service {
         }
 
         blockburnList.clear();
+        blockburnRadiusesList.clear();
         windowManager.removeView(floatingMenu);
 
         stopSelf(); // Остановить сервис
@@ -268,7 +308,7 @@ public class SetupFloatingWindows extends Service {
         List<BlockInfo> blockList = new ArrayList<>();
         for (View view : blockburnList) {
             WindowManager.LayoutParams lp = (WindowManager.LayoutParams) view.getLayoutParams();
-            blockList.add(new BlockInfo(lp.width, lp.height, lp.x, lp.y));
+            blockList.add(new BlockInfo(lp.width, lp.height, lp.x, lp.y, blockburnRadiusesList.get(blockburnList.indexOf(view))));
         }
 
         SharedPreferences prefs = getSharedPreferences("blockPos", MODE_PRIVATE);
@@ -295,6 +335,11 @@ public class SetupFloatingWindows extends Service {
             return;
         }
         for (BlockInfo blockInfo : blockList) {
+            GradientDrawable drawable = new GradientDrawable();
+            drawable.setShape(GradientDrawable.RECTANGLE);
+            drawable.setColor(Color.BLACK);
+            drawable.setCornerRadius(blockInfo.radius);
+
             View blockburn = LayoutInflater.from(this).inflate(R.layout.blockburn, null);
             WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                     blockInfo.width, blockInfo.height,
@@ -305,11 +350,12 @@ public class SetupFloatingWindows extends Service {
             params.x = blockInfo.x;
             params.y = blockInfo.y;
             params.gravity = Gravity.TOP | Gravity.START;
-            blockburn.setBackgroundColor(bgColor);
+            blockburn.setBackground(drawable);
 
-            makeViewDraggable(blockburn, params);
             windowManager.addView(blockburn, params);
             blockburnList.add(blockburn);
+            blockburnRadiusesList.add(blockInfo.radius);
+            makeViewDraggable(blockburn, params);
         }
         CloseBurnSettings();
 

@@ -41,4 +41,6 @@
     <string name="UpdateTitle">Новое обновление :)</string>
     <string name="LSPosed_OldDetection">Старый метод обнаружения</string>
     <string name="LSPosed_OldDetectionDescription">Используйте старый метод обнаружения если новый не работает. (Поддерживается только Английский и русский язык)</string>
+    <string name="borderRadiusSetting">"Скругление: "</string>
+    <string name="borderRadiusSetting_Unknown">Скругление: ?px</string>
 </resources>

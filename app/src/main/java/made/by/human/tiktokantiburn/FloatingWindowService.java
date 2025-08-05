@@ -1,10 +1,13 @@
 package made.by.human.tiktokantiburn;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
@@ -31,8 +34,9 @@ public class FloatingWindowService extends Service {
 
 
 
-    public void CreateElement(int x, int y, int width, int height, boolean rounded, boolean canBeHidden) {
-        View floatingView = inflater.inflate(rounded ? R.layout.blockburn : R.layout.blockburn_quad, null);
+    @SuppressLint("InflateParams")
+    public void CreateElement(int x, int y, int width, int height, long radius, boolean canBeHidden) {
+         View floatingView = inflater.inflate(R.layout.blockburn_quad, null);
 
 
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
@@ -50,6 +54,13 @@ public class FloatingWindowService extends Service {
         params.y = y;
         params.width = width;
         params.height = height;
+
+        GradientDrawable drawable = new GradientDrawable();
+        drawable.setShape(GradientDrawable.RECTANGLE);
+        drawable.setColor(Color.BLACK);
+        drawable.setCornerRadius(radius);
+        floatingView.setBackground(drawable);
+
 
         floatingView.setAlpha(0f);
         floatingView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
@@ -104,7 +115,7 @@ public class FloatingWindowService extends Service {
         }
         for (int i = 0; i < blockList.size(); i++) {
             BlockInfo blockInfo = blockList.get(i);
-            CreateElement(blockInfo.x, blockInfo.y, blockInfo.width, blockInfo.height, false, canBeHidden);
+            CreateElement(blockInfo.x, blockInfo.y, blockInfo.width, blockInfo.height, blockInfo.radius, canBeHidden);
         }
 
     }
@@ -131,7 +142,7 @@ public class FloatingWindowService extends Service {
             SharedPreferences sharedPreferences = getSharedPreferences("SeekBarPrefs", MODE_PRIVATE);
             int savedValue = sharedPreferences.getInt("seekBarValue", 40);
 
-            CreateElement((size.x / 2) - (elementWidth / 2), size.y - savedValue, elementWidth, savedValue, true, canBeHidden);
+            CreateElement((size.x / 2) - (elementWidth / 2), size.y - savedValue, elementWidth, savedValue, 0, canBeHidden);
         }
         LoadCustomBurns(canBeHidden);
 

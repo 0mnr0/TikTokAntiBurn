@@ -157,6 +157,28 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/elementHeight" />
 
+            <TextView
+                android:id="@+id/elementRadius"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/borderRadiusSetting_Unknown"
+                android:textColor="@color/ButtonBackdround"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/heightBar" />
+
+            <SeekBar
+                android:id="@+id/radiusBar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:progressBackgroundTint="@color/SeekBackdroundFilled"
+                android:progressTint="@color/SeekBackdroundFilled"
+                android:thumbTint="@color/SeekBackdroundFilled"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/elementRadius" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

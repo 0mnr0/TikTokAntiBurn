@@ -42,4 +42,6 @@
     <string name="UpdateTitle">New Update :)</string>
     <string name="LSPosed_OldDetection">Old Detection Method</string>
     <string name="LSPosed_OldDetectionDescription">Use the old detection method if the new one doesn\'t work. (Supports English and Russian only)</string>
+    <string name="borderRadiusSetting">Rounding up:</string>
+    <string name="borderRadiusSetting_Unknown">Rounding up: ?px</string>
 </resources>
