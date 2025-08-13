@@ -158,6 +158,20 @@ public class AppHook implements IXposedHookLoadPackage {
                 foundedButton = null;
             }
         });
+        XposedHelpers.findAndHookMethod("com.ss.android.ugc.aweme.main.MainActivity",
+            lpparam.classLoader, "onPause", new XC_MethodHook() {
+            @Override
+            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                foundedButton = null;
+            }
+        });
+        XposedHelpers.findAndHookMethod("com.ss.android.ugc.aweme.main.MainActivity",
+            lpparam.classLoader, "onResume", new XC_MethodHook() {
+            @Override
+            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                foundedButton = null;
+            }
+        });
 
     }
 
