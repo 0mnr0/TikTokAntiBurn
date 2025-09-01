@@ -195,24 +195,23 @@ public class HookBurnScreen implements IXposedHookLoadPackage {
 
 
 
+                        Handler closeHandler = new Handler();
+                        Runnable hideRunnable = () -> {
+                            BottomPane.animate().alpha(0.5f).setDuration(200).start();
+                            topPanel.animate().alpha(0f).setDuration(200).start();
+                            topPanel.animate().scaleX(0).setDuration(200).start();
+                        };
+
                         ShakeManager shakeManager = new ShakeManager(activity, () -> {
-                            if (topPanel != null) {
-                                topPanel.setScaleX(1);
-                                topPanel.animate().alpha(1f).setDuration(200).start();
-                                new android.os.Handler().postDelayed(() -> {
-                                    topPanel.animate().alpha(0f).setDuration(200).start();
-                                    topPanel.animate().scaleX(0).setDuration(200).start();
-                                }, 5000);
-                            }
+                            closeHandler.removeCallbacks(hideRunnable);
 
-                            if (BottomPane != null) {
-                                BottomPane.animate().alpha(1f).setDuration(200).start();
+                            topPanel.animate().scaleX(1f).setDuration(200).start();
+                            topPanel.animate().alpha(1f).setDuration(200).start();
+                            BottomPane.animate().alpha(1f).setDuration(200).start();
 
-                                new android.os.Handler().postDelayed(() -> {
-                                    BottomPane.animate().alpha(0.5f).setDuration(200).start();
-                                }, 5000);
-                            }
+                            closeHandler.postDelayed(hideRunnable, 5000);
                         });
+
 
 
 
