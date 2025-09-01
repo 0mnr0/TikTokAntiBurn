@@ -143,6 +143,10 @@ public class HookBurnScreen implements IXposedHookLoadPackage {
 
 
 
+
+
+
+
                         ShakeManager shakeManager = new ShakeManager(activity, () -> {
                             if (topPanel != null) {
                                 topPanel.setScaleX(1);
@@ -153,6 +157,7 @@ public class HookBurnScreen implements IXposedHookLoadPackage {
                                 }, 5000);
                             }
                         });
+
                         shakeManager.start();
                     }, 500);
                 });
