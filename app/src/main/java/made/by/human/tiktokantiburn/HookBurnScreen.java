@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 public class HookBurnScreen implements IXposedHookLoadPackage {
     final int RandomDirection = View.LAYOUT_DIRECTION_RTL;
+    View possibleLinearLayout;
 
     private LinearLayout findRootLayout(View root) {
         if (root instanceof LinearLayout) {
@@ -121,7 +123,50 @@ public class HookBurnScreen implements IXposedHookLoadPackage {
     }
 
 
+    private View findViewByEnumeration(View root) {
+        if (possibleLinearLayout != null) {
+            return possibleLinearLayout;
+        }
 
+        if (root instanceof LinearLayout) {
+            LinearLayout possibleLinearLayout = (LinearLayout) root;
+            int possibleLinearChildren = possibleLinearLayout.getChildCount();
+
+            if (possibleLinearChildren == 5) {
+                int possibleWeight = 0;
+
+                for (int i = 0; i < possibleLinearChildren; i++) {
+                    View child = possibleLinearLayout.getChildAt(i);
+
+                    if (i != 2 && child instanceof FrameLayout) {
+                        possibleWeight += 1;
+                    }
+
+                    if (i == 2 && child instanceof Button) {
+                        possibleWeight += 1;
+                    }
+                }
+
+                if (possibleWeight >= 4) {
+                    return possibleLinearLayout;
+                }
+            }
+        }
+
+
+        if (root instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) root;
+            for (int i = 0; i < group.getChildCount(); i++) {
+                View child = group.getChildAt(i);
+                View result = findViewByEnumeration(child);
+                if (result != null) {
+                    return result;
+                }
+            }
+        }
+
+        return null;
+    }
 
 
     @Override
@@ -143,22 +188,65 @@ public class HookBurnScreen implements IXposedHookLoadPackage {
 
 
 
-
+                        View BottomPane = findViewByEnumeration(root);
+                        if (BottomPane != null) {
+                            BottomPane.setAlpha(0.5f);
+                        }
 
 
 
                         ShakeManager shakeManager = new ShakeManager(activity, () -> {
                             if (topPanel != null) {
                                 topPanel.setScaleX(1);
-                                topPanel.animate().alpha(1F).setDuration(200).start();
+                                topPanel.animate().alpha(1f).setDuration(200).start();
                                 new android.os.Handler().postDelayed(() -> {
                                     topPanel.animate().alpha(0f).setDuration(200).start();
                                     topPanel.animate().scaleX(0).setDuration(200).start();
                                 }, 5000);
                             }
+
+                            if (BottomPane != null) {
+                                BottomPane.animate().alpha(1f).setDuration(200).start();
+
+                                new android.os.Handler().postDelayed(() -> {
+                                    BottomPane.animate().alpha(0.5f).setDuration(200).start();
+                                }, 5000);
+                            }
                         });
 
+
+
                         shakeManager.start();
+
+
+
+                        //Test Future Code
+                        if (false) {
+                            int interval = 1000;
+                            Handler handler = new Handler(Looper.getMainLooper());
+
+                            Runnable runnable = new Runnable() {
+                                @Override
+                                public void run() {
+                                    FrameLayout VideoLayout = findTikTokRootView(root);
+                                    View child;
+                                    if (VideoLayout != null) {
+                                        child = ViewFinder.getChildByClassName(VideoLayout, "InteractAreaRootLayout", 0);
+                                        child = ViewFinder.getChildByClassName(child, "InteractCheckDrawRelativeLayout", 0);
+                                        child = ViewFinder.getChildByClassName(child, "InteractFrameLayout", 0);
+                                        child = ViewFinder.getNthChildByClassName(child, "InteractConstraintLayout", 0);
+                                        ViewUtils.printChildren(child);
+                                        child.setAlpha(0.5f);
+                                    }
+
+                                    handler.postDelayed(this, interval);
+                                }
+                            };
+
+                            handler.post(runnable);
+
+                            Log.d("TikTokPaneSearcher [F]", "findTarget: " + topPanel);
+                        }
                     }, 500);
                 });
             }
