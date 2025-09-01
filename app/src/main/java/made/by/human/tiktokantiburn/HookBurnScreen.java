@@ -1,10 +1,12 @@
 package made.by.human.tiktokantiburn;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
@@ -12,11 +14,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.google.ar.core.Frame;
-
-import java.util.LinkedList;
-import java.util.Queue;
+import android.widget.Toast;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
@@ -24,7 +22,6 @@ import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 public class HookBurnScreen implements IXposedHookLoadPackage {
-    final int RandomDirection = View.LAYOUT_DIRECTION_RTL;
     View possibleLinearLayout;
 
     private LinearLayout findRootLayout(View root) {
@@ -172,6 +169,7 @@ public class HookBurnScreen implements IXposedHookLoadPackage {
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         XposedHelpers.findAndHookMethod("com.ss.android.ugc.aweme.main.MainActivity", lpparam.classLoader, "onWindowFocusChanged", boolean.class, new XC_MethodHook() {
+            @SuppressLint("ClickableViewAccessibility") // yes, this is bad, but this is to avoid BREAKING TIKTOK UI LOGIC
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 final Activity activity = (Activity) param.thisObject;
@@ -212,6 +210,23 @@ public class HookBurnScreen implements IXposedHookLoadPackage {
                             closeHandler.postDelayed(hideRunnable, 5000);
                         });
 
+                        // Add click listener
+                        ViewGroup parent = (ViewGroup) BottomPane;
+
+                        for (int i = 0; i < parent.getChildCount(); i++) {
+                            View child = parent.getChildAt(i);
+                            child.setOnTouchListener((v, event) -> {
+                                if (event.getAction() == MotionEvent.ACTION_UP) {
+                                    closeHandler.removeCallbacks(hideRunnable);
+                                    BottomPane.animate().alpha(1f).setDuration(200).start();
+                                    closeHandler.postDelayed(hideRunnable, 10000);
+                                }
+
+                                return false;
+                            });
+
+                        }
+
 
 
 
@@ -251,4 +266,7 @@ public class HookBurnScreen implements IXposedHookLoadPackage {
             }
         });
     }
+
+
 }
+
