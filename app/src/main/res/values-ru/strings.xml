@@ -43,4 +43,6 @@
     <string name="LSPosed_OldDetectionDescription">Используйте старый метод обнаружения если новый не работает. (Поддерживается только Английский и русский язык)</string>
     <string name="borderRadiusSetting">"Скругление: "</string>
     <string name="borderRadiusSetting_Unknown">Скругление: ?px</string>
+    <string name="TopPaneModifier">Модификация верхней панели</string>
+    <string name="IdleBrightness">Яркость в простое:</string>
 </resources>

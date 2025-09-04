@@ -3,6 +3,7 @@ package made.by.human.tiktokantiburn;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -49,6 +50,15 @@ public class HookBurnScreen implements IXposedHookLoadPackage {
             }
         }
         return null;
+    }
+
+    public boolean GetBoolean(Context context, String keyName, boolean defaultValue) {
+        SharedPreferences prefs = context.getSharedPreferences("LSPrefs", Context.MODE_PRIVATE);
+        return prefs.getBoolean(keyName, defaultValue);
+    }
+    public int GetInt(Context context, String keyName, int def) {
+        SharedPreferences prefs = context.getSharedPreferences("LSPrefs", Context.MODE_PRIVATE);
+        return prefs.getInt(keyName, def);
     }
 
     private View getFirstDescendant(View view) {
@@ -101,22 +111,7 @@ public class HookBurnScreen implements IXposedHookLoadPackage {
                 return (FrameLayout) v;
             }
         }
-        return null; // не нашли
-    }
-
-    public static View findChildAtPath(View parent, int... path) {
-        View current = parent;
-        for (int index : path) {
-            if (!(current instanceof ViewGroup)) {
-                return null; // дошли не до контейнера
-            }
-            ViewGroup group = (ViewGroup) current;
-            if (index < 0 || index >= group.getChildCount()) {
-                return null; // неправильный индекс
-            }
-            current = group.getChildAt(index);
-        }
-        return current;
+        return null;
     }
 
 
@@ -173,15 +168,18 @@ public class HookBurnScreen implements IXposedHookLoadPackage {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 final Activity activity = (Activity) param.thisObject;
-
-
+                final boolean AllowTopPaneModificator = GetBoolean(activity, "XPOSED:AllowTopPaneModifier", false);
 
                 activity.runOnUiThread(() -> {
                     new android.os.Handler().postDelayed(() -> {
 
+                        final float topPaneInactiveAlpha = ((float) GetInt(activity, "XPOSED:TopPaneOpacity", 100)) / 100;
                         View root = activity.getWindow().getDecorView().getRootView();
                         View topPanel = (View) findRootLayout(root).getParent().getParent().getParent();
-                        topPanel.setAlpha(0f);
+
+                        if (AllowTopPaneModificator) {
+                            topPanel.setAlpha(topPaneInactiveAlpha);
+                        }
 
 
 
@@ -196,17 +194,20 @@ public class HookBurnScreen implements IXposedHookLoadPackage {
                         Handler closeHandler = new Handler();
                         Runnable hideRunnable = () -> {
                             BottomPane.animate().alpha(0.5f).setDuration(200).start();
-                            topPanel.animate().alpha(0f).setDuration(200).start();
-                            topPanel.animate().scaleX(0).setDuration(200).start();
+                            if (AllowTopPaneModificator) {
+                                topPanel.animate().alpha(topPaneInactiveAlpha).setDuration(200).start();
+                                topPanel.animate().scaleX(0).setDuration(200).start();
+                            }
                         };
 
                         ShakeManager shakeManager = new ShakeManager(activity, () -> {
                             closeHandler.removeCallbacks(hideRunnable);
 
-                            topPanel.animate().scaleX(1f).setDuration(200).start();
-                            topPanel.animate().alpha(1f).setDuration(200).start();
+                            if (AllowTopPaneModificator) {
+                                topPanel.animate().scaleX(1f).setDuration(200).start();
+                                topPanel.animate().alpha(1f).setDuration(200).start();
+                            }
                             BottomPane.animate().alpha(1f).setDuration(200).start();
-
                             closeHandler.postDelayed(hideRunnable, 5000);
                         });
 
@@ -234,7 +235,7 @@ public class HookBurnScreen implements IXposedHookLoadPackage {
 
 
 
-                        //Test Future Code
+                        //Testing Future Code
                         if (false) {
                             int interval = 1000;
                             Handler handler = new Handler(Looper.getMainLooper());

@@ -16,14 +16,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.color.DynamicColors;
 import com.google.android.material.loadingindicator.LoadingIndicator;
 import com.google.android.material.materialswitch.MaterialSwitch;
+import com.google.android.material.slider.RangeSlider;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -31,6 +34,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
@@ -38,14 +42,17 @@ import java.util.regex.Pattern;
 
 public class AppSettings extends AppCompatActivity {
     private View view;
-    private MaterialSwitch HideForACoupleSeconds, CompatibilityMode, MainFloatingWindowEnabled, UseOldDetectionMethod, MakeInvisibleInstead;
+    private MaterialSwitch HideForACoupleSeconds, CompatibilityMode, MainFloatingWindowEnabled,
+            UseOldDetectionMethod, MakeInvisibleInstead, TopPaneModifier;
     private ConstraintLayout SomeSetting;
     private Slider seekBar;
     private SharedPreferences sharedPreferences;
-    private TextView progressText;
+    private TextView progressText, topPaneModificatorDescription;
     private TextInputEditText TriggerPacketName;
     boolean LSPosed_INVISIBLE, LSPosed_OLD_METHOD;
     private LoadingIndicator loadingIndicator;
+    Slider TopPaneModifierValue;
+    int TopPaneOpacity = 0;
 
     @SuppressLint({"SetWorldReadable", "ApplySharedPref"})
     public void SaveSettings(String settingName, Object value) {
@@ -109,6 +116,8 @@ public class AppSettings extends AppCompatActivity {
                 "<map>\n" +
                 "    <boolean name=\"" + "XPOSED:MakeInvisibleInstead" + "\" value=\"" + LSPosed_INVISIBLE + "\" />\n" +
                 "    <boolean name=\"" + "XPOSED:OldHookMethod" + "\" value=\"" + LSPosed_OLD_METHOD + "\" />\n" +
+                "    <boolean name=\"" + "XPOSED:AllowTopPaneModifier" + "\" value=\"" + TopPaneModifier.isChecked() + "\" />\n" +
+                "    <int name=\"" + "XPOSED:TopPaneOpacity" + "\" value=\"" + TopPaneOpacity + "\" />\n" +
                 "</map>\n";
 
         try {
@@ -164,6 +173,30 @@ public class AppSettings extends AppCompatActivity {
             return defaultValue;
         }
     }
+    public int ReadLSPosedSetting(String key, int defaultValue) {
+        final String prefsPath = "/data/data/com.zhiliaoapp.musically/shared_prefs/LSPrefs.xml";
+
+        try {
+            Process su = Runtime.getRuntime().exec("su");
+            DataOutputStream os = new DataOutputStream(su.getOutputStream());
+            os.writeBytes("cat " + prefsPath + "\n");
+            os.writeBytes("exit\n");
+            os.flush();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(su.getInputStream()));
+            StringBuilder xmlContent = new StringBuilder(); String line;
+
+            while ((line = reader.readLine()) != null) { xmlContent.append(line).append("\n"); } su.waitFor();
+
+            Pattern pattern = Pattern.compile("<int name=\"" + Pattern.quote(key) + "\" value=\"(\\d+)\"\\s*/>");
+            Matcher matcher = pattern.matcher(xmlContent.toString());
+
+            return matcher.find() ? Integer.parseInt(Objects.requireNonNull(matcher.group(1))) : defaultValue;
+
+        } catch (Exception e) {
+            return defaultValue;
+        }
+    }
 
 
     public boolean CheckLSPosedAvaiable() {
@@ -194,9 +227,10 @@ public class AppSettings extends AppCompatActivity {
     }
 
 
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint({"MissingInflatedId", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        DynamicColors.applyToActivityIfAvailable(this);
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_appsettings);
@@ -207,6 +241,8 @@ public class AppSettings extends AppCompatActivity {
         });
 
 
+        TopPaneModifier = findViewById(R.id.TopPaneModifier);
+        TopPaneModifierValue = findViewById(R.id.TopPaneModifierValue);
         SomeSetting = findViewById(R.id.SomeSetting);
 
         // Hide elements for a couple seconds
@@ -228,7 +264,6 @@ public class AppSettings extends AppCompatActivity {
             CheckSomeSettings();
         });
 
-
         // Main Element Height Text
         int screenHeight = getResources().getDisplayMetrics().heightPixels;
         int max = (int) (screenHeight * 0.09);
@@ -240,6 +275,7 @@ public class AppSettings extends AppCompatActivity {
             editor.putInt("seekBarValue", savedValue);
             editor.apply();
         }
+        topPaneModificatorDescription = findViewById(R.id.topPaneModificatorDescription);
         progressText = findViewById(R.id.textView);
         progressText.setText(getString(R.string.fastSettingsMainFlowtingWindow) + savedValue + " px");
 
@@ -288,8 +324,10 @@ public class AppSettings extends AppCompatActivity {
         Handler handler = new Handler(Looper.getMainLooper());
 
         executor.execute(() -> {
+            boolean AllowTopPaneModifier = ReadLSPosedSetting("XPOSED:AllowTopPaneModifier", false);
             boolean invisible = ReadLSPosedSetting("XPOSED:MakeInvisibleInstead", false);
             boolean oldMethod = ReadLSPosedSetting("XPOSED:OldHookMethod", false);
+            TopPaneOpacity = ReadLSPosedSetting("XPOSED:TopPaneOpacity", 100);
             boolean available = CheckLSPosedAvaiable();
 
             handler.post(() -> {
@@ -306,6 +344,17 @@ public class AppSettings extends AppCompatActivity {
                     });
                 });
 
+
+                TopPaneModifier.setChecked(AllowTopPaneModifier);
+                TopPaneModifier.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+                    executor.execute(() -> {
+                        boolean saved = SaveLSPosed();
+                        if (!saved) {
+                            handler.post(() -> Toast.makeText(this, "Failed to save preferences to TikTok", Toast.LENGTH_SHORT).show());
+                        }
+                    });
+                }));
+
                 UseOldDetectionMethod = findViewById(R.id.UseOldDetectionMethod);
                 UseOldDetectionMethod.setChecked(oldMethod);
                 UseOldDetectionMethod.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -318,6 +367,27 @@ public class AppSettings extends AppCompatActivity {
                         }
                     });
                 });
+
+                topPaneModificatorDescription.setText(getString(R.string.IdleBrightness)  + " " + TopPaneOpacity + "%");
+                TopPaneModifierValue.setValue(TopPaneOpacity);
+                TopPaneModifierValue.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+                    @Override
+                    public void onStartTrackingTouch(@NonNull Slider slider) {}
+
+                    @Override
+                    public void onStopTrackingTouch(@NonNull Slider slider) {
+                        TopPaneOpacity = (int) slider.getValue();
+                        topPaneModificatorDescription.setText(getString(R.string.IdleBrightness) + " " + TopPaneOpacity + "%");
+
+                        executor.execute(() -> {
+                            boolean saved = SaveLSPosed();
+                            if (!saved) {
+                                handler.post(() -> Toast.makeText(AppSettings.this, "Failed to save preferences to TikTok", Toast.LENGTH_SHORT).show());
+                            }
+                        });
+                    }
+                });
+
 
                 if (!available) {
                     ConstraintLayout LSPosedSettings = findViewById(R.id.LSPosedSettings);
