@@ -37,7 +37,6 @@
     <string name="LSPosedHideDescription">By default, the button is hidden from the interface, but when the setting is enabled, it will not hide, but will become invisible and will work.</string>
     <string name="LSPosedWarning">If you change the settings below, the settings of the external application will be changed on its behalf. This is a complex operation, the developer is not responsible for the consequences!</string>
     <string name="Experimental">Experimental</string>
-    <string name="LSPosedFAQ">Reasons why the module is not working:\n\nCurrently, only the English and Russian TikTok interfaces are supported, so the module will not work in other languages. You can add your language to the list of supported languages (go to my GitHub -> Discussion), thank you in advance for your help in developing the project!\n\nCheck that the module is enabled and TikTok is marked in the recommended list.</string>
     <string name="UpdateFound">A new version of the app has been released:</string>
     <string name="UpdateTitle">New Update :)</string>
     <string name="LSPosed_OldDetection">Old Detection Method</string>
@@ -46,4 +45,6 @@
     <string name="borderRadiusSetting_Unknown">Rounding up: ?px</string>
     <string name="TopPaneModifier">Modify Top Panel</string>
     <string name="IdleBrightness">Idle brightness:</string>
+    <string name="InputMethodSkip">Hide when keyboard is opened</string>
+    <string name="SupportedInputMethods">Supporting:\nㅤㅤㅤ• GBoard</string>
 </resources>

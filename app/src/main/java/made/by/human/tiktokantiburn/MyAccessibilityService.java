@@ -18,22 +18,8 @@ import java.util.Set;
 public class MyAccessibilityService extends AccessibilityService {
     LogSystem logger;
     boolean CompatibilityMode = false;
-    // в любой точке приложения
 
 
-
-
-    public String GetApplicationName(String packageName) {
-        try {
-            PackageManager packageManager = this.getPackageManager();
-            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, 0);
-            return packageManager.getApplicationLabel(applicationInfo).toString();
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return "?";
-
-    }
 
     public boolean GetBoolean(String settingName, boolean defaultValue) {
         SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
@@ -66,10 +52,12 @@ public class MyAccessibilityService extends AccessibilityService {
                     }
                 }
 
-                logger.Save("MyAccessibilityService - [Active Packages]", "ActivePackages: "+activePackages + " (CompatibilityMode: "+CompatibilityMode+")", false, false);
                 boolean TikTokOpened = activePackages.contains(GetString("TriggerPacketName", "com.zhiliaoapp.musically"));
+                if (GetBoolean("InputMethodSkip", false) && activePackages.toString().contains("com.google.android.inputmethod")) {
+                    TikTokOpened = false;
+                }
 
-                Log.d("TikTokOpened: ", activePackages.toString());
+                //Log.d("TikTokOpened: ", activePackages.toString());
                 if (activePackages.contains("com.android.launcher")
                         || activePackages.contains("com.google.android.apps.nexuslauncher")
                         || activePackages.contains("com.miui.home") // MIUI

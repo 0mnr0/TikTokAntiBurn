@@ -36,7 +36,6 @@
     <string name="LSPosedHideDescription">"По умолчанию кнопка удаляется из интерфейса, но при её можно скрывать. Кнопка станет невидимой и будет работать как обычно. Сделано для креаторов :) "</string>
     <string name="LSPosedWarning">При изменении настройки ниже будет выполнено изменение настроек внешнего приложения от его имени. Это сложная операция, разработчик не несёт ответственности за последствия!</string>
     <string name="Experimental">Экспериментально</string>
-    <string name="LSPosedFAQ">Причины почему не работает модуль:\n\nНа текущий момент поддерживается только Английский и Русский интерфейс TikTok, поэтому на других языках модуль не будет работать. Вы можете добавить свой язык в список поддерживаемых (перейдите на мой GitHub - Discussions), заранее спасибо за помощь в развитии проекта! :D\n\nПроверьте что модуль включен и TikTok отмечен в списке рекомендуемых</string>
     <string name="UpdateFound">Выпущено новое обновление:</string>
     <string name="UpdateTitle">Новое обновление :)</string>
     <string name="LSPosed_OldDetection">Старый метод обнаружения</string>
@@ -45,4 +44,6 @@
     <string name="borderRadiusSetting_Unknown">Скругление: ?px</string>
     <string name="TopPaneModifier">Модификация верхней панели</string>
     <string name="IdleBrightness">Яркость в простое:</string>
+    <string name="InputMethodSkip">Прятать когда клавиатура открыта</string>
+    <string name="SupportedInputMethods">Поддерживаются:\nㅤㅤㅤ• GBoard</string>
 </resources>

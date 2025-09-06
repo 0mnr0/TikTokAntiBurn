@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
 
 public class AppSettings extends AppCompatActivity {
     private View view;
-    private MaterialSwitch HideForACoupleSeconds, CompatibilityMode, MainFloatingWindowEnabled,
+    private MaterialSwitch HideForACoupleSeconds, CompatibilityMode, MainFloatingWindowEnabled, InputMethodsSwitch,
             UseOldDetectionMethod, MakeInvisibleInstead, TopPaneModifier;
     private ConstraintLayout SomeSetting;
     private Slider seekBar;
@@ -262,6 +262,14 @@ public class AppSettings extends AppCompatActivity {
         MainFloatingWindowEnabled.setOnCheckedChangeListener((buttonView, isChecked) -> {
             SaveSettings("DisableMainFloatingWindow", isChecked);
             CheckSomeSettings();
+        });
+
+        // Hide all when GBoard is working
+        InputMethodsSwitch = findViewById(R.id.InputMethodsSwitch);
+        InputMethodsSwitch.setChecked(GetBoolean("InputMethodSkip", false));
+        CheckSomeSettings();
+        InputMethodsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SaveSettings("InputMethodSkip", isChecked);
         });
 
         // Main Element Height Text
