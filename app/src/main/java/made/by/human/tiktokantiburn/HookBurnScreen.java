@@ -24,6 +24,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 public class HookBurnScreen implements IXposedHookLoadPackage {
     View possibleLinearLayout;
+    ShakeManager shakeManager;
 
     private LinearLayout findRootLayout(View root) {
         if (root instanceof LinearLayout) {
@@ -169,6 +170,9 @@ public class HookBurnScreen implements IXposedHookLoadPackage {
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 final Activity activity = (Activity) param.thisObject;
                 final boolean AllowTopPaneModificator = GetBoolean(activity, "XPOSED:AllowTopPaneModifier", false);
+                if (shakeManager != null) {
+                    shakeManager.stop();
+                }
 
                 activity.runOnUiThread(() -> {
                     new android.os.Handler().postDelayed(() -> {
@@ -200,7 +204,7 @@ public class HookBurnScreen implements IXposedHookLoadPackage {
                             }
                         };
 
-                        ShakeManager shakeManager = new ShakeManager(activity, () -> {
+                        shakeManager = new ShakeManager(activity, () -> {
                             closeHandler.removeCallbacks(hideRunnable);
 
                             if (AllowTopPaneModificator) {
