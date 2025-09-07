@@ -46,6 +46,6 @@
     <string name="TopPaneModifier">Modify Top Panel</string>
     <string name="IdleBrightness">Idle brightness:</string>
     <string name="InputMethodSkip">Hide when keyboard is opened</string>
-    <string name="SupportedInputMethods">Supporting:\nㅤㅤㅤ• GBoard</string>
+    <string name="SupportedInputMethods">Supporting:\nㅤㅤㅤ• GBoard\nㅤㅤㅤ• Facemoji\nㅤㅤㅤ• Yandex Keyboard\nㅤㅤㅤ• SwiftKey</string>
     <string name="BottomPaneModifier">Modify Bottom Panel</string>
 </resources>

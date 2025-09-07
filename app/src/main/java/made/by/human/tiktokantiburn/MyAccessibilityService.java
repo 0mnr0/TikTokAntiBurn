@@ -53,8 +53,16 @@ public class MyAccessibilityService extends AccessibilityService {
                 }
 
                 boolean TikTokOpened = activePackages.contains(GetString("TriggerPacketName", "com.zhiliaoapp.musically"));
-                if (GetBoolean("InputMethodSkip", false) && activePackages.toString().contains("com.google.android.inputmethod")) {
-                    TikTokOpened = false;
+
+                if (GetBoolean("InputMethodSkip", false)) {
+                    final String PCKGS = activePackages.toString();
+                    if (PCKGS.contains("com.google.android.inputmethod")
+                            || PCKGS.contains("com.simejikeyboard")
+                            || PCKGS.contains("ru.yandex.androidkeyboard")
+                            || PCKGS.contains("com.touchtype.swiftkey")
+                    ) {
+                        TikTokOpened = false;
+                    }
                 }
 
                 //Log.d("TikTokOpened: ", activePackages.toString());
