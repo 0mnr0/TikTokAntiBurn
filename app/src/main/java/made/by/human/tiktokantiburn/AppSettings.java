@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -243,14 +244,17 @@ public class AppSettings extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        ImageView topPaneImage, bottomPaneImage;
 
-
+        topPaneImage = findViewById(R.id.topPaneImage);
+        bottomPaneImage = findViewById(R.id.bottomPaneImage);
         Shake2Show = findViewById(R.id.Shake2Show);
         BottomPaneModifier = findViewById(R.id.BottomPaneModifier);
         TopPaneModifier = findViewById(R.id.TopPaneModifier);
         BottomPaneModifierValue = findViewById(R.id.BottomPaneModifierValue);
         TopPaneModifierValue = findViewById(R.id.TopPaneModifierValue);
         SomeSetting = findViewById(R.id.SomeSetting);
+
 
         // Hide elements for a couple seconds
         HideForACoupleSeconds = findViewById(R.id.TheSwitchingTool);
@@ -366,6 +370,7 @@ public class AppSettings extends AppCompatActivity {
 
                 TopPaneModifier.setChecked(AllowTopPaneModifier);
                 TopPaneModifier.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+                    topPaneImage.setAlpha(isChecked ? TopPaneModifierValue.getValue()/100f : 1f);
                     executor.execute(() -> {
                         boolean saved = SaveLSPosed();
                         if (!saved) {
@@ -376,6 +381,7 @@ public class AppSettings extends AppCompatActivity {
 
                 BottomPaneModifier.setChecked(AllowBottomPaneModifier);
                 BottomPaneModifier.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+                    bottomPaneImage.setAlpha(isChecked ? BottomPaneModifierValue.getValue()/100f : 1f);
                     executor.execute(() -> {
                         boolean saved = SaveLSPosed();
                         if (!saved) {
@@ -410,12 +416,14 @@ public class AppSettings extends AppCompatActivity {
 
                 topPaneModificatorDescription.setText(getString(R.string.IdleBrightness)  + " " + TopPaneOpacity + "%");
                 TopPaneModifierValue.setValue(TopPaneOpacity);
+                topPaneImage.setAlpha(TopPaneModifier.isChecked() ? TopPaneOpacity/100f : 1f);
                 TopPaneModifierValue.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
                     @Override
                     public void onStartTrackingTouch(@NonNull Slider slider) {}
 
                     @Override
                     public void onStopTrackingTouch(@NonNull Slider slider) {
+                        topPaneImage.animate().alpha( TopPaneModifier.isChecked() ? slider.getValue() / 100f : 1f).setDuration(200).start();
                         TopPaneOpacity = (int) slider.getValue();
                         topPaneModificatorDescription.setText(getString(R.string.IdleBrightness) + " " + TopPaneOpacity + "%");
 
@@ -430,12 +438,14 @@ public class AppSettings extends AppCompatActivity {
 
                 bottomPaneModificatorDescription.setText(getString(R.string.IdleBrightness)  + " " + BottomPaneOpacity + "%");
                 BottomPaneModifierValue.setValue(BottomPaneOpacity);
+                bottomPaneImage.setAlpha(BottomPaneModifier.isChecked() ? BottomPaneOpacity/100f : 1f);
                 BottomPaneModifierValue.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
                     @Override
                     public void onStartTrackingTouch(@NonNull Slider slider) {}
 
                     @Override
                     public void onStopTrackingTouch(@NonNull Slider slider) {
+                        bottomPaneImage.animate().alpha(BottomPaneModifier.isChecked() ? slider.getValue() / 100f : 1f).setDuration(200).start();
                         BottomPaneOpacity = (int) slider.getValue();
                         bottomPaneModificatorDescription.setText(getString(R.string.IdleBrightness) + " " + BottomPaneOpacity + "%");
 

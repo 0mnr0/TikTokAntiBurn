@@ -452,6 +452,14 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/topPaneModificatorDescription" />
 
+                    <ImageView
+                        android:id="@+id/topPaneImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/TopPaneModifierValue"
+                        app:srcCompat="@drawable/toppane" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -503,6 +511,17 @@
                         app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/bottomPaneModificatorDescription" />
+
+                    <ImageView
+                        android:id="@+id/bottomPaneImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:cropToPadding="true"
+                        android:scaleType="centerInside"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/BottomPaneModifierValue"
+                        app:srcCompat="@drawable/bottom_pane" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
