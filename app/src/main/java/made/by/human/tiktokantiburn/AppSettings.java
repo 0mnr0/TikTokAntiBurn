@@ -203,6 +203,11 @@ public class AppSettings extends AppCompatActivity {
         }
     }
 
+    public void ShowToast(String text) {
+        runOnUiThread(() -> {
+            Toast.makeText(AppSettings.this, text, Toast.LENGTH_LONG).show();
+        });
+    }
 
     public boolean CheckLSPosedAvaiable() {
         try {
@@ -224,10 +229,16 @@ public class AppSettings extends AppCompatActivity {
                     return true;
                 }
             }
-            return false;
+            try{
+                return RootCheck.isDeviceRooted();
+            } catch (Exception ignored) {
+                return false;
+            }
         } catch (Exception e) {
             Log.e("LSPosed", "Error checking LSPosed availability", e);
-            return true;
+            try{ return RootCheck.isDeviceRooted(); } catch (Exception ignored) {
+                return false;
+            }
         }
     }
 
