@@ -278,6 +278,14 @@
                 android:layout_marginTop="16dp">
 
 
+                <View
+                    android:id="@+id/divider3"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/LSSetting2" />
 
                 <TextView
                     android:id="@+id/textView9"
@@ -317,7 +325,7 @@
                     android:textColor="@color/ButtonBackdround"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/LSSetting4" />
+                    app:layout_constraintTop_toBottomOf="@+id/LSSetting5" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/LSSetting"
@@ -402,10 +410,10 @@
                     android:id="@+id/LSSetting3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="16dp"
                     android:background="@drawable/fast_setting_bg"
                     android:padding="12dp"
-                    app:layout_constraintTop_toBottomOf="@+id/LSSetting2">
+                    app:layout_constraintTop_toBottomOf="@+id/divider3">
 
                     <com.google.android.material.materialswitch.MaterialSwitch
                         android:id="@+id/TopPaneModifier"
@@ -501,6 +509,69 @@
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/LSSetting5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/fast_setting_bg"
+                    android:padding="12dp"
+                    app:layout_constraintTop_toBottomOf="@+id/LSSetting4">
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/Shake2Show"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:checked="false"
+                        android:text="@string/Shake2Show"
+                        android:textColor="@color/SeekBackdroundFilled"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:thumbTint="@color/SeekBackdroundFilled"
+                        app:trackDecorationTint="@color/SeekBackdroundFilled"
+                        app:trackTint="@color/MID" />
+
+                    <TextView
+                        android:id="@+id/Shake2ShowDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Shake2SHowDescription"
+                        android:textColor="@color/SeekBackdround"
+                        app:layout_constraintStart_toStartOf="@+id/Shake2Show"
+                        app:layout_constraintTop_toBottomOf="@+id/Shake2Show" />
+
+                    <TextView
+                        android:id="@+id/textView13"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="-6dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/verbg"
+                        android:padding="6dp"
+                        android:scaleX="0.75"
+                        android:scaleY="0.75"
+                        android:text="@string/BatteryExpensive"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/Shake2ShowDescription" />
+
+                    <TextView
+                        android:id="@+id/textView14"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/HighBatteryUsage"
+                        android:textColor="@color/MID"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView13"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/textView13"
+                        app:layout_constraintTop_toTopOf="@+id/textView13" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -47,4 +47,7 @@
     <string name="InputMethodSkip">Прятать когда клавиатура открыта</string>
     <string name="SupportedInputMethods">Поддерживаются:\nㅤㅤㅤ• GBoard\nㅤㅤㅤ• Facemoji\nㅤㅤㅤ• Yandex Keyboard\nㅤㅤㅤ• SwiftKey</string>
     <string name="BottomPaneModifier">Модификация нижней панели</string>
+    <string name="Shake2Show">Встряхните чтобы показать</string>
+    <string name="Shake2SHowDescription">Встряхните телефон, чтобы сделать видимыми верхние и нижние панели</string>
+    <string name="HighBatteryUsage">Высокий уровень использования батареи</string>
 </resources>

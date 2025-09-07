@@ -194,7 +194,7 @@ public class HookBurnScreen implements IXposedHookLoadPackage {
     private Handler handler;
     private Runnable hideRunnable;
 
-    private void setupPanelHider(Activity activity, View topPanel, View bottomPane, float topPaneInactiveAlpha, float bottomPaneInactiveAlpha) {
+    private void setupPanelHider(Activity activity, View topPanel, View bottomPane, float topPaneInactiveAlpha, float bottomPaneInactiveAlpha, boolean Shake2Show) {
         hideRunnable = () -> {
             HIDE_TOP_PANEL(topPanel, topPaneInactiveAlpha);
             HIDE_BOTTOM_PANEL(bottomPane, bottomPaneInactiveAlpha);
@@ -203,9 +203,12 @@ public class HookBurnScreen implements IXposedHookLoadPackage {
         };
         handler.postDelayed(hideRunnable, 1000);
 
-        shakeManager = new ShakeManager(activity, () -> {
-            showTemporarily(topPanel, bottomPane, topPaneInactiveAlpha, bottomPaneInactiveAlpha);
-        }); shakeManager.start();
+        if (Shake2Show) {
+            shakeManager = new ShakeManager(activity, () -> {
+                showTemporarily(topPanel, bottomPane, topPaneInactiveAlpha, bottomPaneInactiveAlpha);
+            });
+            shakeManager.start();
+        }
 
         if (bottomPane != null) {
             bottomPane.setOnClickListener(v -> {
@@ -240,6 +243,7 @@ public class HookBurnScreen implements IXposedHookLoadPackage {
                 final Activity activity = (Activity) param.thisObject;
                 final boolean AllowTopPaneModificator = GetBoolean(activity, "XPOSED:AllowTopPaneModifier", false);
                 final boolean AllowBottomPaneModificator = GetBoolean(activity, "XPOSED:AllowBottomPaneModifier", false);
+                final boolean Shake2Show = GetBoolean(activity, "XPOSED:Shake2Show", false);
                 if (!AllowTopPaneModificator && !AllowBottomPaneModificator) {
                     if (shakeManager != null) {
                         try{ shakeManager.stop(); }
@@ -265,7 +269,7 @@ public class HookBurnScreen implements IXposedHookLoadPackage {
                         }
 
                         Log.d("TTBURN", "bottomPane:"+bottomPane);
-                        setupPanelHider(activity, topPanel, bottomPane, topPaneInactiveAlpha, bottomPaneInactiveAlpha);
+                        setupPanelHider(activity, topPanel, bottomPane, topPaneInactiveAlpha, bottomPaneInactiveAlpha, Shake2Show);
 
 
                         //Testing Future Code

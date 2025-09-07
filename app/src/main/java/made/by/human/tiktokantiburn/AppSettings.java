@@ -43,7 +43,7 @@ import java.util.regex.Pattern;
 public class AppSettings extends AppCompatActivity {
     private View view;
     private MaterialSwitch HideForACoupleSeconds, CompatibilityMode, MainFloatingWindowEnabled, InputMethodsSwitch, TopPaneModifier, BottomPaneModifier,
-            UseOldDetectionMethod, MakeInvisibleInstead;
+            UseOldDetectionMethod, MakeInvisibleInstead, Shake2Show;
     private ConstraintLayout SomeSetting;
     private Slider seekBar;
     private SharedPreferences sharedPreferences;
@@ -119,6 +119,7 @@ public class AppSettings extends AppCompatActivity {
                 "    <boolean name=\"" + "XPOSED:OldHookMethod" + "\" value=\"" + LSPosed_OLD_METHOD + "\" />\n" +
                 "    <boolean name=\"" + "XPOSED:AllowTopPaneModifier" + "\" value=\"" + TopPaneModifier.isChecked() + "\" />\n" +
                 "    <boolean name=\"" + "XPOSED:AllowBottomPaneModifier" + "\" value=\"" + BottomPaneModifier.isChecked() + "\" />\n" +
+                "    <boolean name=\"" + "XPOSED:Shake2Show" + "\" value=\"" + Shake2Show.isChecked() + "\" />\n" +
                 "    <int name=\"" + "XPOSED:TopPaneOpacity" + "\" value=\"" + TopPaneOpacity + "\" />\n" +
                 "    <int name=\"" + "XPOSED:BottomPaneOpacity" + "\" value=\"" + BottomPaneOpacity + "\" />\n" +
                 "</map>\n";
@@ -244,6 +245,7 @@ public class AppSettings extends AppCompatActivity {
         });
 
 
+        Shake2Show = findViewById(R.id.Shake2Show);
         BottomPaneModifier = findViewById(R.id.BottomPaneModifier);
         TopPaneModifier = findViewById(R.id.TopPaneModifier);
         BottomPaneModifierValue = findViewById(R.id.BottomPaneModifierValue);
@@ -340,6 +342,7 @@ public class AppSettings extends AppCompatActivity {
         executor.execute(() -> {
             boolean AllowTopPaneModifier = ReadLSPosedSetting("XPOSED:AllowTopPaneModifier", false);
             boolean AllowBottomPaneModifier = ReadLSPosedSetting("XPOSED:AllowBottomPaneModifier", false);
+            boolean Shake2ShowValue = ReadLSPosedSetting("XPOSED:Shake2Show", false);
             boolean invisible = ReadLSPosedSetting("XPOSED:MakeInvisibleInstead", false);
             boolean oldMethod = ReadLSPosedSetting("XPOSED:OldHookMethod", false);
             TopPaneOpacity = ReadLSPosedSetting("XPOSED:TopPaneOpacity", 100);
@@ -373,6 +376,17 @@ public class AppSettings extends AppCompatActivity {
 
                 BottomPaneModifier.setChecked(AllowBottomPaneModifier);
                 BottomPaneModifier.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+                    executor.execute(() -> {
+                        boolean saved = SaveLSPosed();
+                        if (!saved) {
+                            handler.post(() -> Toast.makeText(this, "Failed to save preferences to TikTok", Toast.LENGTH_SHORT).show());
+                        }
+                    });
+                }));
+
+
+                Shake2Show.setChecked(Shake2ShowValue);
+                Shake2Show.setOnCheckedChangeListener(((buttonView, isChecked) -> {
                     executor.execute(() -> {
                         boolean saved = SaveLSPosed();
                         if (!saved) {

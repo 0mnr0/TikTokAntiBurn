@@ -48,4 +48,8 @@
     <string name="InputMethodSkip">Hide when keyboard is opened</string>
     <string name="SupportedInputMethods">Supporting:\nㅤㅤㅤ• GBoard\nㅤㅤㅤ• Facemoji\nㅤㅤㅤ• Yandex Keyboard\nㅤㅤㅤ• SwiftKey</string>
     <string name="BottomPaneModifier">Modify Bottom Panel</string>
+    <string name="Shake2Show">Shake to show panels</string>
+    <string name="Shake2SHowDescription">Shake your phone to make the top and bottom panels visible</string>
+    <string name="BatteryExpensive">🔋🔥</string>
+    <string name="HighBatteryUsage">High battery usage</string>
 </resources>
