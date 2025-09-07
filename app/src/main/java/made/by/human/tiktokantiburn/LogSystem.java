@@ -12,7 +12,7 @@ import java.util.Date;
 import android.app.Application;
 
 public class LogSystem {
-    public static final String LoggerVersion = "1.3.2";
+    public static final String LoggerVersion = "1.4.0";
     private static final long MAX_FILE_SIZE = 15L * 1024 * 1024; // 15 MB
     private static final String LOG_FILE_NAME = "logs.txt";
     private static LogSystem instance;
