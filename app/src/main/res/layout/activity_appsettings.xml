@@ -84,7 +84,8 @@
                         android:imeOptions="actionDone|actionNext"
                         android:inputType="text"
                         android:maxLines="1"
-                        android:textColor="@color/ButtonBackdround" />
+                        android:textColor="@color/ButtonBackdround"
+                        tools:ignore="HardcodedText" />
 
                 </com.google.android.material.textfield.TextInputLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -181,7 +182,7 @@
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="14dp"
+                    android:layout_marginStart="14dp"
                     android:text="@string/fastSettingsMainFlowtingWindow"
                     android:textColor="@color/ButtonBackdround"
                     android:textSize="18sp"
@@ -203,7 +204,8 @@
                     app:thumbColor="@color/SeekBackdroundFilled"
                     app:trackColorActive="@color/SeekBackdroundFilled"
                     app:trackColorInactive="@color/SeekBackdround"
-                    tools:tickColorInactive="#00000000" />
+                    tools:tickColorInactive="#00000000"
+                    tools:ignore="HardcodedText" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -315,20 +317,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/LSSetting3" />
 
-                <TextView
-                    android:id="@+id/textView13"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:background="@drawable/warn_msg"
-                    android:padding="10dp"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
-                    android:text="\@string/LSPosedFAQ"
-                    android:textColor="@color/ButtonBackdround"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView11" />
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/LSSetting"
                     android:layout_width="match_parent"
@@ -413,7 +401,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:alpha="0.4"
                     android:background="@drawable/fast_setting_bg"
                     android:padding="12dp"
                     app:layout_constraintTop_toBottomOf="@+id/LSSetting2">
@@ -423,7 +410,6 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:checked="false"
-                        android:enabled="false"
                         android:text="@string/TopPaneModifier"
                         android:textColor="@color/SeekBackdroundFilled"
                         android:textSize="18sp"
@@ -451,7 +437,6 @@
                         android:layout_marginStart="-8dp"
                         android:layout_marginEnd="-8dp"
                         android:contentDescription="@string/IdleBrightness"
-                        android:enabled="false"
                         android:stepSize="1"
                         android:value="20"
                         android:valueFrom="0"
