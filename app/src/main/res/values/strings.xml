@@ -35,7 +35,7 @@
     <string name="LSPosedSettingTitle">LSPosed Module Settings</string>
     <string name="LSPosedHideType">Hide, not delete</string>
     <string name="LSPosedHideDescription">By default, the button is hidden from the interface, but when the setting is enabled, it will not hide, but will become invisible and will work.</string>
-    <string name="LSPosedWarning">If you change the settings below, the settings of the external application will be changed on its behalf. This is a complex operation, the developer is not responsible for the consequences!</string>
+    <string name="LSPosedWarning">If you change the above settings, the settings of the external application will be changed on its behalf. This is a complex operation, the developer is not responsible for the consequences!</string>
     <string name="Experimental">Experimental</string>
     <string name="UpdateFound">A new version of the app has been released:</string>
     <string name="UpdateTitle">New Update :)</string>
