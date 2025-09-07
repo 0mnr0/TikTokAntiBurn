@@ -46,4 +46,5 @@
     <string name="IdleBrightness">Яркость в простое:</string>
     <string name="InputMethodSkip">Прятать когда клавиатура открыта</string>
     <string name="SupportedInputMethods">Поддерживаются:\nㅤㅤㅤ• GBoard</string>
+    <string name="BottomPaneModifier">Модификация нижней панели</string>
 </resources>

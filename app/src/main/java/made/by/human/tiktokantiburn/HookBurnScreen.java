@@ -17,6 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
+
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedHelpers;
@@ -162,6 +165,72 @@ public class HookBurnScreen implements IXposedHookLoadPackage {
     }
 
 
+
+    private void SHOW_TOP_PANEL(View TopPane, float topPaneAlpha) {
+        if (TopPane != null) {
+            TopPane.animate().alpha(topPaneAlpha).setDuration(200).start();
+        }
+    }
+
+    private void SHOW_BOTTOM_PANEL(View BottomPane, float bottomPaneAlpha) {
+        if (BottomPane != null) {
+            BottomPane.animate().alpha(bottomPaneAlpha).setDuration(200).start();
+        }
+    }
+
+    private void HIDE_TOP_PANEL(View TopPane, float topPaneAlpha) {
+        if (TopPane != null) {
+            TopPane.animate().alpha(topPaneAlpha).setDuration(200).start();
+        }
+    }
+
+    private void HIDE_BOTTOM_PANEL(View BottomPane, float bottomPaneAlpha) {
+        if (BottomPane != null) {
+            BottomPane.animate().alpha(bottomPaneAlpha).setDuration(200).start();
+        }
+    }
+
+
+    private Handler handler;
+    private Runnable hideRunnable;
+
+    private void setupPanelHider(Activity activity, View topPanel, View bottomPane, float topPaneInactiveAlpha, float bottomPaneInactiveAlpha) {
+        hideRunnable = () -> {
+            HIDE_TOP_PANEL(topPanel, topPaneInactiveAlpha);
+            HIDE_BOTTOM_PANEL(bottomPane, bottomPaneInactiveAlpha);
+
+            handler.postDelayed(hideRunnable, 15000);
+        };
+        handler.postDelayed(hideRunnable, 1000);
+
+        shakeManager = new ShakeManager(activity, () -> {
+            showTemporarily(topPanel, bottomPane, topPaneInactiveAlpha, bottomPaneInactiveAlpha);
+        }); shakeManager.start();
+
+        if (bottomPane != null) {
+            bottomPane.setOnClickListener(v -> {
+                showTemporarily(topPanel, bottomPane, topPaneInactiveAlpha, bottomPaneInactiveAlpha);
+            });
+        }
+    }
+
+    private void showTemporarily(View topPanel, View bottomPane,
+                                 float topPaneInactiveAlpha, float bottomPaneInactiveAlpha) {
+        SHOW_TOP_PANEL(topPanel, 1.0f);
+        SHOW_BOTTOM_PANEL(bottomPane, 1.0f);
+
+        handler.removeCallbacks(hideRunnable);
+
+        handler.postDelayed(() -> {
+            HIDE_TOP_PANEL(topPanel, topPaneInactiveAlpha);
+            HIDE_BOTTOM_PANEL(bottomPane, bottomPaneInactiveAlpha);
+
+            handler.postDelayed(hideRunnable, 15000);
+        }, 10000);
+    }
+
+
+
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         XposedHelpers.findAndHookMethod("com.ss.android.ugc.aweme.main.MainActivity", lpparam.classLoader, "onWindowFocusChanged", boolean.class, new XC_MethodHook() {
@@ -170,73 +239,33 @@ public class HookBurnScreen implements IXposedHookLoadPackage {
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 final Activity activity = (Activity) param.thisObject;
                 final boolean AllowTopPaneModificator = GetBoolean(activity, "XPOSED:AllowTopPaneModifier", false);
-                if (shakeManager != null) {
-                    shakeManager.stop();
+                final boolean AllowBottomPaneModificator = GetBoolean(activity, "XPOSED:AllowBottomPaneModifier", false);
+                if (!AllowTopPaneModificator && !AllowBottomPaneModificator) {
+                    if (shakeManager != null) {
+                        try{ shakeManager.stop(); }
+                        catch (Exception ignored) {}
+                    }
+                    return;
                 }
+
+                final float topPaneInactiveAlpha = ((float) GetInt(activity, "XPOSED:TopPaneOpacity", 100)) / 100;
+                final float bottomPaneInactiveAlpha = ((float) GetInt(activity, "XPOSED:BottomPaneOpacity", 50)) / 100;
+                handler = new Handler(Looper.getMainLooper());
 
                 activity.runOnUiThread(() -> {
                     new android.os.Handler().postDelayed(() -> {
 
-                        final float topPaneInactiveAlpha = ((float) GetInt(activity, "XPOSED:TopPaneOpacity", 100)) / 100;
+
                         View root = activity.getWindow().getDecorView().getRootView();
-                        View topPanel = (View) findRootLayout(root).getParent().getParent().getParent();
+                        View topPanel = AllowTopPaneModificator ? (View) findRootLayout(root).getParent().getParent().getParent() : null;
+                        View bottomPane = AllowBottomPaneModificator ? findViewByEnumeration(root) : null;
 
-                        if (AllowTopPaneModificator) {
-                            topPanel.setAlpha(topPaneInactiveAlpha);
+                        if (shakeManager != null) {
+                            shakeManager.stop();
                         }
 
-
-
-
-                        View BottomPane = findViewByEnumeration(root);
-                        if (BottomPane != null) {
-                            BottomPane.setAlpha(0.5f);
-                        }
-
-
-
-                        Handler closeHandler = new Handler();
-                        Runnable hideRunnable = () -> {
-                            BottomPane.animate().alpha(0.5f).setDuration(200).start();
-                            if (AllowTopPaneModificator) {
-                                topPanel.animate().alpha(topPaneInactiveAlpha).setDuration(200).start();
-                                topPanel.animate().scaleX(0).setDuration(200).start();
-                            }
-                        };
-
-                        shakeManager = new ShakeManager(activity, () -> {
-                            closeHandler.removeCallbacks(hideRunnable);
-
-                            if (AllowTopPaneModificator) {
-                                topPanel.animate().scaleX(1f).setDuration(200).start();
-                                topPanel.animate().alpha(1f).setDuration(200).start();
-                            }
-                            BottomPane.animate().alpha(1f).setDuration(200).start();
-                            closeHandler.postDelayed(hideRunnable, 5000);
-                        });
-
-                        // Add click listener
-                        ViewGroup parent = (ViewGroup) BottomPane;
-
-                        for (int i = 0; i < parent.getChildCount(); i++) {
-                            View child = parent.getChildAt(i);
-                            child.setOnTouchListener((v, event) -> {
-                                if (event.getAction() == MotionEvent.ACTION_UP) {
-                                    closeHandler.removeCallbacks(hideRunnable);
-                                    BottomPane.animate().alpha(1f).setDuration(200).start();
-                                    closeHandler.postDelayed(hideRunnable, 10000);
-                                }
-
-                                return false;
-                            });
-
-                        }
-
-
-
-
-                        shakeManager.start();
-
+                        Log.d("TTBURN", "bottomPane:"+bottomPane);
+                        setupPanelHider(activity, topPanel, bottomPane, topPaneInactiveAlpha, bottomPaneInactiveAlpha);
 
 
                         //Testing Future Code

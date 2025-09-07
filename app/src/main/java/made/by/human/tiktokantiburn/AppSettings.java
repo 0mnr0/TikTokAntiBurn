@@ -42,17 +42,18 @@ import java.util.regex.Pattern;
 
 public class AppSettings extends AppCompatActivity {
     private View view;
-    private MaterialSwitch HideForACoupleSeconds, CompatibilityMode, MainFloatingWindowEnabled, InputMethodsSwitch,
-            UseOldDetectionMethod, MakeInvisibleInstead, TopPaneModifier;
+    private MaterialSwitch HideForACoupleSeconds, CompatibilityMode, MainFloatingWindowEnabled, InputMethodsSwitch, TopPaneModifier, BottomPaneModifier,
+            UseOldDetectionMethod, MakeInvisibleInstead;
     private ConstraintLayout SomeSetting;
     private Slider seekBar;
     private SharedPreferences sharedPreferences;
-    private TextView progressText, topPaneModificatorDescription;
+    private TextView progressText, topPaneModificatorDescription, bottomPaneModificatorDescription;
     private TextInputEditText TriggerPacketName;
     boolean LSPosed_INVISIBLE, LSPosed_OLD_METHOD;
     private LoadingIndicator loadingIndicator;
-    Slider TopPaneModifierValue;
+    Slider TopPaneModifierValue, BottomPaneModifierValue;
     int TopPaneOpacity = 0;
+    int BottomPaneOpacity = 0;
 
     @SuppressLint({"SetWorldReadable", "ApplySharedPref"})
     public void SaveSettings(String settingName, Object value) {
@@ -117,7 +118,9 @@ public class AppSettings extends AppCompatActivity {
                 "    <boolean name=\"" + "XPOSED:MakeInvisibleInstead" + "\" value=\"" + LSPosed_INVISIBLE + "\" />\n" +
                 "    <boolean name=\"" + "XPOSED:OldHookMethod" + "\" value=\"" + LSPosed_OLD_METHOD + "\" />\n" +
                 "    <boolean name=\"" + "XPOSED:AllowTopPaneModifier" + "\" value=\"" + TopPaneModifier.isChecked() + "\" />\n" +
+                "    <boolean name=\"" + "XPOSED:AllowBottomPaneModifier" + "\" value=\"" + BottomPaneModifier.isChecked() + "\" />\n" +
                 "    <int name=\"" + "XPOSED:TopPaneOpacity" + "\" value=\"" + TopPaneOpacity + "\" />\n" +
+                "    <int name=\"" + "XPOSED:BottomPaneOpacity" + "\" value=\"" + BottomPaneOpacity + "\" />\n" +
                 "</map>\n";
 
         try {
@@ -241,7 +244,9 @@ public class AppSettings extends AppCompatActivity {
         });
 
 
+        BottomPaneModifier = findViewById(R.id.BottomPaneModifier);
         TopPaneModifier = findViewById(R.id.TopPaneModifier);
+        BottomPaneModifierValue = findViewById(R.id.BottomPaneModifierValue);
         TopPaneModifierValue = findViewById(R.id.TopPaneModifierValue);
         SomeSetting = findViewById(R.id.SomeSetting);
 
@@ -283,6 +288,7 @@ public class AppSettings extends AppCompatActivity {
             editor.putInt("seekBarValue", savedValue);
             editor.apply();
         }
+        bottomPaneModificatorDescription = findViewById(R.id.bottomPaneModificatorDescription);
         topPaneModificatorDescription = findViewById(R.id.topPaneModificatorDescription);
         progressText = findViewById(R.id.textView);
         progressText.setText(getString(R.string.fastSettingsMainFlowtingWindow) + savedValue + " px");
@@ -333,9 +339,11 @@ public class AppSettings extends AppCompatActivity {
 
         executor.execute(() -> {
             boolean AllowTopPaneModifier = ReadLSPosedSetting("XPOSED:AllowTopPaneModifier", false);
+            boolean AllowBottomPaneModifier = ReadLSPosedSetting("XPOSED:AllowBottomPaneModifier", false);
             boolean invisible = ReadLSPosedSetting("XPOSED:MakeInvisibleInstead", false);
             boolean oldMethod = ReadLSPosedSetting("XPOSED:OldHookMethod", false);
             TopPaneOpacity = ReadLSPosedSetting("XPOSED:TopPaneOpacity", 100);
+            BottomPaneOpacity = ReadLSPosedSetting("XPOSED:BottomPaneOpacity", 100);
             boolean available = CheckLSPosedAvaiable();
 
             handler.post(() -> {
@@ -355,6 +363,16 @@ public class AppSettings extends AppCompatActivity {
 
                 TopPaneModifier.setChecked(AllowTopPaneModifier);
                 TopPaneModifier.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+                    executor.execute(() -> {
+                        boolean saved = SaveLSPosed();
+                        if (!saved) {
+                            handler.post(() -> Toast.makeText(this, "Failed to save preferences to TikTok", Toast.LENGTH_SHORT).show());
+                        }
+                    });
+                }));
+
+                BottomPaneModifier.setChecked(AllowBottomPaneModifier);
+                BottomPaneModifier.setOnCheckedChangeListener(((buttonView, isChecked) -> {
                     executor.execute(() -> {
                         boolean saved = SaveLSPosed();
                         if (!saved) {
@@ -386,6 +404,26 @@ public class AppSettings extends AppCompatActivity {
                     public void onStopTrackingTouch(@NonNull Slider slider) {
                         TopPaneOpacity = (int) slider.getValue();
                         topPaneModificatorDescription.setText(getString(R.string.IdleBrightness) + " " + TopPaneOpacity + "%");
+
+                        executor.execute(() -> {
+                            boolean saved = SaveLSPosed();
+                            if (!saved) {
+                                handler.post(() -> Toast.makeText(AppSettings.this, "Failed to save preferences to TikTok", Toast.LENGTH_SHORT).show());
+                            }
+                        });
+                    }
+                });
+
+                bottomPaneModificatorDescription.setText(getString(R.string.IdleBrightness)  + " " + BottomPaneOpacity + "%");
+                BottomPaneModifierValue.setValue(BottomPaneOpacity);
+                BottomPaneModifierValue.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+                    @Override
+                    public void onStartTrackingTouch(@NonNull Slider slider) {}
+
+                    @Override
+                    public void onStopTrackingTouch(@NonNull Slider slider) {
+                        BottomPaneOpacity = (int) slider.getValue();
+                        bottomPaneModificatorDescription.setText(getString(R.string.IdleBrightness) + " " + BottomPaneOpacity + "%");
 
                         executor.execute(() -> {
                             boolean saved = SaveLSPosed();
