@@ -1,6 +1,7 @@
 package made.by.human.tiktokantiburn;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.InputStreamReader;
 
@@ -13,21 +14,31 @@ public class RootCheck {
     // Попытка выполнить команду "su"
     private static boolean checkSuExists() {
         Process process = null;
+        DataOutputStream os = null;
         try {
-            process = Runtime.getRuntime().exec(new String[] { "which", "su" });
-            BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String result = in.readLine();
-            return result != null; // если нашли путь к su → root доступен
+            // Запускаем su
+            process = Runtime.getRuntime().exec("su");
+            os = new DataOutputStream(process.getOutputStream());
+
+            os.writeBytes("id\n");
+            os.writeBytes("exit\n");
+            os.flush();
+
+            int exitCode = process.waitFor();
+            return exitCode == 0;
         } catch (Exception e) {
-            return false;
+            return false; // su не сработал
         } finally {
+            if (os != null) {
+                try { os.close(); } catch (Exception ignored) {}
+            }
             if (process != null) {
                 process.destroy();
             }
         }
+
     }
 
-    // Проверка стандартных путей, где обычно лежит su
     private static boolean checkSuInPaths() {
         String[] paths = {
                 "/system/bin/", "/system/xbin/", "/sbin/", "/system/sd/xbin/",

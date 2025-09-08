@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
@@ -27,13 +26,11 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.color.DynamicColors;
 import com.google.android.material.loadingindicator.LoadingIndicator;
 import com.google.android.material.materialswitch.MaterialSwitch;
-import com.google.android.material.slider.RangeSlider;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.InputStreamReader;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
@@ -209,37 +206,8 @@ public class AppSettings extends AppCompatActivity {
         });
     }
 
-    public boolean CheckLSPosedAvaiable() {
-        try {
-            String[] paths = {
-                    "/system/app/Superuser.apk",
-                    "/sbin/su",
-                    "/system/bin/su",
-                    "/system/xbin/su",
-                    "/data/local/xbin/su",
-                    "/data/local/bin/su",
-                    "/system/sd/xbin/su",
-                    "/system/bin/failsafe/su",
-                    "/data/local/su"
-            };
-            for (String path : paths) {
-                File file = new File(path);
-                if (file.exists()) {
-                    Log.d("LSPosed", "LSPosed is installed!");
-                    return true;
-                }
-            }
-            try{
-                return RootCheck.isDeviceRooted();
-            } catch (Exception ignored) {
-                return false;
-            }
-        } catch (Exception e) {
-            Log.e("LSPosed", "Error checking LSPosed availability", e);
-            try{ return RootCheck.isDeviceRooted(); } catch (Exception ignored) {
-                return false;
-            }
-        }
+    public boolean CheckRootAvailable() {
+        return RootCheck.isDeviceRooted();
     }
 
 
@@ -362,7 +330,7 @@ public class AppSettings extends AppCompatActivity {
             boolean oldMethod = ReadLSPosedSetting("XPOSED:OldHookMethod", false);
             TopPaneOpacity = ReadLSPosedSetting("XPOSED:TopPaneOpacity", 100);
             BottomPaneOpacity = ReadLSPosedSetting("XPOSED:BottomPaneOpacity", 100);
-            boolean available = CheckLSPosedAvaiable();
+            boolean available = CheckRootAvailable();
 
             handler.post(() -> {
                 MakeInvisibleInstead = findViewById(R.id.MakeInvisibleInstead);
