@@ -350,8 +350,14 @@ public class AppSettings extends AppCompatActivity {
 
 
                 TopPaneModifier.setChecked(AllowTopPaneModifier);
+                TopPaneModifierValue.setVisibility(AllowTopPaneModifier ? View.VISIBLE : View.GONE);
+                topPaneModificatorDescription.setVisibility(AllowTopPaneModifier ? View.VISIBLE : View.GONE);
+
                 TopPaneModifier.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+                    topPaneModificatorDescription.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+                    TopPaneModifierValue.setVisibility(isChecked ? View.VISIBLE : View.GONE);
                     topPaneImage.setAlpha(isChecked ? TopPaneModifierValue.getValue()/100f : 1f);
+
                     executor.execute(() -> {
                         boolean saved = SaveLSPosed();
                         if (!saved) {
@@ -361,8 +367,14 @@ public class AppSettings extends AppCompatActivity {
                 }));
 
                 BottomPaneModifier.setChecked(AllowBottomPaneModifier);
+                BottomPaneModifierValue.setVisibility(AllowBottomPaneModifier ? View.VISIBLE : View.GONE);
+                bottomPaneModificatorDescription.setVisibility(AllowBottomPaneModifier ? View.VISIBLE : View.GONE);
+
                 BottomPaneModifier.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+                    bottomPaneModificatorDescription.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+                    BottomPaneModifierValue.setVisibility(isChecked ? View.VISIBLE : View.GONE);
                     bottomPaneImage.setAlpha(isChecked ? BottomPaneModifierValue.getValue()/100f : 1f);
+
                     executor.execute(() -> {
                         boolean saved = SaveLSPosed();
                         if (!saved) {
