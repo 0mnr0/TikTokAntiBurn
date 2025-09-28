@@ -18,6 +18,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -132,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void CleanLogs(View view) {
         logger.clear();
+        Log.d("SomeRandomAction", "Clean Logs Detected");
         Toast.makeText(this, "Cleared!", Toast.LENGTH_SHORT).show();
     }
     public void ExportLogs(View view) {
@@ -213,8 +215,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         refreshPermissionStatuses();
-
-
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

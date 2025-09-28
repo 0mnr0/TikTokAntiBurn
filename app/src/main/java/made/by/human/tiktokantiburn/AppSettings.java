@@ -7,8 +7,10 @@ import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.DocumentsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
@@ -224,6 +226,7 @@ public class AppSettings extends AppCompatActivity {
             return insets;
         });
         ImageView topPaneImage, bottomPaneImage;
+        final boolean available = CheckRootAvailable();
 
         topPaneImage = findViewById(R.id.topPaneImage);
         bottomPaneImage = findViewById(R.id.bottomPaneImage);
@@ -319,9 +322,9 @@ public class AppSettings extends AppCompatActivity {
 
 
         loadingIndicator.setVisibility(View.VISIBLE);
-        ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
 
+        ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
             boolean AllowTopPaneModifier = ReadLSPosedSetting("XPOSED:AllowTopPaneModifier", false);
             boolean AllowBottomPaneModifier = ReadLSPosedSetting("XPOSED:AllowBottomPaneModifier", false);
@@ -330,7 +333,6 @@ public class AppSettings extends AppCompatActivity {
             boolean oldMethod = ReadLSPosedSetting("XPOSED:OldHookMethod", false);
             TopPaneOpacity = ReadLSPosedSetting("XPOSED:TopPaneOpacity", 100);
             BottomPaneOpacity = ReadLSPosedSetting("XPOSED:BottomPaneOpacity", 100);
-            boolean available = CheckRootAvailable();
 
             handler.post(() -> {
                 MakeInvisibleInstead = findViewById(R.id.MakeInvisibleInstead);
@@ -438,9 +440,11 @@ public class AppSettings extends AppCompatActivity {
                 });
 
 
+                ConstraintLayout LSPosedSettings = findViewById(R.id.LSPosedSettings);
                 if (!available) {
-                    ConstraintLayout LSPosedSettings = findViewById(R.id.LSPosedSettings);
                     LSPosedSettings.setVisibility(View.GONE);
+                } else {
+                    LSPosedSettings.setVisibility(View.VISIBLE);
                 }
                 loadingIndicator.setVisibility(View.GONE);
             });
