@@ -5,6 +5,7 @@ plugins {
 android {
     namespace = "made.by.human.tiktokantiburn"
     compileSdk = 35
+    ndkVersion = "28.2.13676358"
 
     defaultConfig {
         applicationId = "made.by.human.tiktokantiburn"
@@ -13,14 +14,10 @@ android {
         versionCode = 1
         versionName = "1.4.0"
 
-        externalNativeBuild {
-            cmake {
-                arguments("-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON")
-            }
-        }
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
+
 
     buildTypes {
         release {
@@ -54,16 +51,20 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
-    implementation("com.google.android.material:material:1.14.0-alpha03")
-    implementation ("com.google.code.gson:gson:2.11.0")
-    implementation ("androidx.work:work-runtime:2.10.2") // или последнюю
     implementation(libs.ui.android)
-    implementation(libs.rendering)
-    compileOnly("de.robv.android.xposed:api:82")
     implementation (libs.material.v190)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    //noinspection UseTomlInstead
+    compileOnly("de.robv.android.xposed:api:82")
+    //noinspection UseTomlInstead
+    implementation("com.google.android.material:material:1.14.0-alpha05")
+    //noinspection UseTomlInstead
+    implementation ("com.google.code.gson:gson:2.13.2")
+    //noinspection UseTomlInstead
+    implementation ("androidx.work:work-runtime:2.10.5")
 }
 java {
     toolchain {
