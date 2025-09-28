@@ -233,13 +233,7 @@ public class MainActivity extends AppCompatActivity {
                 ExistingPeriodicWorkPolicy.KEEP,
                 checkRequest
         );
-
-
-
-
     }
-
-
 
     public boolean PermissionOverlayGranted(){
         return Settings.canDrawOverlays(this);

@@ -52,4 +52,5 @@
     <string name="Shake2SHowDescription">Shake your phone to make the top and bottom panels visible</string>
     <string name="BatteryExpensive" translatable="false">🔋🔥</string>
     <string name="HighBatteryUsage">High battery usage</string>
+    <string name="pleasestar">If you have a GitHub account, please put a star to the repository or tell your friends about the project. I will be very grateful, thank you! LOVE U ALL ❤️</string>
 </resources>
