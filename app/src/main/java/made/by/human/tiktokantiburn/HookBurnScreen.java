@@ -236,6 +236,9 @@ public class HookBurnScreen implements IXposedHookLoadPackage {
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
+        if (!lpparam.packageName.equals("com.zhiliaoapp.musically"))
+            return;
+
         XposedHelpers.findAndHookMethod("com.ss.android.ugc.aweme.main.MainActivity", lpparam.classLoader, "onWindowFocusChanged", boolean.class, new XC_MethodHook() {
             @SuppressLint("ClickableViewAccessibility") // yes, this is bad, but this is to avoid BREAKING TIKTOK UI LOGIC
             @Override
