@@ -53,4 +53,6 @@
     <string name="BatteryExpensive" translatable="false">🔋🔥</string>
     <string name="HighBatteryUsage">High battery usage</string>
     <string name="pleasestar">If you have a GitHub account, please put a star to the repository or tell your friends about the project. I will be very grateful, thank you! LOVE U ALL ❤️</string>
+    <string name="EnableEditorPreview">Opens TikTok when you click advanced settings</string>
+    <string name="EnableEditorPreviewTitle">Preview of the advanced settings</string>
 </resources>

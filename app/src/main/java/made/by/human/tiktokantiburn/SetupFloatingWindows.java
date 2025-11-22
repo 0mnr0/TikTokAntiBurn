@@ -61,12 +61,31 @@ public class SetupFloatingWindows extends Service {
     }
 
 
+    @SuppressLint({"SetWorldReadable", "ApplySharedPref"})
+    public void SaveSettings(String settingName, Object value) {
+        SharedPreferences prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        if (value instanceof String) {
+            editor.putString(settingName, (String) value);
+        } else if (value instanceof Integer) {
+            editor.putInt(settingName, (Integer) value);
+        } else if (value instanceof Boolean) {
+            editor.putBoolean(settingName, (Boolean) value);
+        } else {
+            throw new IllegalArgumentException("Unsupported value type: " + value.getClass().getName());
+        }
+
+        editor.commit();
+    }
+
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onCreate() {
         super.onCreate();
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-
+        SaveSettings("isSetupping", true);
         Context themedContext = new ContextThemeWrapper(getApplicationContext(), R.style.Theme_TikTokAntiBurn);
         LayoutInflater inflater = LayoutInflater.from(themedContext);
         floatingMenu = inflater.inflate(R.layout.floating_menu, null);
@@ -360,5 +379,15 @@ public class SetupFloatingWindows extends Service {
         CloseBurnSettings();
 
     }
+
+
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        SaveSettings("isSetupping", false);
+    }
+
 }
 
