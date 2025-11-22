@@ -51,6 +51,8 @@
     <string name="Shake2SHowDescription">Встряхните телефон, чтобы сделать видимыми верхние и нижние панели</string>
     <string name="HighBatteryUsage">Высокий уровень использования батареи</string>
     <string name="pleasestar">Если у вас есть аккаунт GitHub пожалуйста поставьте репозиторию звездочку или расскажите друзьям о проекте. Я буду очень признателен, спасибо! LOVE U ALL ❤️</string>
-    <string name="EnableEditorPreview">Открывает TikTok при нажатии расширенной настройки</string>
+    <string name="EnableEditorPreview">"Открывает TikTok при нажатии расширенной настройки. После настройки возможно понадобиться свернуть и открыть TikTok "</string>
     <string name="EnableEditorPreviewTitle">Предпросмотр расширенной настройки</string>
+    <string name="FullScreenAPITitle">Режим Полного экрана</string>
+    <string name="FullScreenAPIDescription">Использовать полноэкранный режим для popup\'ов. Это может решить проблемы когда система сдвигает попап к системным панелям</string>
 </resources>

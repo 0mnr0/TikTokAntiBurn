@@ -341,6 +341,10 @@ public class SetupFloatingWindows extends Service {
         closeWindow();
     }
 
+    public boolean GetBoolean(String settingName) {
+        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
+        return prefs.getBoolean(settingName, false);
+    }
 
     public void LoadSettings(){
         SharedPreferences prefs = getSharedPreferences("blockPos", MODE_PRIVATE);
@@ -360,12 +364,24 @@ public class SetupFloatingWindows extends Service {
             drawable.setCornerRadius(blockInfo.radius);
 
             View blockburn = LayoutInflater.from(this).inflate(R.layout.blockburn, null);
+
+
+            boolean useFullScreenAPI =  GetBoolean("FullScreenAPI");
+            int displayMode = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+            if (useFullScreenAPI) {
+                displayMode = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                        | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
+                        | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                        | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+                        | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+                        | WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR;
+            }
             WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                     blockInfo.width, blockInfo.height,
                     WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
-                            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                    displayMode,
                     PixelFormat.TRANSLUCENT);
+            if (useFullScreenAPI) { params.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES; }
             params.x = blockInfo.x;
             params.y = blockInfo.y;
             params.gravity = Gravity.TOP | Gravity.START;

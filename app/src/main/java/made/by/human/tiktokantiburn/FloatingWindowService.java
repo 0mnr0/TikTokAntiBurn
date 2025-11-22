@@ -36,18 +36,31 @@ public class FloatingWindowService extends Service {
 
     @SuppressLint("InflateParams")
     public void CreateElement(int x, int y, int width, int height, long radius, boolean canBeHidden) {
-         View floatingView = inflater.inflate(R.layout.blockburn_quad, null);
+        View floatingView = inflater.inflate(R.layout.blockburn_quad, null);
+
+        boolean useFullScreenAPI =  GetBoolean("FullScreenAPI");
+
+        int displayMode = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        if (useFullScreenAPI) {
+            displayMode = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                    | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
+                    | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                    | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+                    | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+                    | WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR;
+        }
+
 
 
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                        | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
-                        | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                displayMode,
                 PixelFormat.TRANSLUCENT
         );
+        if (useFullScreenAPI) { params.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES; }
+
 
         params.gravity = Gravity.TOP | Gravity.START;
         params.x = x;

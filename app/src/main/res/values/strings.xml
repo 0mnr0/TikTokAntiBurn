@@ -53,6 +53,8 @@
     <string name="BatteryExpensive" translatable="false">🔋🔥</string>
     <string name="HighBatteryUsage">High battery usage</string>
     <string name="pleasestar">If you have a GitHub account, please put a star to the repository or tell your friends about the project. I will be very grateful, thank you! LOVE U ALL ❤️</string>
-    <string name="EnableEditorPreview">Opens TikTok when you click advanced settings</string>
+    <string name="EnableEditorPreview">Opens TikTok when you click on advanced settings. After setting up, you may need to minimize and open TikTok.</string>
     <string name="EnableEditorPreviewTitle">Preview of the advanced settings</string>
+    <string name="FullScreenAPITitle">FullScreen Mode</string>
+    <string name="FullScreenAPIDescription">Use full-screen mode for popups. This can solve problems when the system pushes the pop-up to the system panels.</string>
 </resources>
