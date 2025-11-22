@@ -39,7 +39,6 @@ import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends AppCompatActivity {
-    boolean AskedForUpdate = false;
     LogSystem logger;
 
 

@@ -7,10 +7,8 @@ import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.provider.DocumentsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
@@ -41,7 +39,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AppSettings extends AppCompatActivity {
-    private View view;
     private MaterialSwitch HideForACoupleSeconds, CompatibilityMode, MainFloatingWindowEnabled, InputMethodsSwitch, TopPaneModifier, BottomPaneModifier, EnablePreview, FullScreenAPISwitch,
             UseOldDetectionMethod, MakeInvisibleInstead, Shake2Show;
     private ConstraintLayout SomeSetting;

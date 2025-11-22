@@ -10,7 +10,6 @@ import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
