@@ -264,7 +264,8 @@ public class HookBurnScreen implements IXposedHookLoadPackage {
 
 
                         View root = activity.getWindow().getDecorView().getRootView();
-                        View topPanel = AllowTopPaneModificator ? (View) findRootLayout(root).getParent().getParent().getParent() : null;
+                        View topPanel = null;
+                        try{ topPanel = AllowTopPaneModificator ? (View) findRootLayout(root).getParent().getParent().getParent() : null; } catch (Exception ignored) {}
                         View bottomPane = AllowBottomPaneModificator ? findViewByEnumeration(root) : null;
 
                         if (shakeManager != null) {
@@ -299,8 +300,6 @@ public class HookBurnScreen implements IXposedHookLoadPackage {
                             };
 
                             handler.post(runnable);
-
-                            Log.d("TikTokPaneSearcher [F]", "findTarget: " + topPanel);
                         }
                     }, 500);
                 });
