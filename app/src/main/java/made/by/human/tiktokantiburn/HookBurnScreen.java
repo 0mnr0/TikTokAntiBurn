@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
@@ -15,10 +14,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.io.ObjectInputStream;
-import java.util.ArrayList;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
@@ -26,8 +21,12 @@ import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 public class HookBurnScreen implements IXposedHookLoadPackage {
-    View possibleLinearLayout;
-    ShakeManager shakeManager;
+    private View possibleLinearLayout;
+    private ShakeManager shakeManager;
+    private Handler handler;
+    private Runnable hideRunnable;
+    private boolean isLogicRunning = false;
+
 
     private LinearLayout findRootLayout(View root) {
         if (root instanceof LinearLayout) {
@@ -45,7 +44,6 @@ public class HookBurnScreen implements IXposedHookLoadPackage {
                 if (isValid) return layout;
             }
         }
-
         if (root instanceof ViewGroup) {
             ViewGroup group = (ViewGroup) root;
             for (int i = 0; i < group.getChildCount(); i++) {
@@ -60,6 +58,7 @@ public class HookBurnScreen implements IXposedHookLoadPackage {
         SharedPreferences prefs = context.getSharedPreferences("LSPrefs", Context.MODE_PRIVATE);
         return prefs.getBoolean(keyName, defaultValue);
     }
+
     public int GetInt(Context context, String keyName, int def) {
         SharedPreferences prefs = context.getSharedPreferences("LSPrefs", Context.MODE_PRIVATE);
         return prefs.getInt(keyName, def);
@@ -72,167 +71,118 @@ public class HookBurnScreen implements IXposedHookLoadPackage {
         return getFirstDescendant(((ViewGroup) view).getChildAt(0));
     }
 
-    public static View findNthChild(View parent, int targetIndex) {
-        if (!(parent instanceof ViewGroup)) return null;
-        return findNthRecursive((ViewGroup) parent, targetIndex, new int[]{0});
-    }
-
-    private static View findNthRecursive(ViewGroup parent, int targetIndex, int[] counter) {
-        for (int i = 0; i < parent.getChildCount(); i++) {
-            View child = parent.getChildAt(i);
-
-            if (child instanceof ViewStub) {
-                continue; // пропускаем
+    private View findViewByEnumeration(View root) {
+        if (possibleLinearLayout != null) {
+            return possibleLinearLayout;
+        }
+        if (root instanceof LinearLayout) {
+            LinearLayout possibleLinearLayout = (LinearLayout) root;
+            int possibleLinearChildren = possibleLinearLayout.getChildCount();
+            if (possibleLinearChildren == 5) {
+                int possibleWeight = 0;
+                for (int i = 0; i < possibleLinearChildren; i++) {
+                    View child = possibleLinearLayout.getChildAt(i);
+                    if (i != 2 && child instanceof FrameLayout) possibleWeight += 1;
+                    if (i == 2 && child instanceof Button) possibleWeight += 1;
+                }
+                if (possibleWeight >= 4) return possibleLinearLayout;
             }
-
-            if (counter[0] == targetIndex) {
-                return child;
-            }
-            counter[0]++;
-
-            if (child instanceof ViewGroup) {
-                View result = findNthRecursive((ViewGroup) child, targetIndex, counter);
+        }
+        if (root instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) root;
+            for (int i = 0; i < group.getChildCount(); i++) {
+                View child = group.getChildAt(i);
+                View result = findViewByEnumeration(child);
                 if (result != null) return result;
             }
         }
         return null;
     }
 
-
-
-
-    public static FrameLayout findTikTokRootView(View root) {
-        Context context = root.getContext();
-        int resId = context.getResources().getIdentifier(
-                "view_rootview", // имя ресурса
-                "id",            // тип ресурса
-                "com.zhiliaoapp.musically" // пакет
-        );
-
-        if (resId != 0) {
-            View v = root.findViewById(resId);
-            if (v instanceof FrameLayout) {
-                return (FrameLayout) v;
-            }
+    private void changeAlpha(View view, float alpha) {
+        if (view != null) {
+            view.animate().alpha(alpha).setDuration(200).start();
         }
-        return null;
     }
 
 
-    private View findViewByEnumeration(View root) {
-        if (possibleLinearLayout != null) {
-            return possibleLinearLayout;
+    private void cleanup() {
+        if (handler != null) {
+            handler.removeCallbacksAndMessages(null);
         }
 
-        if (root instanceof LinearLayout) {
-            LinearLayout possibleLinearLayout = (LinearLayout) root;
-            int possibleLinearChildren = possibleLinearLayout.getChildCount();
-
-            if (possibleLinearChildren == 5) {
-                int possibleWeight = 0;
-
-                for (int i = 0; i < possibleLinearChildren; i++) {
-                    View child = possibleLinearLayout.getChildAt(i);
-
-                    if (i != 2 && child instanceof FrameLayout) {
-                        possibleWeight += 1;
-                    }
-
-                    if (i == 2 && child instanceof Button) {
-                        possibleWeight += 1;
-                    }
-                }
-
-                if (possibleWeight >= 4) {
-                    return possibleLinearLayout;
-                }
+        if (shakeManager != null) {
+            try {
+                shakeManager.stop();
+            } catch (Exception e) {
+                Log.e("TTBURN", "Error stopping shake manager", e);
             }
+            shakeManager = null;
         }
 
+        isLogicRunning = false;
+    }
 
-        if (root instanceof ViewGroup) {
-            ViewGroup group = (ViewGroup) root;
-            for (int i = 0; i < group.getChildCount(); i++) {
-                View child = group.getChildAt(i);
-                View result = findViewByEnumeration(child);
-                if (result != null) {
-                    return result;
+    private void startBurnProtection(Activity activity, boolean allowTop, boolean allowBottom, boolean shake2Show, float topAlpha, float bottomAlpha) {
+        cleanup();
+
+        if (handler == null) {
+            handler = new Handler(Looper.getMainLooper());
+        }
+
+        View root = activity.getWindow().getDecorView().getRootView();
+        View topPanel = null;
+        try {
+            topPanel = allowTop ? (View) findRootLayout(root).getParent().getParent().getParent() : null;
+        } catch (Exception ignored) {}
+
+        View bottomPane = allowBottom ? findViewByEnumeration(root) : null;
+        final View finalTop = topPanel;
+        final View finalBottom = bottomPane;
+
+        hideRunnable = new Runnable() {
+            @Override
+            public void run() {
+                changeAlpha(finalTop, topAlpha);
+                changeAlpha(finalBottom, bottomAlpha);
+                if (handler != null) {
+                    handler.postDelayed(this, 15000);
                 }
             }
-        }
-
-        return null;
-    }
-
-
-
-    private void SHOW_TOP_PANEL(View TopPane, float topPaneAlpha) {
-        if (TopPane != null) {
-            TopPane.animate().alpha(topPaneAlpha).setDuration(200).start();
-        }
-    }
-
-    private void SHOW_BOTTOM_PANEL(View BottomPane, float bottomPaneAlpha) {
-        if (BottomPane != null) {
-            BottomPane.animate().alpha(bottomPaneAlpha).setDuration(200).start();
-        }
-    }
-
-    private void HIDE_TOP_PANEL(View TopPane, float topPaneAlpha) {
-        if (TopPane != null) {
-            TopPane.animate().alpha(topPaneAlpha).setDuration(200).start();
-        }
-    }
-
-    private void HIDE_BOTTOM_PANEL(View BottomPane, float bottomPaneAlpha) {
-        if (BottomPane != null) {
-            BottomPane.animate().alpha(bottomPaneAlpha).setDuration(200).start();
-        }
-    }
-
-
-    private Handler handler;
-    private Runnable hideRunnable;
-
-    private void setupPanelHider(Activity activity, View topPanel, View bottomPane, float topPaneInactiveAlpha, float bottomPaneInactiveAlpha, boolean Shake2Show) {
-        hideRunnable = () -> {
-            HIDE_TOP_PANEL(topPanel, topPaneInactiveAlpha);
-            HIDE_BOTTOM_PANEL(bottomPane, bottomPaneInactiveAlpha);
-
-            handler.postDelayed(hideRunnable, 15000);
         };
-        handler.postDelayed(hideRunnable, 1000);
 
-        if (Shake2Show) {
+        handler.postDelayed(hideRunnable, 1000);
+        if (shake2Show) {
             shakeManager = new ShakeManager(activity, () -> {
-                showTemporarily(topPanel, bottomPane, topPaneInactiveAlpha, bottomPaneInactiveAlpha);
+                showTemporarily(finalTop, finalBottom, topAlpha, bottomAlpha);
             });
             shakeManager.start();
         }
 
-        if (bottomPane != null) {
-            bottomPane.setOnClickListener(v -> {
-                showTemporarily(topPanel, bottomPane, topPaneInactiveAlpha, bottomPaneInactiveAlpha);
+        if (finalBottom != null) {
+            finalBottom.setOnClickListener(v -> {
+                showTemporarily(finalTop, finalBottom, topAlpha, bottomAlpha);
             });
         }
+
+        isLogicRunning = true;
     }
 
-    private void showTemporarily(View topPanel, View bottomPane,
-                                 float topPaneInactiveAlpha, float bottomPaneInactiveAlpha) {
-        SHOW_TOP_PANEL(topPanel, 1.0f);
-        SHOW_BOTTOM_PANEL(bottomPane, 1.0f);
+    private void showTemporarily(View top, View bottom, float inactiveTopAlpha, float inactiveBottomAlpha) {
+        changeAlpha(top, 1.0f);
+        changeAlpha(bottom, 1.0f);
 
-        handler.removeCallbacks(hideRunnable);
+        if (handler != null && hideRunnable != null) {
+            handler.removeCallbacks(hideRunnable);
 
-        handler.postDelayed(() -> {
-            HIDE_TOP_PANEL(topPanel, topPaneInactiveAlpha);
-            HIDE_BOTTOM_PANEL(bottomPane, bottomPaneInactiveAlpha);
+            handler.postDelayed(() -> {
+                changeAlpha(top, inactiveTopAlpha);
+                changeAlpha(bottom, inactiveBottomAlpha);
 
-            handler.postDelayed(hideRunnable, 15000);
-        }, 10000);
+                handler.postDelayed(hideRunnable, 15000);
+            }, 10000);
+        }
     }
-
-
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
@@ -240,73 +190,36 @@ public class HookBurnScreen implements IXposedHookLoadPackage {
             return;
 
         XposedHelpers.findAndHookMethod("com.ss.android.ugc.aweme.main.MainActivity", lpparam.classLoader, "onWindowFocusChanged", boolean.class, new XC_MethodHook() {
-            @SuppressLint("ClickableViewAccessibility") // yes, this is bad, but this is to avoid BREAKING TIKTOK UI LOGIC
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                boolean hasFocus = (boolean) param.args[0];
                 final Activity activity = (Activity) param.thisObject;
-                final boolean AllowTopPaneModificator = GetBoolean(activity, "XPOSED:AllowTopPaneModifier", false);
-                final boolean AllowBottomPaneModificator = GetBoolean(activity, "XPOSED:AllowBottomPaneModifier", false);
-                final boolean Shake2Show = GetBoolean(activity, "XPOSED:Shake2Show", false);
-                if (!AllowTopPaneModificator && !AllowBottomPaneModificator) {
-                    if (shakeManager != null) {
-                        try{ shakeManager.stop(); }
-                        catch (Exception ignored) {}
-                    }
+
+                if (!hasFocus) {
+                    cleanup();
                     return;
                 }
 
-                final float topPaneInactiveAlpha = ((float) GetInt(activity, "XPOSED:TopPaneOpacity", 100)) / 100;
-                final float bottomPaneInactiveAlpha = ((float) GetInt(activity, "XPOSED:BottomPaneOpacity", 50)) / 100;
-                handler = new Handler(Looper.getMainLooper());
+
+                final boolean allowTop = GetBoolean(activity, "XPOSED:AllowTopPaneModifier", false);
+                final boolean allowBottom = GetBoolean(activity, "XPOSED:AllowBottomPaneModifier", false);
+                final boolean shake2Show = GetBoolean(activity, "XPOSED:Shake2Show", false);
+
+                if (!allowTop && !allowBottom) {
+                    cleanup();
+                    return;
+                }
+
+                final float topOpacity = ((float) GetInt(activity, "XPOSED:TopPaneOpacity", 100)) / 100;
+                final float bottomOpacity = ((float) GetInt(activity, "XPOSED:BottomPaneOpacity", 50)) / 100;
 
                 activity.runOnUiThread(() -> {
-                    new android.os.Handler().postDelayed(() -> {
-
-
-                        View root = activity.getWindow().getDecorView().getRootView();
-                        View topPanel = null;
-                        try{ topPanel = AllowTopPaneModificator ? (View) findRootLayout(root).getParent().getParent().getParent() : null; } catch (Exception ignored) {}
-                        View bottomPane = AllowBottomPaneModificator ? findViewByEnumeration(root) : null;
-
-                        if (shakeManager != null) {
-                            shakeManager.stop();
-                        }
-
-                        Log.d("TTBURN", "bottomPane:"+bottomPane);
-                        setupPanelHider(activity, topPanel, bottomPane, topPaneInactiveAlpha, bottomPaneInactiveAlpha, Shake2Show);
-
-
-                        //Testing Future Code
-                        if (false) {
-                            int interval = 1000;
-                            Handler handler = new Handler(Looper.getMainLooper());
-
-                            Runnable runnable = new Runnable() {
-                                @Override
-                                public void run() {
-                                    FrameLayout VideoLayout = findTikTokRootView(root);
-                                    View child;
-                                    if (VideoLayout != null) {
-                                        child = ViewFinder.getChildByClassName(VideoLayout, "InteractAreaRootLayout", 0);
-                                        child = ViewFinder.getChildByClassName(child, "InteractCheckDrawRelativeLayout", 0);
-                                        child = ViewFinder.getChildByClassName(child, "InteractFrameLayout", 0);
-                                        child = ViewFinder.getNthChildByClassName(child, "InteractConstraintLayout", 0);
-                                        ViewUtils.printChildren(child);
-                                        child.setAlpha(0.5f);
-                                    }
-
-                                    handler.postDelayed(this, interval);
-                                }
-                            };
-
-                            handler.post(runnable);
-                        }
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        startBurnProtection(activity, allowTop, allowBottom, shake2Show, topOpacity, bottomOpacity);
                     }, 500);
                 });
             }
         });
     }
-
-
 }
-
