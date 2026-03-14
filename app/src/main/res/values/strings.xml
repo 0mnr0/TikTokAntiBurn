@@ -14,7 +14,7 @@
     <string name="ExtendedSetting_Create">Create Element</string>
     <string name="close" translatable="false">X</string>
     <string name="ExtendedSetting_Save">Save</string>
-    <string name="ExtendedSetting_Remove">🗑️ Remove Element</string>
+    <string name="ExtendedSetting_Remove" translatable="false">🗑️</string>
     <string name="ExtendedSetting_WidthUnknown">Width: ?px</string>
     <string name="ExtendedSetting_HeightUnknwon">Height: ?px</string>
     <string name="ExtendedSetting_Width">"Width: "</string>

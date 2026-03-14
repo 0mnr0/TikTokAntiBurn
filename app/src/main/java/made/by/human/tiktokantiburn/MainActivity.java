@@ -89,24 +89,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(browserIntent);
     }
 
-    public String GetString(String settingName, String defaultValue) {
-        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
-        return prefs.getString(settingName, defaultValue);
-    }
 
 
     public void OpenExtendedSetting(View view) {
-        Intent launchIntent = getPackageManager().getLaunchIntentForPackage(GetString("TriggerPacketName", "com.zhiliaoapp.musically"));
-        if (launchIntent != null) {
-            launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            if (GetBoolean("EnablePreview", false)) {
-                startActivity(launchIntent);
-            }
-        } else {
-            Toast.makeText(this, getString(R.string.TikTokNotFound), Toast.LENGTH_SHORT).show();
-        }
-
-
         Intent intent = new Intent(this, SetupFloatingWindows.class);
         startService(intent);
 

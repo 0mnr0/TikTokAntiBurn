@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -18,8 +19,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -46,6 +49,7 @@ public class SetupFloatingWindows extends Service {
 
     TextView elementWidth, elementHeight, elementRadius;
     SeekBar widthBar, heightBar, radiusBar;
+    Button RemoveElementBtn;
 
     @Override
     public IBinder onBind(Intent intent) { return null; }
@@ -112,10 +116,13 @@ public class SetupFloatingWindows extends Service {
         widthBar = floatingMenu.findViewById(R.id.widthBar);
         heightBar = floatingMenu.findViewById(R.id.heightBar);
         radiusBar = floatingMenu.findViewById(R.id.radiusBar);
-        Button RemoveElement = floatingMenu.findViewById(R.id.removeElement);
+        RemoveElementBtn = floatingMenu.findViewById(R.id.removeElement);
         Button btnSave = floatingMenu.findViewById(R.id.btnSave);
-        RemoveElement.setOnClickListener(v -> RemoveElement());
         btnSave.setOnClickListener(v -> SaveSettings());
+        ImageView launchTikTok = floatingMenu.findViewById(R.id.launchTikTok);
+        launchTikTok.setOnClickListener(v -> launchTikTok());
+        RemoveElementBtn.setOnClickListener(v -> RemoveElement());
+
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         windowManager.getDefaultDisplay().getMetrics(displayMetrics);
@@ -267,6 +274,7 @@ public class SetupFloatingWindows extends Service {
                         drawable.setStroke(dpToPx(1), Color.RED);
                         lastBlockBurnElement.setBackground(drawable);
                         blockBurnSettings.setVisibility(View.VISIBLE);
+                        RemoveElementBtn.setVisibility(View.VISIBLE);
                         draggingObject = v;
                         RefreshSettings(true);
                         windowManager.updateViewLayout(view, params);
@@ -293,6 +301,7 @@ public class SetupFloatingWindows extends Service {
     private void CloseBurnSettings() {
         if (dragging) return;
         blockBurnSettings.setVisibility(View.GONE);
+        RemoveElementBtn.setVisibility(View.GONE);
 
         for (View view : blockburnList) {
             GradientDrawable drawable = new GradientDrawable();
@@ -322,6 +331,10 @@ public class SetupFloatingWindows extends Service {
         return (int)(dp * getResources().getDisplayMetrics().density);
     }
 
+    public String GetString(String settingName, String defaultValue) {
+        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
+        return prefs.getString(settingName, defaultValue);
+    }
 
     public void SaveSettings(){
         List<BlockInfo> blockList = new ArrayList<>();
@@ -339,6 +352,16 @@ public class SetupFloatingWindows extends Service {
         editor.putString("block_list", json);
         editor.apply();
         closeWindow();
+    }
+
+    public void launchTikTok() {
+        Intent launchIntent = getPackageManager().getLaunchIntentForPackage(GetString("TriggerPacketName", "com.zhiliaoapp.musically"));
+        if (launchIntent != null) {
+            launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(launchIntent);
+        } else {
+            Toast.makeText(this, getString(R.string.TikTokNotFound), Toast.LENGTH_SHORT).show();
+        }
     }
 
     public boolean GetBoolean(String settingName) {
@@ -381,7 +404,10 @@ public class SetupFloatingWindows extends Service {
                     WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
                     displayMode,
                     PixelFormat.TRANSLUCENT);
-            if (useFullScreenAPI) { params.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES; }
+
+            if (useFullScreenAPI && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                params.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+            }
             params.x = blockInfo.x;
             params.y = blockInfo.y;
             params.gravity = Gravity.TOP | Gravity.START;

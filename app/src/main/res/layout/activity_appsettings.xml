@@ -131,44 +131,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/PreviewSetting"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:background="@drawable/fast_setting_bg"
-                android:padding="12dp">
-
-                <com.google.android.material.materialswitch.MaterialSwitch
-                    android:id="@+id/EnablePreview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:text="@string/EnableEditorPreviewTitle"
-                    android:textColor="@color/SeekBackdroundFilled"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:thumbTint="@color/SeekBackdroundFilled"
-                    app:trackDecorationTint="@color/SeekBackdroundFilled"
-                    app:trackTint="@color/MID" />
-
-                <TextView
-                    android:id="@+id/textView17"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:alpha="0.75"
-                    android:paddingBottom="6dp"
-                    android:text="@string/EnableEditorPreview"
-                    android:textColor="@color/SeekBackdroundFilled"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/EnablePreview" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/FullScreenAPI"

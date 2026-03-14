@@ -13,7 +13,7 @@
     <string name="ExtendedSettings">Расширенная настройка AntiBurn</string>
     <string name="ExtendedSetting_Create">Создать элемент</string>
     <string name="ExtendedSetting_Save">Сохранить</string>
-    <string name="ExtendedSetting_Remove">🗑️ Удалить элемент</string>
+    <string name="ExtendedSetting_Remove">🗑️</string>
     <string name="ExtendedSetting_WidthUnknown">Ширина: ?px</string>
     <string name="ExtendedSetting_HeightUnknwon">Высота: ?px</string>
     <string name="ExtendedSetting_Width">"Ширина: "</string>

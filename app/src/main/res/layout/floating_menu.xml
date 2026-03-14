@@ -38,14 +38,14 @@
             android:id="@+id/btnSave"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
+            android:layout_marginEnd="4dp"
             android:backgroundTint="@color/ButtonBackdround"
             android:padding="15dp"
             android:text="@string/ExtendedSetting_Save"
             android:textColor="@color/ButtonForeground"
             android:textStyle="bold"
             app:cornerRadius="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/removeElement"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnAdd" />
 
@@ -53,7 +53,7 @@
             android:id="@+id/btnAdd"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="4dp"
+            android:layout_marginEnd="4dp"
             android:backgroundTint="@color/ButtonBackdround"
             android:padding="15dp"
             android:text="@string/ExtendedSetting_Create"
@@ -61,7 +61,8 @@
             app:cornerRadius="10dp"
             app:layout_constraintEnd_toStartOf="@+id/btnClose"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_goneMarginLeft="4dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnClose"
@@ -76,6 +77,33 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/launchTikTok"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:adjustViewBounds="true"
+            android:padding="6dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/tiktok_icon"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/BlockBurnSettings"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/btnClose"
+            app:layout_constraintTop_toBottomOf="@+id/btnClose" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/removeElement"
+            android:layout_width="50dp"
+            android:layout_height="0dp"
+            android:backgroundTint="@color/ButtonBackdround"
+            android:padding="1dp"
+            android:text="@string/ExtendedSetting_Remove"
+            android:textColor="@color/ButtonForeground"
+            app:cornerRadius="7dp"
+            app:layout_constraintBottom_toBottomOf="@+id/launchTikTok"
+            app:layout_constraintEnd_toStartOf="@+id/launchTikTok"
+            app:layout_constraintTop_toTopOf="@+id/btnSave" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/BlockBurnSettings"
             android:layout_width="match_parent"
@@ -89,30 +117,15 @@
             app:layout_constraintTop_toBottomOf="@+id/btnSave"
             tools:visibility="visible">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/removeElement"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-5dp"
-                android:backgroundTint="@color/ButtonBackdround"
-                android:padding="15dp"
-                android:text="@string/ExtendedSetting_Remove"
-                android:textColor="@color/ButtonForeground"
-                app:cornerRadius="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <TextView
                 android:id="@+id/elementWidth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
                 android:text="@string/ExtendedSetting_WidthUnknown"
                 android:textColor="@color/ButtonBackdround"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/removeElement" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <SeekBar
                 android:id="@+id/widthBar"
@@ -129,22 +142,21 @@
                 android:id="@+id/divider"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="6dp"
                 android:background="?android:attr/listDivider"
-                app:layout_constraintEnd_toEndOf="@+id/widthBar"
-                app:layout_constraintStart_toStartOf="@+id/widthBar"
-                app:layout_constraintTop_toBottomOf="@+id/widthBar" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/heightBar" />
 
             <TextView
                 android:id="@+id/elementHeight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:text="@string/ExtendedSetting_HeightUnknwon"
                 android:textColor="@color/ButtonBackdround"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider" />
+                app:layout_constraintTop_toBottomOf="@+id/widthBar" />
 
             <SeekBar
                 android:id="@+id/heightBar"
@@ -161,12 +173,12 @@
                 android:id="@+id/elementRadius"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="6dp"
                 android:text="@string/borderRadiusSetting_Unknown"
                 android:textColor="@color/ButtonBackdround"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/heightBar" />
+                app:layout_constraintTop_toBottomOf="@+id/divider" />
 
             <SeekBar
                 android:id="@+id/radiusBar"
@@ -180,6 +192,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/elementRadius" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.Guideline

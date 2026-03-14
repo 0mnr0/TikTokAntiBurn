@@ -2,14 +2,8 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
 
-    <!-- Фон внутри -->
     <solid android:color="@color/ButtonForeground" />
 
-    <!-- Обводка -->
-    <stroke
-        android:width="2dp"
-        android:color="@color/SeekBackdround" /> <!-- красная обводка, поменяй по вкусу -->
 
-    <!-- Скруглённые углы -->
     <corners android:radius="16dp" />
 </shape>

@@ -39,7 +39,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AppSettings extends AppCompatActivity {
-    private MaterialSwitch HideForACoupleSeconds, CompatibilityMode, MainFloatingWindowEnabled, InputMethodsSwitch, TopPaneModifier, BottomPaneModifier, EnablePreview, FullScreenAPISwitch,
+    private MaterialSwitch HideForACoupleSeconds, CompatibilityMode, MainFloatingWindowEnabled, InputMethodsSwitch, TopPaneModifier, BottomPaneModifier, FullScreenAPISwitch,
             UseOldDetectionMethod, MakeInvisibleInstead, Shake2Show;
     private ConstraintLayout SomeSetting;
     private Slider seekBar;
@@ -244,11 +244,6 @@ public class AppSettings extends AppCompatActivity {
         CompatibilityMode = findViewById(R.id.OptimalSwitcher);
         CompatibilityMode.setChecked(GetBoolean("CompatibilityMode", false));
         CompatibilityMode.setOnCheckedChangeListener((buttonView, isChecked) -> SaveSettings("CompatibilityMode", isChecked));
-
-        // Enable preview when opened extended settings
-        EnablePreview = findViewById(R.id.EnablePreview);
-        EnablePreview.setChecked(GetBoolean("EnablePreview", false));
-        EnablePreview.setOnCheckedChangeListener((buttonView, isChecked) -> SaveSettings("EnablePreview", isChecked));
 
         // Enable preview when opened extended settings
         FullScreenAPISwitch = findViewById(R.id.FullScreenAPISwitch);
