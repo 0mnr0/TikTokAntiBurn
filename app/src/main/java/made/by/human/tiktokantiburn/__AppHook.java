@@ -14,12 +14,7 @@ import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
-//public class AppHook implements IXposedHookZygoteInit, IXposedHookLoadPackage {
-public class AppHook implements IXposedHookLoadPackage {
-
-
-    // private String modulePath = null;
-    // private final String TAG = "TikTokAntiBurn";
+public class __AppHook implements IXposedHookLoadPackage {
 
 
 
@@ -117,7 +112,7 @@ public class AppHook implements IXposedHookLoadPackage {
 
 
     @Override
-    public void handleLoadPackage(final XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
+    public void handleLoadPackage(final XC_LoadPackage.LoadPackageParam lpparam) {
         if (!lpparam.packageName.equals("com.zhiliaoapp.musically"))
             return;
 

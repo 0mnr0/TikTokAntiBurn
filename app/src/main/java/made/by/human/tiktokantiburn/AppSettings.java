@@ -46,7 +46,7 @@ public class AppSettings extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private TextView progressText, topPaneModificatorDescription, bottomPaneModificatorDescription;
     private TextInputEditText TriggerPacketName;
-    boolean LSPosed_INVISIBLE, LSPosed_OLD_METHOD;
+    boolean LSPosed_INVISIBLE, LSPosed_OLD_METHOD, RunBinder;
     private LoadingIndicator loadingIndicator;
     Slider TopPaneModifierValue, BottomPaneModifierValue;
     int TopPaneOpacity = 0;
@@ -71,28 +71,25 @@ public class AppSettings extends AppCompatActivity {
     }
 
 
-
-
-
     public boolean GetBoolean(String settingName, boolean defaultValue) {
         SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
         return prefs.getBoolean(settingName, defaultValue);
     }
 
 
-    public boolean GetClickableStatus(){
+    public boolean GetClickableStatus() {
         SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
         return prefs.getBoolean("Clickable", false);
     }
 
-    public void SetClickableStatus(boolean status){
+    public void SetClickableStatus(boolean status) {
         SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("Clickable", status);
         editor.apply();
     }
 
-    public void CheckSomeSettings(){
+    public void CheckSomeSettings() {
         SomeSetting.setVisibility(GetBoolean("DisableMainFloatingWindow", false) ? View.GONE : View.VISIBLE);
     }
 
@@ -117,6 +114,7 @@ public class AppSettings extends AppCompatActivity {
                 "    <boolean name=\"" + "XPOSED:AllowTopPaneModifier" + "\" value=\"" + TopPaneModifier.isChecked() + "\" />\n" +
                 "    <boolean name=\"" + "XPOSED:AllowBottomPaneModifier" + "\" value=\"" + BottomPaneModifier.isChecked() + "\" />\n" +
                 "    <boolean name=\"" + "XPOSED:Shake2Show" + "\" value=\"" + Shake2Show.isChecked() + "\" />\n" +
+                "    <boolean name=\"" + "XPOSED:RunBinder" + "\" value=\"" + RunBinder + "\" />\n" +
                 "    <int name=\"" + "XPOSED:TopPaneOpacity" + "\" value=\"" + TopPaneOpacity + "\" />\n" +
                 "    <int name=\"" + "XPOSED:BottomPaneOpacity" + "\" value=\"" + BottomPaneOpacity + "\" />\n" +
                 "</map>\n";
@@ -149,6 +147,12 @@ public class AppSettings extends AppCompatActivity {
             return false;
         }
     }
+
+    public void RunBinder(View view) {
+        RunBinder = true;
+        SaveLSPosed();
+    }
+
 
     public Boolean ReadLSPosedSetting(String key, Boolean defaultValue) {
         final String prefsPath = "/data/data/com.zhiliaoapp.musically/shared_prefs/LSPrefs.xml";
@@ -241,7 +245,7 @@ public class AppSettings extends AppCompatActivity {
         HideForACoupleSeconds.setOnCheckedChangeListener((buttonView, isChecked) -> SetClickableStatus(isChecked));
 
         // Compatibility mode
-        CompatibilityMode = findViewById(R.id.OptimalSwitcher);
+        CompatibilityMode = findViewById(R.id.ViewGONE);
         CompatibilityMode.setChecked(GetBoolean("CompatibilityMode", false));
         CompatibilityMode.setOnCheckedChangeListener((buttonView, isChecked) -> SaveSettings("CompatibilityMode", isChecked));
 

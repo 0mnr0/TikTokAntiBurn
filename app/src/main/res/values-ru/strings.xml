@@ -55,4 +55,12 @@
     <string name="EnableEditorPreviewTitle">Предпросмотр расширенной настройки</string>
     <string name="FullScreenAPITitle">Режим Полного экрана</string>
     <string name="FullScreenAPIDescription">Использовать полноэкранный режим для popup\'ов. Это может решить проблемы когда система сдвигает попап к системным панелям</string>
+    <string name="__Binder_ClickOnAnyView">Сначала нажмите на элемент</string>
+    <string name="__Binder_Save">Применить</string>
+    <string name="__Binder_AllowMods">Разрешить редактирование</string>
+    <string name="__Binder_KeepOnVideo">Для каждого видео</string>
+    <string name="__Binder_Visible">Показывать:</string>
+    <string name="__Binder_Alpha">"Прозрачность: "</string>
+    <string name="__Binder_Saved">Сохранено!</string>
+    <string name="__Binder_Saved2">Рекомендуется принудительно перезапустить TikTok</string>
 </resources>

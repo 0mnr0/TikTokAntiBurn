@@ -101,7 +101,7 @@
                 tools:layout_editor_absoluteY="250dp">
 
                 <com.google.android.material.materialswitch.MaterialSwitch
-                    android:id="@+id/OptimalSwitcher"
+                    android:id="@+id/ViewGONE"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:checked="false"
@@ -125,8 +125,8 @@
                     android:paddingBottom="6dp"
                     android:text="@string/OptimalSwitchDescription"
                     android:textColor="@color/SeekBackdroundFilled"
-                    app:layout_constraintStart_toStartOf="@+id/OptimalSwitcher"
-                    app:layout_constraintTop_toBottomOf="@+id/OptimalSwitcher" />
+                    app:layout_constraintStart_toStartOf="@+id/ViewGONE"
+                    app:layout_constraintTop_toBottomOf="@+id/ViewGONE" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -637,6 +637,14 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="RunBinder"
+        android:text="Binder"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

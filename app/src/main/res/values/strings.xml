@@ -57,4 +57,12 @@
     <string name="EnableEditorPreviewTitle">Preview of the advanced settings</string>
     <string name="FullScreenAPITitle">FullScreen Mode</string>
     <string name="FullScreenAPIDescription">Use full-screen mode for popups. This can solve problems when the system pushes the pop-up to the system panels.</string>
+    <string name="__Binder_ClickOnAnyView">Click on an item to modify it</string>
+    <string name="__Binder_Save">Save</string>
+    <string name="__Binder_AllowMods">Allow modification</string>
+    <string name="__Binder_KeepOnVideo">Apply for each video</string>
+    <string name="__Binder_Visible">Visible:</string>
+    <string name="__Binder_Alpha">Alpha:</string>
+    <string name="__Binder_Saved">Saved!</string>
+    <string name="__Binder_Saved2">Force restart TikTok to apply!</string>
 </resources>
