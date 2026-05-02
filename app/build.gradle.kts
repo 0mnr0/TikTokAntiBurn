@@ -4,13 +4,13 @@ plugins {
 
 android {
     namespace = "made.by.human.tiktokantiburn"
-    compileSdk = 35
+    compileSdk = 37
     ndkVersion = "28.2.13676358"
 
     defaultConfig {
         applicationId = "made.by.human.tiktokantiburn"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 37
         versionCode = 1
         versionName = "1.4.3"
 
@@ -34,7 +34,7 @@ android {
 
     sourceSets {
         getByName("main") {
-            assets.srcDirs("src/main/assets")
+            assets.directories.add("src/main/assets")
         }
     }
 
@@ -60,11 +60,11 @@ dependencies {
     //noinspection UseTomlInstead
     compileOnly("de.robv.android.xposed:api:82")
     //noinspection UseTomlInstead
-    implementation("com.google.android.material:material:1.14.0-alpha05")
+    implementation("com.google.android.material:material:1.14.0-rc01")
     //noinspection UseTomlInstead
-    implementation ("com.google.code.gson:gson:2.13.2")
+    implementation ("com.google.code.gson:gson:2.14.0")
     //noinspection UseTomlInstead
-    implementation ("androidx.work:work-runtime:2.10.5")
+    implementation ("androidx.work:work-runtime:2.11.2")
 }
 java {
     toolchain {

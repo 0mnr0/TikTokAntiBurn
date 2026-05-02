@@ -43,14 +43,17 @@ public class __ElementsBinder implements IXposedHookZygoteInit, IXposedHookLoadP
 
 
     private View RootWindow, GlobalSettingsPanel;
-    private Map<View, ViewState> ModifiedViews = new IdentityHashMap<>();
+    private final Map<View, ViewState> ModifiedViews = new IdentityHashMap<>();
 
 
 
     private LinearLayout Modifiers, KeepEveryVideo;
-    private TextView classNameInfo, AllowModifyText, EveryVideoText;
-    private Button applyButton;
-    private ImageButton left, right, up, down, closeButton;
+    private TextView classNameInfo;
+    private TextView AllowModifyText;
+    private ImageButton left;
+    private ImageButton right;
+    private ImageButton up;
+    private ImageButton down;
     private CheckBox checkBoxGone, AllowModify, EveryVideoBox;
     private SeekBar seekBarAlpha;
 
@@ -296,6 +299,7 @@ public class __ElementsBinder implements IXposedHookZygoteInit, IXposedHookLoadP
 
 
 
+    @SuppressLint("DiscouragedApi") // only variant in xposed module to fix warning
     private void injectLayout(Activity activity) {
         ViewGroup decor = (ViewGroup) activity.getWindow().getDecorView();
         if (decor.findViewWithTag("xposed_panel") != null) return;
@@ -326,8 +330,6 @@ public class __ElementsBinder implements IXposedHookZygoteInit, IXposedHookLoadP
 
 
         classNameInfo = panel.findViewById(getId(ctx, "panel_text"));
-        applyButton   = panel.findViewById(getId(ctx, "apply_button"));
-        closeButton   = panel.findViewById(getId(ctx, "close"));
         left          = panel.findViewById(getId(ctx, "Left"));
         up            = panel.findViewById(getId(ctx, "Up"));
         down          = panel.findViewById(getId(ctx, "Down"));
@@ -339,7 +341,10 @@ public class __ElementsBinder implements IXposedHookZygoteInit, IXposedHookLoadP
         AllowModifyText = panel.findViewById(getId(ctx, "AllowModifyText"));
         KeepEveryVideo  = panel.findViewById(getId(ctx, "KeepEveryVideo"));
         EveryVideoBox   = panel.findViewById(getId(ctx, "KeepEveryVideoBox"));
-        EveryVideoText  = panel.findViewById(getId(ctx, "KeepEveryVideoText"));
+
+        Button applyButton = panel.findViewById(getId(ctx, "apply_button"));
+        ImageButton closeButton = panel.findViewById(getId(ctx, "close"));
+        TextView everyVideoText = panel.findViewById(getId(ctx, "KeepEveryVideoText"));
 
 
 
@@ -347,7 +352,7 @@ public class __ElementsBinder implements IXposedHookZygoteInit, IXposedHookLoadP
                 classNameInfo, applyButton, closeButton,
                 left, right, up, down,
                 AllowModify, AllowModifyText, Modifiers, KeepEveryVideo,
-                EveryVideoBox, EveryVideoText,
+                EveryVideoBox, everyVideoText,
                 checkBoxGone, seekBarAlpha, panel
         ));
 
@@ -356,7 +361,7 @@ public class __ElementsBinder implements IXposedHookZygoteInit, IXposedHookLoadP
         applyButton.setOnClickListener(v -> Save());
         closeButton.setOnClickListener(v -> JustClose());
         AllowModifyText.setOnClickListener(v -> {if (activeView!=null) { AllowModify.performClick(); }});
-        EveryVideoText.setOnClickListener(v -> {if (activeView!=null) { EveryVideoBox.performClick(); }});
+        everyVideoText.setOnClickListener(v -> {if (activeView!=null) { EveryVideoBox.performClick(); }});
         left.setOnClickListener(v -> runAction(HIERARCHY.Type.LEFT));
         right.setOnClickListener(v -> runAction(HIERARCHY.Type.NEXT));
         up.setOnClickListener(v -> runAction(HIERARCHY.Type.UP));
@@ -393,6 +398,8 @@ public class __ElementsBinder implements IXposedHookZygoteInit, IXposedHookLoadP
         XposedBridge.log("[LayoutInjector] Done");
     }
 
+
+    @SuppressLint("DiscouragedApi")
     private int getId(Context moduleContext, String name) {
         return moduleContext.getResources().getIdentifier(name, "id", myPkgName);
     }
