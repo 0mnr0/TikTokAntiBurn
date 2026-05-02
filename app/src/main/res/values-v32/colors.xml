@@ -6,10 +6,10 @@
     <color name="DarkABit">@color/material_dynamic_neutral_variant30</color>
     <color name="MonetViewDarkBG">@color/material_dynamic_neutral_variant10</color>
     <color name="ButtonForeground">@color/material_dynamic_neutral_variant10</color>
-    <color name="ButtonBackdround">@color/material_dynamic_neutral_variant80</color>
+    <color name="ButtonBackground">@color/material_dynamic_neutral_variant80</color>
     <color name="SheetForeground">@color/material_dynamic_neutral_variant90</color>
-    <color name="SeekBackdround">@color/material_dynamic_neutral_variant70</color>
-    <color name="SeekBackdroundFilled">@color/material_dynamic_neutral_variant90</color>
+    <color name="SeekBackground">@color/material_dynamic_neutral_variant70</color>
+    <color name="SeekBackgroundFilled">@color/material_dynamic_neutral_variant90</color>
     <color name="SeekBG">@color/material_dynamic_neutral_variant60</color>
     <color name="SeekFG">@color/material_dynamic_neutral_variant10</color>
     <color name="MID">@color/material_dynamic_neutral_variant50</color>

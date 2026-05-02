@@ -2,13 +2,15 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="pleasestar">#44464f</color>
+    <color name="Settings">#44464f</color>
     <color name="DarkABit">#44464f</color>
     <color name="MonetViewDarkBG">#191b23</color>
     <color name="ButtonForeground">#191b23</color>
-    <color name="ButtonBackdround">#c5c6d0</color>
+    <color name="ButtonBackground">#c5c6d0</color>
     <color name="SheetForeground">#D1D2DD</color>
-    <color name="SeekBackdround">#a9abb4</color>
-    <color name="SeekBackdroundFilled">#e1e2ec</color>
+    <color name="SeekBackground">#a9abb4</color>
+    <color name="SeekBackgroundFilled">#e1e2ec</color>
     <color name="SeekBG">#8f9099</color>
     <color name="SeekFG">#191b23</color>
     <color name="MID">#757780</color>
