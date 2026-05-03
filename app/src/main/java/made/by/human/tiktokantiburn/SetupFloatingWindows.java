@@ -133,7 +133,7 @@ public class SetupFloatingWindows extends Service {
         widthBar.setMax(width+(width/4));
         heightBar.setMin(70);
         heightBar.setMax(height/2);
-        radiusBar.setMax(Math.max(widthBar.getProgress(), heightBar.getProgress()) /2);
+        radiusBar.setMax(Math.min(widthBar.getProgress(), heightBar.getProgress()) /2);
         widthBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -141,7 +141,7 @@ public class SetupFloatingWindows extends Service {
                 layoutParams.width = i;
                 windowManager.updateViewLayout(lastBlockBurnElement, layoutParams);
                 RefreshSettings(false);
-                radiusBar.setMax(Math.max(widthBar.getProgress(), heightBar.getProgress()) / 2);
+                radiusBar.setMax(Math.min(widthBar.getProgress(), heightBar.getProgress()) / 2);
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {}
@@ -156,7 +156,7 @@ public class SetupFloatingWindows extends Service {
                 layoutParams.height = i;
                 windowManager.updateViewLayout(lastBlockBurnElement, layoutParams);
                 RefreshSettings(false);
-                radiusBar.setMax(Math.max(widthBar.getProgress(), heightBar.getProgress()) / 2);
+                radiusBar.setMax(Math.min(widthBar.getProgress(), heightBar.getProgress()) / 2);
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) { }
