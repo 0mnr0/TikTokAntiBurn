@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.view.Display;
@@ -34,7 +35,7 @@ public class FloatingWindowService extends Service {
 
 
     @SuppressLint("InflateParams")
-    public void CreateElement(int x, int y, int width, int height, long radius, boolean canBeHidden) {
+    public void CreateElement(int x, int y, int width, int height, long radius, float alpha, boolean canBeHidden) {
         View floatingView = inflater.inflate(R.layout.blockburn_quad, null);
 
         boolean useFullScreenAPI =  GetBoolean("FullScreenAPI");
@@ -58,7 +59,9 @@ public class FloatingWindowService extends Service {
                 displayMode,
                 PixelFormat.TRANSLUCENT
         );
-        if (useFullScreenAPI) { params.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES; }
+        if (useFullScreenAPI && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            params.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+        }
 
 
         params.gravity = Gravity.TOP | Gravity.START;
@@ -78,7 +81,7 @@ public class FloatingWindowService extends Service {
         floatingView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
         windowManager.addView(floatingView, params);
         floatingViews.add(floatingView);
-        floatingView.animate().alpha(1f).setDuration(AnimationLength).start();
+        floatingView.animate().alpha(alpha).setDuration(AnimationLength).start();
 
         if (canBeHidden) {
             floatingView.setOnClickListener(v -> {
@@ -90,7 +93,7 @@ public class FloatingWindowService extends Service {
                 new Handler().postDelayed(() -> {
                     if (floatingView != null && floatingView.getParent() != null) {
                         floatingView.setVisibility(View.VISIBLE);
-                        floatingView.animate().alpha(1f).setDuration(AnimationLength).start();
+                        floatingView.animate().alpha(alpha).setDuration(AnimationLength).start();
                     }
                 }, HiddenActionLength);
             });
@@ -127,7 +130,7 @@ public class FloatingWindowService extends Service {
         }
         for (int i = 0; i < blockList.size(); i++) {
             BlockInfo blockInfo = blockList.get(i);
-            CreateElement(blockInfo.x, blockInfo.y, blockInfo.width, blockInfo.height, blockInfo.radius, canBeHidden);
+            CreateElement(blockInfo.x, blockInfo.y, blockInfo.width, blockInfo.height, blockInfo.radius, blockInfo.alpha, canBeHidden);
         }
 
     }
@@ -154,7 +157,7 @@ public class FloatingWindowService extends Service {
             SharedPreferences sharedPreferences = getSharedPreferences("SeekBarPrefs", MODE_PRIVATE);
             int savedValue = sharedPreferences.getInt("seekBarValue", 40);
 
-            CreateElement((size.x / 2) - (elementWidth / 2), size.y - savedValue, elementWidth, savedValue, 0, canBeHidden);
+            CreateElement((size.x / 2) - (elementWidth / 2), size.y - savedValue, elementWidth, savedValue, 10, 1f, canBeHidden);
         }
         LoadCustomBurns(canBeHidden);
 

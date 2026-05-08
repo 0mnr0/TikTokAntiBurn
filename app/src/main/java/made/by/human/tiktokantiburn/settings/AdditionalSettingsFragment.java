@@ -1,6 +1,7 @@
 package made.by.human.tiktokantiburn.settings;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -60,6 +62,20 @@ public class AdditionalSettingsFragment extends Fragment {
                 LogSystem.getInstance().clear();
             }
         }));
+
+
+
+
+        if (!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)) {
+            FullScreenAPISwitch.setChecked(false);
+            Settings.Service.setBool(ctx, "FullScreenAPISwitch", false);
+            FullScreenAPISwitch.setEnabled(false);
+            FullScreenAPISwitch.setAlpha(0.5f);
+
+            TextView FullScreenDesc = view.findViewById(R.id.FullScreenAPIText);
+            FullScreenDesc.setText(getString(R.string.Settings_ADD_FULLSCREEN_API_NotSupported));
+
+        }
 
 
     }

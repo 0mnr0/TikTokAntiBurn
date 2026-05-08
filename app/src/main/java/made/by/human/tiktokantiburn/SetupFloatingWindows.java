@@ -48,8 +48,8 @@ public class SetupFloatingWindows extends Service {
     List<Long> blockburnRadiusesList = new ArrayList<>();
     List<Point> savedPositions = new ArrayList<>();
 
-    TextView elementWidth, elementHeight, elementRadius;
-    SeekBar widthBar, heightBar, radiusBar;
+    TextView elementWidth, elementHeight, elementRadius, elementAlpha;
+    SeekBar widthBar, heightBar, radiusBar, alphaBar;
     Button RemoveElementBtn;
 
     @Override
@@ -114,9 +114,11 @@ public class SetupFloatingWindows extends Service {
         elementWidth = floatingMenu.findViewById(R.id.elementWidth);
         elementHeight = floatingMenu.findViewById(R.id.elementHeight);
         elementRadius = floatingMenu.findViewById(R.id.elementRadius);
+        elementAlpha = floatingMenu.findViewById(R.id.alphaTextView);
         widthBar = floatingMenu.findViewById(R.id.widthBar);
         heightBar = floatingMenu.findViewById(R.id.heightBar);
         radiusBar = floatingMenu.findViewById(R.id.radiusBar);
+        alphaBar = floatingMenu.findViewById(R.id.alphaBar);
         RemoveElementBtn = floatingMenu.findViewById(R.id.removeElement);
         Button btnSave = floatingMenu.findViewById(R.id.btnSave);
         btnSave.setOnClickListener(v -> SaveSettings());
@@ -135,6 +137,18 @@ public class SetupFloatingWindows extends Service {
         heightBar.setMin(70);
         heightBar.setMax(height/2);
         radiusBar.setMax(Math.min(widthBar.getProgress(), heightBar.getProgress()) /2);
+        alphaBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                lastBlockBurnElement.setAlpha(alphaBar.getProgress() / 100f);
+                RefreshSettings(false);
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) { }
+        });
+
         widthBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -235,11 +249,13 @@ public class SetupFloatingWindows extends Service {
             widthBar.setProgress(BurnWidth);
             heightBar.setProgress(BurnHeight);
             radiusBar.setProgress(Math.toIntExact(blockburnRadiusesList.get(blockburnList.indexOf(lastBlockBurnElement))));
+            alphaBar.setProgress((int) (lastBlockBurnElement.getAlpha() * 100f));
         }
 
         elementWidth.setText(getString(R.string.ExtendedSetting_Width) + BurnWidth + " px");
         elementHeight.setText(getString(R.string.ExtendedSetting_Height) + BurnHeight + " px");
         elementRadius.setText(getString(R.string.borderRadiusSetting) + (blockburnRadiusesList.get(blockburnList.indexOf(lastBlockBurnElement))) + " px");
+        elementAlpha.setText(getString(R.string.Alpha) + ((int) (lastBlockBurnElement.getAlpha() * 100)) + "%");
     }
 
     private void makeViewDraggable(View view, WindowManager.LayoutParams params) {
@@ -272,7 +288,9 @@ public class SetupFloatingWindows extends Service {
                         drawable.setShape(GradientDrawable.RECTANGLE);
                         drawable.setColor(bgColor);
                         drawable.setCornerRadius(blockburnRadiusesList.get(blockburnList.indexOf(lastBlockBurnElement)));
-                        drawable.setStroke(dpToPx(1), Color.RED);
+                        drawable.setStroke(
+                                dpToPx(1), Color.RED
+                        );
                         lastBlockBurnElement.setBackground(drawable);
                         blockBurnSettings.setVisibility(View.VISIBLE);
                         RemoveElementBtn.setVisibility(View.VISIBLE);
@@ -341,7 +359,16 @@ public class SetupFloatingWindows extends Service {
         List<BlockInfo> blockList = new ArrayList<>();
         for (View view : blockburnList) {
             WindowManager.LayoutParams lp = (WindowManager.LayoutParams) view.getLayoutParams();
-            blockList.add(new BlockInfo(lp.width, lp.height, lp.x, lp.y, blockburnRadiusesList.get(blockburnList.indexOf(view))));
+            blockList.add(
+                    new BlockInfo(
+                            lp.width,
+                            lp.height,
+                            lp.x,
+                            lp.y,
+                            view.getAlpha(),
+                            blockburnRadiusesList.get(blockburnList.indexOf(view))
+                    )
+            );
         }
 
         SharedPreferences prefs = getSharedPreferences("blockPos", MODE_PRIVATE);
@@ -417,6 +444,9 @@ public class SetupFloatingWindows extends Service {
             windowManager.addView(blockburn, params);
             blockburnList.add(blockburn);
             blockburnRadiusesList.add(blockInfo.radius);
+            blockburn.setAlpha(
+                    blockInfo.alpha
+            );
             makeViewDraggable(blockburn, params);
         }
         CloseBurnSettings();

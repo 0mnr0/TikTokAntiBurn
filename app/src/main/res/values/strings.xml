@@ -70,4 +70,6 @@
     <string name="Settings_LSP_BinderTitle_ON">Enter \"Click to hide\" Mode</string>
     <string name="Settings_LSP_BinderDesc">Enable this mode to customize the hiding of any elements. After applying the changes, restart TikTok</string>
     <string name="Settings_LSP_BinderTitle_OFF">Quit \"Click to hide\" mode</string>
+    <string name="Alpha">Alpha:</string>
+    <string name="Settings_ADD_FULLSCREEN_API_NotSupported">This function is available from Android 9+</string>
 </resources>

@@ -191,6 +191,29 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/elementRadius" />
 
+            <TextView
+                android:id="@+id/alphaTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Alpha"
+                android:textColor="@color/ButtonBackground"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/radiusBar" />
+
+            <SeekBar
+                android:id="@+id/alphaBar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:max="100"
+                android:min="30"
+                android:progressBackgroundTint="@color/SeekBackgroundFilled"
+                android:progressTint="@color/SeekBackgroundFilled"
+                android:thumbTint="@color/SeekBackgroundFilled"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/alphaTextView" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

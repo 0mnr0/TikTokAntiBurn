@@ -67,4 +67,6 @@
     <string name="Settings_LSP_BinderTitle_ON">Запустить режим \"Нажал - скрыл\"</string>
     <string name="Settings_LSP_BinderDesc">Включите этот режим чтобы настроить скрытие любых элементов. После применения изменений перезапустите TikTok</string>
     <string name="Settings_LSP_BinderTitle_OFF">Выйти из режима \"Нажал - скрыл\"</string>
+    <string name="Alpha">"Прозрачность: "</string>
+    <string name="Settings_ADD_FULLSCREEN_API_NotSupported">Эта опция доступна только с Android 9 и выше</string>
 </resources>
