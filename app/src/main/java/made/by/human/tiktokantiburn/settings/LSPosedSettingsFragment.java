@@ -16,6 +16,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
 
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.slider.Slider;
@@ -24,8 +26,13 @@ import made.by.human.tiktokantiburn.BlockableLinearLayout;
 import made.by.human.tiktokantiburn.R;
 
 public class LSPosedSettingsFragment extends Fragment {
+    Context ctx;
     TextView TopModifierDisabled, BottomModifierDisabled;
     Slider TopPaneModifierValue, BottomPaneModifierValue;
+
+    BlockableLinearLayout SettingsRequiresNonBinderMode;
+    Button ActivateBinderAction;
+    boolean activeBindMode = false;
 
 
 
@@ -41,26 +48,22 @@ public class LSPosedSettingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        final Context ctx = requireContext();
+        ctx = requireContext();
 
 
 
 
-        final boolean[] bindMode = {Settings.Module.getBool(ctx, "StartWithBindMode", false)};
-        final String whenBindModeEnabled = "Stop Bind Mode";
-        final String whenBindModeDisabled = "Enable Bind Mode";
-
-        BlockableLinearLayout SettingsRequiresNonBinderMode = view.findViewById(R.id.RequiresNonBinder);
-        Button ActivateBinderAction = view.findViewById(R.id.ActivateBinderMode);
+        activeBindMode = Settings.Module.getBool(ctx, "StartWithBinder", false);
+        SettingsRequiresNonBinderMode = view.findViewById(R.id.RequiresNonBinder);
+        ActivateBinderAction = view.findViewById(R.id.ActivateBinderMode);
         ActivateBinderAction.setOnClickListener((v) -> {
-            bindMode[0] = !bindMode[0];
-            Settings.Module.setBool(ctx, "StartWithBinder", bindMode[0]);
-            ActivateBinderAction.setText(bindMode[0] ? whenBindModeEnabled : whenBindModeDisabled);
-            SettingsRequiresNonBinderMode.setAlpha(
-                    bindMode[0] ? 0.35f : 1f
-            );
-            SettingsRequiresNonBinderMode.setBlockTouches(bindMode[0]);
+            activeBindMode = !activeBindMode;
+            UpdateBindInfo();
         });
+        if (activeBindMode) {
+            activeBindMode = false;
+            ActivateBinderAction.performClick();
+        }
 
 
         ImageView CenterPlusButton = view.findViewById(R.id.CenterPlusButton);
@@ -130,8 +133,19 @@ public class LSPosedSettingsFragment extends Fragment {
         });
         EnableModule.setChecked(Settings.Module.getBool(ctx, "isModuleEnabled", false));
         WholeModuleLayout.setVisibility(Settings.Module.getBool(ctx, "isModuleEnabled", false) ? View.VISIBLE : View.GONE);
+    }
 
 
+    public void UpdateBindInfo() {
+        final String whenBindModeEnabled = "Exit Bind Mode";
+        final String whenBindModeDisabled = "Enter Bind Mode";
+
+        Settings.Module.setBool(ctx, "StartWithBinder", activeBindMode);
+        ActivateBinderAction.setText(activeBindMode ? whenBindModeEnabled : whenBindModeDisabled);
+        SettingsRequiresNonBinderMode.setAlpha(
+                activeBindMode ? 0.35f : 1f
+        );
+        SettingsRequiresNonBinderMode.setBlockTouches(activeBindMode);
     }
 
 
@@ -144,5 +158,20 @@ public class LSPosedSettingsFragment extends Fragment {
     }
     private void updateInactiveBottom(){
         BottomModifierDisabled.setVisibility(BottomPaneModifierValue.getValue() == 100f ? View.VISIBLE : View.GONE);
+    }
+
+
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        onResumeNotify();
+    }
+
+    public void onResumeNotify() {
+        if (ctx == null) {return;}
+        if (activeBindMode != Settings.Module.getBool(ctx, "StartWithBinder", false)) {
+            ActivateBinderAction.performClick();
+        }
     }
 }

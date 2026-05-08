@@ -13,22 +13,35 @@ public class PageAdapter extends FragmentStateAdapter {
     boolean haveRoot = false;
     int tabsCount = 3; // with root
 
+
+
+    AdditionalSettingsFragment AdditionalSettings;
+    LSPosedSettingsFragment LSPosedSettings;
+    MainSettingsFragment MainSettings;
+
     public PageAdapter(@NonNull FragmentActivity activity) {
         super(activity);
     }
 
-    public void rootStatusUpdate() {
+    public void init() {
         haveRoot = RootCheck.isDeviceRooted();
-        Log.d("haveRoot:", String.valueOf(haveRoot));
+        haveRoot = true;
+        AdditionalSettings = new AdditionalSettingsFragment();
+        LSPosedSettings = new LSPosedSettingsFragment();
+        MainSettings = new MainSettingsFragment();
+    }
+
+    public void onResumeNotify() {
+        LSPosedSettings.onResumeNotify();
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
         switch (position) {
-            case 1: return new AdditionalSettingsFragment();
-            case 2: return new LSPosedSettingsFragment();
-            default: return new MainSettingsFragment(); // 0
+            case 1: return AdditionalSettings;
+            case 2: return LSPosedSettings;
+            default: return MainSettings; // 0
         }
     }
 

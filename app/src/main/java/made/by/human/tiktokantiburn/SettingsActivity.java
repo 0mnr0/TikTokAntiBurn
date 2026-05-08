@@ -43,7 +43,7 @@ public class SettingsActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.viewPager);
 
         adapter = new PageAdapter(this);
-        adapter.rootStatusUpdate();
+        adapter.init();
         viewPager.setAdapter(adapter);
 
 
@@ -54,6 +54,13 @@ public class SettingsActivity extends AppCompatActivity {
                 case 2: tab.setText("LSPosed"); break;
             }
         }).attach();
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.onResumeNotify();
     }
 
 
