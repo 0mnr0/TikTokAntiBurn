@@ -3,6 +3,7 @@ package made.by.human.tiktokantiburn;
 import java.io.File;
 import java.io.IOException;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
 
@@ -11,6 +12,8 @@ import java.util.Date;
 
 import android.app.Application;
 
+import made.by.human.tiktokantiburn.settings.Settings;
+
 public class LogSystem {
     public static final String LoggerVersion = "1.4.3";
     private static final long MAX_FILE_SIZE = 15L * 1024 * 1024; // 15 MB
@@ -18,12 +21,14 @@ public class LogSystem {
     private static LogSystem instance;
     private final File logFile;
     private final Handler backgroundHandler;
+    private final Application ctx;
     public static LogSystem getInstanceOrNull() {
         return instance;
     }
 
 
     LogSystem(Application app) {
+        ctx = app;
         logFile = new File(app.getFilesDir(), LOG_FILE_NAME);
 
         HandlerThread thread = new HandlerThread("LogWriterThread");
@@ -44,7 +49,13 @@ public class LogSystem {
         return instance;
     }
 
+    public boolean isDisabled() {
+        return Settings.Service.getBool(ctx, ".enable_logging", true);
+    }
+
     public void Save(String key, Object data, boolean DivideTop, boolean DivideBottom) {
+        if (isDisabled()) {return;}
+
         String content = "(" + LoggerVersion + ") [" + key + "] - " + data.toString() + "\n";
         Date date = new Date();
         content =  date.toLocaleString() + "  " + content;
@@ -57,6 +68,7 @@ public class LogSystem {
     }
 
     private void SaveOperation(String text){
+        if (isDisabled()) {return;}
         backgroundHandler.post(() -> {
             try {
                 manageFileSize(); // Проверяем размер до записи

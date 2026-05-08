@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -182,6 +183,17 @@ public class MainActivity extends AppCompatActivity {
                 ExistingPeriodicWorkPolicy.KEEP,
                 checkRequest
         );
+
+        UpdateLogsVisibility();
+    }
+
+    public void UpdateLogsVisibility() {
+        ConstraintLayout LogsPanel = findViewById(R.id.LogsPanel);
+        LogsPanel.setVisibility(
+                made.by.human.tiktokantiburn.settings.Settings.Service.getBool(this, ".enable_logging", true)
+                ? View.VISIBLE
+                        : View.GONE
+        );
     }
 
     public boolean PermissionOverlayGranted(){
@@ -226,6 +238,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         refreshPermissionStatuses();
+        UpdateLogsVisibility();
     }
 
 

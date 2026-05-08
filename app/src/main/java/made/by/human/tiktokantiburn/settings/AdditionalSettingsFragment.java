@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.textfield.TextInputEditText;
 
+import made.by.human.tiktokantiburn.LogSystem;
 import made.by.human.tiktokantiburn.R;
 
 public class AdditionalSettingsFragment extends Fragment {
@@ -55,6 +56,9 @@ public class AdditionalSettingsFragment extends Fragment {
         EnableLogging.setChecked(Settings.Service.getBool(ctx, ".enable_logging", false));
         EnableLogging.setOnCheckedChangeListener(((buttonView, isChecked) -> {
             Settings.Service.setBool(ctx, ".enable_logging", isChecked);
+            if (!isChecked) {
+                LogSystem.getInstance().clear();
+            }
         }));
 
 
