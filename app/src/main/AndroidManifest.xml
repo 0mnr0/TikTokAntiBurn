@@ -3,22 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-
     <uses-permission
         android:name="android.permission.BIND_ACCESSIBILITY_SERVICE"
         tools:ignore="ProtectedPermissions" />
-
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
-
     <uses-permission
         android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-
 
     <queries>
         <package android:name="com.zhiliaoapp.musically" />
@@ -37,6 +32,9 @@
         android:theme="@style/Theme.TikTokAntiBurn"
         tools:ignore="HardcodedDebugMode"
         tools:targetApi="31">
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false" />
         <activity
             android:name=".AppSettings"
             android:exported="false" />
@@ -63,16 +61,19 @@
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibility_service_config" />
         </service>
-
         <service
             android:name=".FloatingWindowService"
             android:enabled="true"
             android:exported="true" />
-
         <service
             android:name=".SetupFloatingWindows"
             android:enabled="true"
             android:exported="false" />
+
+        <provider
+            android:name=".settings.SettingsProvider"
+            android:authorities="made.by.human.tiktokantiburn.settings"
+            android:exported="true" />
 
         <meta-data
             android:name="xposedmodule"

@@ -1,4 +1,4 @@
-package made.by.human.tiktokantiburn;
+package made.by.human.tiktokantiburn.helpers;
 
 import android.app.AndroidAppHelper;
 import android.content.Context;

@@ -236,11 +236,10 @@ public class AppSettings extends AppCompatActivity {
         TopPaneModifier = findViewById(R.id.TopPaneModifier);
         BottomPaneModifierValue = findViewById(R.id.BottomPaneModifierValue);
         TopPaneModifierValue = findViewById(R.id.TopPaneModifierValue);
-        SomeSetting = findViewById(R.id.SomeSetting);
 
 
         // Hide elements for a couple seconds
-        HideForACoupleSeconds = findViewById(R.id.TheSwitchingTool);
+        HideForACoupleSeconds = findViewById(R.id.HideOnTouch);
         HideForACoupleSeconds.setChecked(GetClickableStatus());
         HideForACoupleSeconds.setOnCheckedChangeListener((buttonView, isChecked) -> SetClickableStatus(isChecked));
 
@@ -255,7 +254,6 @@ public class AppSettings extends AppCompatActivity {
         FullScreenAPISwitch.setOnCheckedChangeListener((buttonView, isChecked) -> SaveSettings("FullScreenAPI", isChecked));
 
         // Main Floating Window Disabled
-        MainFloatingWindowEnabled = findViewById(R.id.MinifiedVersion);
         MainFloatingWindowEnabled.setChecked(GetBoolean("DisableMainFloatingWindow", false));
         CheckSomeSettings();
         MainFloatingWindowEnabled.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -283,14 +281,13 @@ public class AppSettings extends AppCompatActivity {
             editor.apply();
         }
         bottomPaneModificatorDescription = findViewById(R.id.bottomPaneModificatorDescription);
-        topPaneModificatorDescription = findViewById(R.id.topPaneModificatorDescription);
+        topPaneModificatorDescription = findViewById(R.id.topPaneModificatorDisabled);
         progressText = findViewById(R.id.textView);
         progressText.setText(getString(R.string.fastSettingsMainFlowtingWindow) + savedValue + " px");
 
         loadingIndicator = findViewById(R.id.loadingIndicator);
 
         // Main Element Height
-        seekBar = findViewById(R.id.slider);
         seekBar.setValueTo(max);
         seekBar.setValueFrom(40);
 

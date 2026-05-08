@@ -18,13 +18,17 @@ import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
+import made.by.human.tiktokantiburn.helpers.ShouldRun;
+import made.by.human.tiktokantiburn.settings.__SettingsGetter;
 
 public class __HookBurnScreen implements IXposedHookLoadPackage {
+    View finalTop;
+    View finalBottom;
+    private boolean isLogicRunning = false;
     private View possibleLinearLayout;
     private ShakeManager shakeManager;
     private Handler handler;
     private Runnable hideRunnable;
-    private boolean isLogicRunning = false;
 
 
     private LinearLayout findRootLayout(View root) {
@@ -53,15 +57,6 @@ public class __HookBurnScreen implements IXposedHookLoadPackage {
         return null;
     }
 
-    public boolean GetBoolean(Context context, String keyName, boolean defaultValue) {
-        SharedPreferences prefs = context.getSharedPreferences("LSPrefs", Context.MODE_PRIVATE);
-        return prefs.getBoolean(keyName, defaultValue);
-    }
-
-    public int GetInt(Context context, String keyName, int def) {
-        SharedPreferences prefs = context.getSharedPreferences("LSPrefs", Context.MODE_PRIVATE);
-        return prefs.getInt(keyName, def);
-    }
 
     private View getFirstDescendant(View view) {
         if (!(view instanceof ViewGroup) || ((ViewGroup) view).getChildCount() == 0) {
@@ -100,7 +95,7 @@ public class __HookBurnScreen implements IXposedHookLoadPackage {
 
     private void changeAlpha(View view, float alpha) {
         if (view != null) {
-            view.animate().alpha(alpha).setDuration(200).start();
+            view.setAlpha(alpha);
         }
     }
 
@@ -122,7 +117,7 @@ public class __HookBurnScreen implements IXposedHookLoadPackage {
         isLogicRunning = false;
     }
 
-    private void startBurnProtection(Activity activity, boolean allowTop, boolean allowBottom, boolean shake2Show, float topAlpha, float bottomAlpha) {
+    private void startBurnProtection(Activity activity, boolean shake2Show, float topAlpha, float bottomAlpha) {
         cleanup();
 
         if (handler == null) {
@@ -131,17 +126,19 @@ public class __HookBurnScreen implements IXposedHookLoadPackage {
 
         View root = activity.getWindow().getDecorView().getRootView();
         View topPanel = null;
+        finalBottom = null;
         try {
-            topPanel = allowTop ? (View) findRootLayout(root).getParent().getParent().getParent() : null;
+            topPanel = (View) findRootLayout(root).getParent().getParent().getParent();
         } catch (Exception ignored) {}
 
-        View bottomPane = allowBottom ? findViewByEnumeration(root) : null;
-        final View finalTop = topPanel;
-        final View finalBottom = bottomPane;
+
+        finalTop = topAlpha == 1f ? null : topPanel;
+        finalBottom = bottomAlpha == 1f ? null : findViewByEnumeration(root);
 
         hideRunnable = new Runnable() {
             @Override
             public void run() {
+                Log.d("[finalBottom]:", finalBottom +" | " + bottomAlpha);
                 changeAlpha(finalTop, topAlpha);
                 changeAlpha(finalBottom, bottomAlpha);
                 if (handler != null) {
@@ -192,6 +189,7 @@ public class __HookBurnScreen implements IXposedHookLoadPackage {
             @SuppressLint("ClickableViewAccessibility")
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                if (!ShouldRun.check(param.thisObject)) {returnToBasics(); return;}
                 boolean hasFocus = (boolean) param.args[0];
                 final Activity activity = (Activity) param.thisObject;
 
@@ -201,24 +199,53 @@ public class __HookBurnScreen implements IXposedHookLoadPackage {
                 }
 
 
-                final boolean allowTop = GetBoolean(activity, "XPOSED:AllowTopPaneModifier", false);
-                final boolean allowBottom = GetBoolean(activity, "XPOSED:AllowBottomPaneModifier", false);
-                final boolean shake2Show = GetBoolean(activity, "XPOSED:Shake2Show", false);
 
-                if (!allowTop && !allowBottom) {
+                final boolean shake2Show = __SettingsGetter.getBoolean(activity, "Shake2Show", false);
+                final float topOpacity = __SettingsGetter.getFloat(activity, "TopPaneAlpha", 100f) / 100f;
+                final float bottomOpacity = __SettingsGetter.getFloat(activity, "BottomPaneAlpha", 100f) / 100f;
+
+
+                if (topOpacity == 1f && bottomOpacity==1f) {
                     cleanup();
                     return;
                 }
+                if (topOpacity == 1f) {
+                    returnTopToBasics();
+                }
+                if (bottomOpacity==1f) {
+                    returnBottomToBasics();
+                }
 
-                final float topOpacity = ((float) GetInt(activity, "XPOSED:TopPaneOpacity", 100)) / 100;
-                final float bottomOpacity = ((float) GetInt(activity, "XPOSED:BottomPaneOpacity", 50)) / 100;
+                if (handler == null) {
+                    handler = new Handler(Looper.getMainLooper());
+                }
+                handler.removeCallbacksAndMessages(null);
 
-                activity.runOnUiThread(() -> {
-                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                        startBurnProtection(activity, allowTop, allowBottom, shake2Show, topOpacity, bottomOpacity);
-                    }, 500);
-                });
+                handler.postDelayed(() -> {
+                    startBurnProtection(activity, shake2Show, topOpacity, bottomOpacity);
+                }, 500);
             }
         });
     }
+
+
+    public void returnToBasics() {
+        returnTopToBasics();
+        returnBottomToBasics();
+    }
+
+    public void returnTopToBasics(){
+        if (finalTop != null) {
+            finalTop.setVisibility(View.VISIBLE);
+            finalTop.setAlpha(1f);
+        }
+    }
+
+    public void returnBottomToBasics(){
+        if (finalBottom != null) {
+            finalBottom.setVisibility(View.VISIBLE);
+            finalBottom.setAlpha(1f);
+        }
+    }
+
 }

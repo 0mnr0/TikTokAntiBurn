@@ -1,11 +1,14 @@
 package made.by.human.tiktokantiburn;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -18,53 +21,75 @@ import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 import made.by.human.tiktokantiburn.helpers.Debouncer;
 import made.by.human.tiktokantiburn.helpers.PathFinder;
+import made.by.human.tiktokantiburn.helpers.ShouldRun;
+import made.by.human.tiktokantiburn.settings.__SettingsGetter;
 
 public class __ElementsModifier implements IXposedHookLoadPackage {
-
-    private Activity getActivityFromContext(Context context) {
-        while (context instanceof ContextWrapper) {
-            if (context instanceof Activity) {
-                return (Activity) context;
-            }
-            context = ((ContextWrapper) context).getBaseContext();
-        }
-        return null;
-    }
+    Debouncer debouncer;
+    Activity activity;
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
-        Debouncer debouncer = new Debouncer(300);
 
-        XposedHelpers.findAndHookMethod(
-                View.class,
-                "onAttachedToWindow",
-                new XC_MethodHook() {
+
+        XposedHelpers.findAndHookMethod("com.ss.android.ugc.aweme.main.MainActivity",
+                lpparam.classLoader, "onWindowFocusChanged", boolean.class, new XC_MethodHook() {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) {
-                        View view = (View) param.thisObject;
-                        Activity activity = getActivityFromContext(view.getContext());
-                        View rootWindow = view.getRootView();
+                        boolean hasFocus = (boolean) param.args[0];
+                        if (!hasFocus || !ShouldRun.check(param.thisObject)) {
+                            returnToBasics();
+                            return;
+                        }
+                        if (debouncer == null) {
+                            debouncer = new Debouncer(300);
+                        }
+                        activity = (Activity) param.thisObject;
 
-                        debouncer.call(() -> hideUI(activity, rootWindow));
+                        View root = activity.getWindow().getDecorView().getRootView();
+                        ViewTreeObserver vto = root.getViewTreeObserver();
+
+
+                        vto.removeOnGlobalLayoutListener(globalLayoutListener);
+                        vto.addOnGlobalLayoutListener(globalLayoutListener);
                     }
                 }
         );
     }
 
+    private final ViewTreeObserver.OnGlobalLayoutListener globalLayoutListener = () -> {
+        if (activity == null) return;
+        View root = activity.getWindow().getDecorView().getRootView();
+        debouncer.call(() -> hideUI(activity, root));
+    };
 
 
 
-    private void hideUI(Activity activity, View rootWindow) {
-        if (activity == null || rootWindow == null) {
+
+    List<View> SearchResultList;
+    private void returnToBasics() {
+        if (SearchResultList == null) {return;}
+        SearchResultList.forEach(SearchResult -> {
+            if (SearchResult != null) {
+                SearchResult.setAlpha(1f);
+                SearchResult.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+
+
+    private void hideUI(Activity ctx, View rootWindow) {
+        if (ctx == null || rootWindow == null) {
+            XposedBridge.log("[Search]: " + "ctx: "+ctx+" | window:"+rootWindow);
             return;
         }
+        XposedBridge.log("[Search]: ctx is fine");
 
-        SharedPreferences prefs = activity.getSharedPreferences("LSPrefs", Context.MODE_PRIVATE);
-        final boolean showHidden = prefs.getBoolean("XPOSED:RunBinder", false);
+        final boolean showHidden = __SettingsGetter.getBoolean(ctx, "StartWithBinder", false);
+        Set<String> Settings = __SettingsGetter.getStringSet(ctx, "ElementsModifiers", new HashSet<>());
 
-        Set<String> Settings = prefs.getStringSet("ElementsModifiers", new HashSet<>());
-
-        XposedBridge.log("[Search]: " + Settings.size());
+        XposedBridge.log("[Search] L: " + Settings.size());
         Settings.forEach(line -> {
             String[] splitData = line.split(";");
             float Alpha = Float.parseFloat(splitData[0]);
@@ -72,9 +97,10 @@ public class __ElementsModifier implements IXposedHookLoadPackage {
             boolean keepOnEveryVideo = Objects.equals(splitData[2], "1");
             String ViewPath = splitData[3];
 
-            List<View> SearchResultList = PathFinder.search(rootWindow, ViewPath, keepOnEveryVideo);
+            XposedBridge.log("[Search] Path: "+ViewPath);
+            SearchResultList = PathFinder.search(rootWindow, ViewPath, keepOnEveryVideo);
             SearchResultList.forEach(SearchResult -> {
-                XposedBridge.log("[Search:Result] " + SearchResult);
+                XposedBridge.log("[Search:Result] " + PathFinder.getPath(SearchResult));
                 if (SearchResult != null) {
                     SearchResult.setAlpha(Alpha);
                     SearchResult.setVisibility((IsVisible || showHidden) ? View.VISIBLE : View.GONE);

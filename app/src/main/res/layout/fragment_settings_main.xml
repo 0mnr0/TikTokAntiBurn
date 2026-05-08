@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="#241F1F">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/Main_1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/fast_setting_bg"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/MainText_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/packetnamedescription"
+                android:textColor="@color/ButtonBackground"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/PacketName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/MID"
+                app:boxBackgroundColor="@color/DarkABit"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxStrokeColor="@color/SeekBackground"
+                app:boxStrokeWidth="0dp"
+                app:cursorColor="@color/ButtonBackground"
+                app:helperTextEnabled="false"
+                app:hintTextColor="@color/ButtonBackground"
+                app:layout_constraintTop_toBottomOf="@+id/MainText_1"
+                tools:layout_editor_absoluteX="12dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/TriggerPacketName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="com.zhiliaoapp.musically"
+                    android:imeOptions="actionDone|actionNext"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textColor="@color/ButtonBackground"
+                    tools:ignore="HardcodedText" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/Main_2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/fast_setting_bg"
+            android:padding="12dp">
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/InputMethodsSwitch"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:checked="false"
+                android:text="@string/InputMethodSkip"
+                android:textColor="@color/SeekBackgroundFilled"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:thumbTint="@color/SeekBackgroundFilled"
+                app:trackDecorationTint="@color/SeekBackgroundFilled"
+                app:trackTint="@color/MID" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:alpha="0.75"
+                android:text="@string/SupportedInputMethods"
+                android:textColor="@color/SeekBackgroundFilled"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/InputMethodsSwitch"
+                app:layout_constraintTop_toBottomOf="@+id/InputMethodsSwitch" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/Main_3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/fast_setting_bg"
+            android:padding="12dp">
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/HideOnTouch"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:checked="false"
+                android:text="@string/fastSettingsGoneOnclick"
+                android:textColor="@color/SeekBackgroundFilled"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:thumbTint="@color/SeekBackgroundFilled"
+                app:trackDecorationTint="@color/SeekBackgroundFilled"
+                app:trackTint="@color/MID" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </LinearLayout>
+</ScrollView>

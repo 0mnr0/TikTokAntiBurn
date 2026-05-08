@@ -37,6 +37,8 @@ import androidx.work.WorkManager;
 
 import java.util.concurrent.TimeUnit;
 
+import made.by.human.tiktokantiburn.settings.DefaultSettings;
+
 
 public class MainActivity extends AppCompatActivity {
     LogSystem logger;
@@ -115,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openAppSettings(View view) {
-        Intent serviceIntent = new Intent(this, AppSettings.class);
+        Intent serviceIntent = new Intent(this, SettingsActivity.class);
         startActivity(serviceIntent);
     }
 
@@ -146,29 +148,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void SaveSettings(String settingName, Object value) {
-        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        if (value instanceof String) {
-            editor.putString(settingName, (String) value);
-        } else if (value instanceof Integer) {
-            editor.putInt(settingName, (Integer) value);
-        } else if (value instanceof Boolean) {
-            editor.putBoolean(settingName, (Boolean) value);
-        } else {
-            throw new IllegalArgumentException("Unsupported value type: " + value.getClass().getName());
-        }
-        editor.apply();
-    }
 
-    public boolean GetBoolean(String settingName, boolean defaultValue) {
-        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
-        return prefs.getBoolean(settingName, defaultValue);
-    }
-
-    public void AskForUpdate(){
-
-    }
 
 
     @SuppressLint("MissingInflatedId")
@@ -190,17 +170,18 @@ public class MainActivity extends AppCompatActivity {
         checkOverlayPermission();
         TextView VersionCode = findViewById(R.id.VersionCode);
         VersionCode.setText(LogSystem.LoggerVersion);
+        DefaultSettings.Setup(this);
 
 
         boolean isServiceEnabled = isAccessibilityServiceEnabled(this, MyAccessibilityService.class);
 
         if (!isServiceEnabled) {
-            openSpecificAccessibilityServiceSettings(null);
+            // openSpecificAccessibilityServiceSettings(null);
         }
         if (!Settings.canDrawOverlays(this)) {
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:" + getPackageName()));
-            startActivity(intent);
+            // startActivity(intent);
         }
 
         refreshPermissionStatuses();
@@ -209,10 +190,12 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
                     != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.POST_NOTIFICATIONS}, 101);
+                // ActivityCompat.requestPermissions(this,
+                //        new String[]{Manifest.permission.POST_NOTIFICATIONS}, 101);
             }
         }
+
+
         PeriodicWorkRequest checkRequest =
                 new PeriodicWorkRequest.Builder(VersionCheckWorker.class, 2, TimeUnit.DAYS)
                         .build();

@@ -1,8 +1,6 @@
 package made.by.human.tiktokantiburn;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -13,9 +11,12 @@ import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
+import made.by.human.tiktokantiburn.helpers.ResourceHelper;
+import made.by.human.tiktokantiburn.helpers.ShouldRun;
+import made.by.human.tiktokantiburn.settings.__SettingsGetter;
 
 public class __AppHook implements IXposedHookLoadPackage {
-
+    View targetButton;
 
 
 
@@ -89,24 +90,27 @@ public class __AppHook implements IXposedHookLoadPackage {
 
 
 
-    public void RealUpdate(boolean statement, View targetButton) {
-        if (statement) {
-            targetButton.setAlpha(0f);
-        } else {
-            targetButton.setVisibility(View.GONE);
+    public void setZeroAlpha(boolean shouldBeZero, View targetButton) {
+        if (shouldBeZero) { targetButton.setAlpha(0f); }
+        else if (targetButton.getAlpha() == 0f) {targetButton.setAlpha(1f);}
+    }
+    public void setDisplayNone(boolean shouldBeGone, View targetButton) {
+        if (shouldBeGone) { targetButton.setVisibility(View.GONE);}
+        else if (targetButton.getVisibility() == View.GONE) {
+            targetButton.setVisibility(View.VISIBLE);
         }
     }
 
 
-    public void UpdateViewByRules(Context context, View targetButton) {
-        SharedPreferences prefs = context.getSharedPreferences("LSPrefs", Context.MODE_PRIVATE);
-        boolean someSetting = prefs.getBoolean("XPOSED:MakeInvisibleInstead", false);
-        RealUpdate(someSetting, targetButton);
+    public void UpdateViewByRules(Activity ctx, View targetButton) {
+        boolean HidePlusButton = __SettingsGetter.getBoolean(ctx, "HidePlusButton", false);
+        boolean SetDisplayNone = __SettingsGetter.getBoolean(ctx, "RemoveFromPanel", false);
+        setZeroAlpha(HidePlusButton, targetButton);
+        setDisplayNone(SetDisplayNone, targetButton);
     }
 
-    public boolean IsOldHookMethod(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences("LSPrefs", Context.MODE_PRIVATE);
-        return prefs.getBoolean("XPOSED:OldHookMethod", false);
+    public boolean IsOldHookMethod(Activity ctx) {
+        return __SettingsGetter.getBoolean(ctx, "OldDetectionMethod", false);
     }
 
 
@@ -120,11 +124,12 @@ public class __AppHook implements IXposedHookLoadPackage {
         XposedHelpers.findAndHookMethod("com.ss.android.ugc.aweme.main.MainActivity", lpparam.classLoader, "onWindowFocusChanged", boolean.class, new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                if (!ShouldRun.check(param.thisObject)) {returnToBasics(); return;}
                 final Activity activity = (Activity) param.thisObject;
                 activity.runOnUiThread(() -> {
                     new android.os.Handler().postDelayed(() -> {
                         View root = activity.getWindow().getDecorView().getRootView();
-                        View targetButton = null;
+                        targetButton = null;
                         if (IsOldHookMethod(activity)) {
                             targetButton = findViewByContentDescription(root, ResourceHelper.getString(R.string.LSPosedHookButtonByText));
                         }
@@ -154,13 +159,6 @@ public class __AppHook implements IXposedHookLoadPackage {
             }
         });
         XposedHelpers.findAndHookMethod("com.ss.android.ugc.aweme.main.MainActivity",
-            lpparam.classLoader, "onPause", new XC_MethodHook() {
-            @Override
-            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                foundedButton = null;
-            }
-        });
-        XposedHelpers.findAndHookMethod("com.ss.android.ugc.aweme.main.MainActivity",
             lpparam.classLoader, "onResume", new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
@@ -168,6 +166,14 @@ public class __AppHook implements IXposedHookLoadPackage {
             }
         });
 
+    }
+
+
+    private void returnToBasics() {
+        if (targetButton != null) {
+            targetButton.setVisibility(View.VISIBLE);
+            targetButton.setAlpha(1f);
+        }
     }
 
 

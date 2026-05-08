@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="#241F1F">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/EnableModule"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/switch_like_title"
+            android:checked="false"
+            android:gravity="center"
+            android:padding="20dp"
+            android:paddingStart="0dp"
+            android:paddingEnd="15dp"
+            android:text="Enable Module"
+            android:textColor="@color/ButtonForeground"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:switchPadding="-38dp"
+            app:thumbTint="@color/SeekBackgroundFilled"
+            app:trackDecorationTint="@color/DarkABit"
+            app:trackTint="@color/DarkABit" />
+
+        <View
+            android:id="@+id/divider6"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/DarkABit" />
+
+        <LinearLayout
+            android:id="@+id/ModuleLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/ActivateBinderMode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/pleasestar"
+                    android:onClick="openRequestTopWindow"
+                    android:padding="15dp"
+                    android:text="Run Binder"
+                    android:textColor="@color/SeekBackgroundFilled"
+                    app:cornerRadius="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Allows to hide any element YOU want. May be uneffective after structure update"
+                    android:textColor="@color/MID"
+                    android:textSize="12sp"
+                    app:layout_constraintTop_toBottomOf="@+id/ActivateBinderMode" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/divider7"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/DarkABit" />
+
+            <made.by.human.tiktokantiburn.BlockableLinearLayout
+                android:id="@+id/RequiresNonBinder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="30dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/Warning"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/fast_setting_bg"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="4dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/warning" />
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:alpha="0.75"
+                        android:text="Приведенные настройки ниже - зависят от структуры TikTok на вашем устройстве. Если функции ниже не работают - значит ваша версия TikTok отличается структурой XML на которой я готовил эти функции"
+                        android:textColor="@color/SeekBackgroundFilled"
+                        android:textSize="10sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/LSPosed_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:animateLayoutChanges="true"
+                    android:background="@drawable/fast_setting_bg"
+                    android:padding="12dp"
+                    app:layout_constraintTop_toBottomOf="@+id/divider3">
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/removeFromPanel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="Скрыть из панели"
+                        android:textColor="@color/SeekBackgroundFilled"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/HidePlusButton"
+                        app:thumbTint="@color/SeekBackgroundFilled"
+                        app:trackDecorationTint="@color/SeekBackgroundFilled"
+                        app:trackTint="@color/MID" />
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/RemoveFromPanel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="Скрыть из панели"
+                        android:textColor="@color/SeekBackgroundFilled"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/HidePlusButton"
+                        app:thumbTint="@color/SeekBackgroundFilled"
+                        app:trackDecorationTint="@color/SeekBackgroundFilled"
+                        app:trackTint="@color/MID" />
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/HidePlusButton"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:checked="false"
+                        android:text="Прозрачная кнопка &quot;+&quot;"
+                        android:textColor="@color/SeekBackgroundFilled"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:thumbTint="@color/SeekBackgroundFilled"
+                        app:trackDecorationTint="@color/SeekBackgroundFilled"
+                        app:trackTint="@color/MID" />
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout4"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="4dp"
+                        android:animateLayoutChanges="true"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/RemoveFromPanel">
+
+                        <ImageView
+                            android:id="@+id/imageView2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/lspreview_1" />
+
+                        <ImageView
+                            android:id="@+id/CenterPlusButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.75"
+                            app:srcCompat="@drawable/lspreview_2" />
+
+                        <ImageView
+                            android:id="@+id/imageView5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/lspreview_3" />
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/divider8"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="12dp"
+                        android:background="?android:attr/listDivider"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/OldDetectionMethod"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:alpha="0.85"
+                        android:checked="false"
+                        android:text="@string/LSPosed_OldDetection"
+                        android:textColor="@color/SeekBackgroundFilled"
+                        android:textSize="16sp"
+                        android:textStyle="italic"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/divider8"
+                        app:thumbTint="@color/SeekBackgroundFilled"
+                        app:trackDecorationTint="@color/SeekBackgroundFilled"
+                        app:trackTint="@color/MID" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/LSPosed_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:animateLayoutChanges="true"
+                    android:background="@drawable/fast_setting_bg"
+                    android:padding="12dp"
+                    app:layout_constraintTop_toBottomOf="@+id/divider3">
+
+                    <TextView
+                        android:id="@+id/topPaneModificatorDisabled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Неактивно"
+                        android:textColor="@color/SeekBackground"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/TopPaneModificatorText"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/TopPaneModificatorText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Яркость верхней панели"
+                        android:textColor="@color/SeekBackgroundFilled"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@+id/topPaneModificatorDisabled"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.slider.Slider
+                        android:id="@+id/TopPaneModifierValue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="-8dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="-8dp"
+                        android:contentDescription="@string/IdleBrightness"
+                        android:stepSize="1"
+                        android:value="100"
+                        android:valueFrom="0"
+                        android:valueTo="100"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/topPaneModificatorDisabled" />
+
+                    <ImageView
+                        android:id="@+id/topPaneImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/TopPaneModifierValue"
+                        app:srcCompat="@drawable/toppane" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/LSPosed_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:animateLayoutChanges="true"
+                    android:background="@drawable/fast_setting_bg"
+                    android:padding="12dp"
+                    tools:layout_editor_absoluteY="578dp">
+
+                    <TextView
+                        android:id="@+id/bottomPaneModificatorDisabled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Неактивно"
+                        android:textColor="@color/SeekBackground"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/bottomPaneModificatorText"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/bottomPaneModificatorText"
+                        tools:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/bottomPaneModificatorText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Яркость нижней панели"
+                        android:textColor="@color/SeekBackgroundFilled"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@+id/bottomPaneModificatorDisabled"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.slider.Slider
+                        android:id="@+id/BottomPaneModifierValue_"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="-8dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="-8dp"
+                        android:contentDescription="@string/IdleBrightness"
+                        android:stepSize="1"
+                        android:value="100"
+                        android:valueFrom="0"
+                        android:valueTo="100"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/bottomPaneModificatorDisabled" />
+
+                    <ImageView
+                        android:id="@+id/bottomPaneImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:cropToPadding="true"
+                        android:scaleType="centerInside"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/BottomPaneModifierValue_"
+                        app:srcCompat="@drawable/bottom_pane" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/LSPosed_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:animateLayoutChanges="true"
+                    android:background="@drawable/fast_setting_bg"
+                    android:padding="12dp"
+                    tools:layout_editor_absoluteY="578dp">
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/Shake2Show_API"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="@string/Shake2Show"
+                        android:textColor="@color/SeekBackgroundFilled"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/HidePlusButton"
+                        app:thumbTint="@color/SeekBackgroundFilled"
+                        app:trackDecorationTint="@color/SeekBackgroundFilled"
+                        app:trackTint="@color/MID" />
+
+                    <TextView
+                        android:id="@+id/textView8"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:alpha="0.75"
+                        android:text="@string/Shake2SHowDescription"
+                        android:textColor="@color/SeekBackgroundFilled"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView"
+                        app:layout_constraintTop_toBottomOf="@+id/Shake2Show_API" />
+
+                    <TextView
+                        android:id="@+id/textView17"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="-6dp"
+                        android:background="@drawable/verbg"
+                        android:padding="6dp"
+                        android:scaleX="0.75"
+                        android:scaleY="0.75"
+                        android:text="@string/BatteryExpensive"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+                    <TextView
+                        android:id="@+id/textView18"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/HighBatteryUsage"
+                        android:textColor="@color/MID"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView17"
+                        app:layout_constraintStart_toEndOf="@+id/textView17"
+                        app:layout_constraintTop_toTopOf="@+id/textView17" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </made.by.human.tiktokantiburn.BlockableLinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

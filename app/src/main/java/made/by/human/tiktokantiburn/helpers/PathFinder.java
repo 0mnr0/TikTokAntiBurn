@@ -46,7 +46,7 @@ public class PathFinder {
                     }
                 }
 
-                if (sameTypeCount > 1) {
+                if (sameTypeCount > 1 && myIndex!=1) {
                     parts.addFirst(simpleName + "=" + myIndex);
                     if (showDebugPath) {
                         debugSearch.append(simpleName).append("=").append(myIndex).append("(").append(sameTypeCount).append(")/");
@@ -237,20 +237,33 @@ public class PathFinder {
         for (int j = 0; j < group.getChildCount(); j++) {
             View child = group.getChildAt(j);
             String simpleName = child.getClass().getSimpleName();
-
-            if (simpleName.isEmpty()) {
-                simpleName = child.getClass().getName();
-            }
+            if (simpleName.isEmpty()) simpleName = child.getClass().getName();
 
             if (simpleName.equals(segment.className)) {
                 sameTypeCounter++;
-                if (sameTypeCounter == targetIndex) {
-                    return child;
-                }
+                if (sameTypeCounter == targetIndex) return child;
+            } else if (isTransparentWrapper(child, segment.className)) {
+                // Прозрачная обёртка — ищем нужный класс внутри неё
+                View inner = findChildBySegment((ViewGroup) child, segment);
+                if (inner != null) return inner;
             }
         }
-
         return null;
+    }
+
+    private static boolean isTransparentWrapper(View view, String lookingFor) {
+        if (!(view instanceof ViewGroup)) return false;
+        String name = view.getClass().getSimpleName();
+        // Однобуквенные обфусцированные имена — потенциальные обёртки
+        if (name.length() > 2) return false;
+        ViewGroup vg = (ViewGroup) view;
+        if (vg.getChildCount() == 0) return false;
+        // Проверяем, есть ли нужный класс среди детей
+        for (int i = 0; i < vg.getChildCount(); i++) {
+            String childName = vg.getChildAt(i).getClass().getSimpleName();
+            if (childName.equals(lookingFor)) return true;
+        }
+        return false;
     }
 
     private static View searchSingle(View root, List<PathSegment> segments) {

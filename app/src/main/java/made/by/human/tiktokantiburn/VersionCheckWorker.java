@@ -1,7 +1,5 @@
 package made.by.human.tiktokantiburn;
 
-import static made.by.human.tiktokantiburn.ResourceHelper.getString;
-
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -13,7 +11,6 @@ import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
-import androidx.core.os.BuildCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 

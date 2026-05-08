@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SetupFloatingWindows extends Service {
+    final String PrefsFileName = "BlockData";
     boolean dragging = false;
 
     ConstraintLayout blockBurnSettings;
@@ -67,7 +68,7 @@ public class SetupFloatingWindows extends Service {
 
     @SuppressLint({"SetWorldReadable", "ApplySharedPref"})
     public void SaveSettings(String settingName, Object value) {
-        SharedPreferences prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences(PrefsFileName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
         if (value instanceof String) {
@@ -332,7 +333,7 @@ public class SetupFloatingWindows extends Service {
     }
 
     public String GetString(String settingName, String defaultValue) {
-        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences(PrefsFileName, MODE_PRIVATE);
         return prefs.getString(settingName, defaultValue);
     }
 
@@ -365,7 +366,7 @@ public class SetupFloatingWindows extends Service {
     }
 
     public boolean GetBoolean(String settingName) {
-        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences(PrefsFileName, MODE_PRIVATE);
         return prefs.getBoolean(settingName, false);
     }
 

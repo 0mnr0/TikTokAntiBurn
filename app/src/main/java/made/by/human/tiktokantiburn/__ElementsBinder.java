@@ -3,7 +3,6 @@ package made.by.human.tiktokantiburn;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.XModuleResources;
 import android.view.Gravity;
@@ -34,7 +33,10 @@ import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 import made.by.human.tiktokantiburn.helpers.HIERARCHY;
 import made.by.human.tiktokantiburn.helpers.PathFinder;
+import made.by.human.tiktokantiburn.helpers.ResourceHelper;
+import made.by.human.tiktokantiburn.helpers.ShouldRun;
 import made.by.human.tiktokantiburn.helpers.ViewState;
+import made.by.human.tiktokantiburn.settings.__SettingsGetter;
 
 public class __ElementsBinder implements IXposedHookZygoteInit, IXposedHookLoadPackage {
     private final String myPkgName = "made.by.human.tiktokantiburn";
@@ -67,7 +69,7 @@ public class __ElementsBinder implements IXposedHookZygoteInit, IXposedHookLoadP
 
     @Override
     public void initZygote(StartupParam startupParam) {
-        XModuleResources moduleRes = XModuleResources.createInstance(startupParam.modulePath, null);
+        //XModuleResources moduleRes = XModuleResources.createInstance(startupParam.modulePath, null);
     }
 
 
@@ -81,6 +83,7 @@ public class __ElementsBinder implements IXposedHookZygoteInit, IXposedHookLoadP
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) {
                         View view = (View) param.thisObject;
+
                         if (notXposedTriggers(view) && enableBinder) {
                             RootWindow = view.getRootView();
                             param.setResult(true);
@@ -98,6 +101,7 @@ public class __ElementsBinder implements IXposedHookZygoteInit, IXposedHookLoadP
                 new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) {
+
                         final View.OnClickListener originalListener = (View.OnClickListener) param.args[0];
                         param.args[0] = (View.OnClickListener) v -> {
                             if (notXposedTriggers(v) && enableBinder) {
@@ -110,9 +114,12 @@ public class __ElementsBinder implements IXposedHookZygoteInit, IXposedHookLoadP
                 }
         );
 
+
         XposedHelpers.findAndHookMethod("com.ss.android.ugc.aweme.main.MainActivity", lpparam.classLoader, "onWindowFocusChanged", boolean.class, new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) {
+                if (!ShouldRun.check(param.thisObject, true)) {returnToBasics(); return;}
+
                 XposedBridge.log("[ContextSearch] Running...");
                 AppContext = (Context) param.thisObject;
                 if (AppContext == null) {
@@ -120,45 +127,28 @@ public class __ElementsBinder implements IXposedHookZygoteInit, IXposedHookLoadP
                 }
 
                 XposedBridge.log("[ContextSearch] Found");
-                SharedPreferences prefs = AppContext.getSharedPreferences("LSPrefs", Context.MODE_PRIVATE);
-                if (prefs.getBoolean("XPOSED:RunBinder", false)) {
+                if (__SettingsGetter.getBoolean(AppContext, "StartWithBinder", false)) {
                     enableBinder = true;
-                    loadList(prefs);
                     injectLayout((Activity) param.thisObject);
                     XposedBridge.log("[ContextSearch] Should be injected");
                 } else {
                     enableBinder = false;
-                    XposedBridge.log("[ContextSearch] Skipped (XPOSED:RunBinder) -> false");
+                    XposedBridge.log("[ContextSearch] Skipped (StartWithBinder) -> false");
                 }
                 XposedBridge.log("[enableBinder]: "+enableBinder);
             }
         });
     }
 
-
-
-    public void loadList(SharedPreferences prefs){
-        Set<String> Settings = prefs.getStringSet("ElementsModifiers", new HashSet<>());
-
-        Settings.forEach(line -> {
-            XposedBridge.log("[Loading BY Search]: "+line);
-            String[] splitData = line.split(";");
-            float Alpha = Float.parseFloat(splitData[0]); if (Alpha < 0.3) {Alpha = 0.3f;}
-            final boolean keepOnEvery = splitData[2].equals("1");
-            final String ViewPath = splitData[3];
-
-
-            float finalAlpha = Alpha;
-            List<View> SearchResultList = PathFinder.search(RootWindow, ViewPath, false);
-            SearchResultList.forEach(view -> {
-                XposedBridge.log("[Loading BY Result]: "+view);
-                if (view != null) {
-                    ModifiedViews.put(view, new ViewState(finalAlpha, View.VISIBLE, keepOnEvery));
-                }
-            });
-
+    public void returnToBasics() {
+        ModifiedViews.forEach((view, value) -> {
+            view.setVisibility(View.VISIBLE);
+            view.setAlpha(1f);
         });
+        ModifiedViews.clear();
     }
+
+
 
 
 
@@ -253,7 +243,6 @@ public class __ElementsBinder implements IXposedHookZygoteInit, IXposedHookLoadP
 
 
     public void Save() {
-        SharedPreferences.Editor Prefs = AppContext.getSharedPreferences("LSPrefs", Context.MODE_PRIVATE).edit();
         Set<String> set = new HashSet<>();
 
 
@@ -263,29 +252,28 @@ public class __ElementsBinder implements IXposedHookZygoteInit, IXposedHookLoadP
             set.add(ApplyRules+ElementPath);
         });
 
-        Prefs.putStringSet(
+        __SettingsGetter.putStringSet(
+                AppContext,
                 "ElementsModifiers",
                 set
-        ).apply();
-        Prefs.putBoolean("XPOSED:RunBinder", false).apply();
+        );
+        __SettingsGetter.setBoolean(AppContext, "StartWithBinder", false);
         if (GlobalSettingsPanel.getParent() != null) {
             ((ViewGroup) GlobalSettingsPanel.getParent()).removeView(GlobalSettingsPanel);
         }
+        if (activeView != null) { HIERARCHY.ClearBorder(activeView); }
         enableBinder = false;
         Toast.makeText(AppContext, ResourceHelper.getString(R.string.__Binder_Saved), Toast.LENGTH_LONG).show();
         Toast.makeText(AppContext, ResourceHelper.getString(R.string.__Binder_Saved2), Toast.LENGTH_LONG).show();
-
-
-
     }
 
 
     public void JustClose() {
-        SharedPreferences.Editor Prefs = AppContext.getSharedPreferences("LSPrefs", Context.MODE_PRIVATE).edit();
-        Prefs.putBoolean("XPOSED:RunBinder", false).apply();
+        __SettingsGetter.setBoolean(AppContext, "StartWithBinder", false);
         if (GlobalSettingsPanel.getParent() != null) {
             ((ViewGroup) GlobalSettingsPanel.getParent()).removeView(GlobalSettingsPanel);
         }
+        if (activeView != null) { HIERARCHY.ClearBorder(activeView); }
         enableBinder = false;
     }
 

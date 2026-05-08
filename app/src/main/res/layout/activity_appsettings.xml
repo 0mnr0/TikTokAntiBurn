@@ -26,7 +26,7 @@
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
                 android:text="@string/fastSettings"
-                android:textColor="@color/ButtonBackdround"
+                android:textColor="@color/ButtonBackground"
                 android:textSize="34sp"
                 android:textStyle="bold" />
 
@@ -37,7 +37,7 @@
                 android:paddingTop="20dp"
                 android:paddingBottom="4dp"
                 android:text="@string/GlobalSettingsDivide"
-                android:textColor="@color/SeekBackdround"
+                android:textColor="@color/SeekBackground"
                 android:textSize="18sp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -52,7 +52,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/packetnamedescription"
-                    android:textColor="@color/ButtonBackdround"
+                    android:textColor="@color/ButtonBackground"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -68,11 +68,11 @@
                     app:boxCornerRadiusBottomStart="8dp"
                     app:boxCornerRadiusTopEnd="8dp"
                     app:boxCornerRadiusTopStart="8dp"
-                    app:boxStrokeColor="@color/SeekBackdround"
+                    app:boxStrokeColor="@color/SeekBackground"
                     app:boxStrokeWidth="0dp"
-                    app:cursorColor="@color/ButtonBackdround"
+                    app:cursorColor="@color/ButtonBackground"
                     app:helperTextEnabled="false"
-                    app:hintTextColor="@color/ButtonBackdround"
+                    app:hintTextColor="@color/ButtonBackground"
                     app:layout_constraintTop_toBottomOf="@+id/textView5"
                     tools:layout_editor_absoluteX="12dp">
 
@@ -84,7 +84,7 @@
                         android:imeOptions="actionDone|actionNext"
                         android:inputType="text"
                         android:maxLines="1"
-                        android:textColor="@color/ButtonBackdround"
+                        android:textColor="@color/ButtonBackground"
                         tools:ignore="HardcodedText" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -106,15 +106,15 @@
                     android:layout_height="wrap_content"
                     android:checked="false"
                     android:text="@string/OptimalSwitchTitle"
-                    android:textColor="@color/SeekBackdroundFilled"
+                    android:textColor="@color/SeekBackgroundFilled"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:thumbTint="@color/SeekBackdroundFilled"
-                    app:trackDecorationTint="@color/SeekBackdroundFilled"
+                    app:thumbTint="@color/SeekBackgroundFilled"
+                    app:trackDecorationTint="@color/SeekBackgroundFilled"
                     app:trackTint="@color/MID" />
 
                 <TextView
@@ -124,7 +124,7 @@
                     android:alpha="0.75"
                     android:paddingBottom="6dp"
                     android:text="@string/OptimalSwitchDescription"
-                    android:textColor="@color/SeekBackdroundFilled"
+                    android:textColor="@color/SeekBackgroundFilled"
                     app:layout_constraintStart_toStartOf="@+id/ViewGONE"
                     app:layout_constraintTop_toBottomOf="@+id/ViewGONE" />
 
@@ -146,14 +146,14 @@
                     android:layout_height="wrap_content"
                     android:checked="false"
                     android:text="@string/FullScreenAPITitle"
-                    android:textColor="@color/SeekBackdroundFilled"
+                    android:textColor="@color/SeekBackgroundFilled"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:thumbTint="@color/SeekBackdroundFilled"
-                    app:trackDecorationTint="@color/SeekBackdroundFilled"
+                    app:thumbTint="@color/SeekBackgroundFilled"
+                    app:trackDecorationTint="@color/SeekBackgroundFilled"
                     app:trackTint="@color/MID" />
 
                 <TextView
@@ -163,25 +163,17 @@
                     android:alpha="0.75"
                     android:paddingBottom="6dp"
                     android:text="@string/FullScreenAPIDescription"
-                    android:textColor="@color/SeekBackdroundFilled"
+                    android:textColor="@color/SeekBackgroundFilled"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/FullScreenAPISwitch" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="32dp"
-                android:paddingBottom="4dp"
-                android:text="@string/MainElementSettingsDivide"
-                android:textColor="@color/SeekBackdround"
-                android:textSize="18sp" />
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/SomeSetting3"
+                android:id="@+id/Main_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -189,90 +181,26 @@
                 android:padding="12dp">
 
                 <com.google.android.material.materialswitch.MaterialSwitch
-                    android:id="@+id/MinifiedVersion"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:checked="false"
-                    android:text="@string/MinifiedStatus"
-                    android:textColor="@color/SeekBackdroundFilled"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:thumbTint="@color/SeekBackdroundFilled"
-                    app:trackDecorationTint="@color/SeekBackdroundFilled"
-                    app:trackTint="@color/MID" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/SomeSetting"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:animateLayoutChanges="true"
-                android:background="@drawable/fast_setting_bg"
-                android:paddingTop="12dp">
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
-                    android:text="@string/fastSettingsMainFlowtingWindow"
-                    android:textColor="@color/ButtonBackdround"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="@+id/slider"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <com.google.android.material.slider.Slider
-                    android:id="@+id/slider"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="Setup a height of popup"
-                    android:value="50"
-                    android:valueFrom="0"
-                    android:valueTo="100"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView"
-                    tools:ignore="HardcodedText"
-                    tools:tickColorInactive="#00000000" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/SomeSetting2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:background="@drawable/fast_setting_bg"
-                android:padding="12dp">
-
-                <com.google.android.material.materialswitch.MaterialSwitch
-                    android:id="@+id/TheSwitchingTool"
+                    android:id="@+id/HideOnTouch"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:checked="false"
                     android:text="@string/fastSettingsGoneOnclick"
-                    android:textColor="@color/SeekBackdroundFilled"
+                    android:textColor="@color/SeekBackgroundFilled"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:thumbTint="@color/SeekBackdroundFilled"
-                    app:trackDecorationTint="@color/SeekBackdroundFilled"
+                    app:thumbTint="@color/SeekBackgroundFilled"
+                    app:trackDecorationTint="@color/SeekBackgroundFilled"
                     app:trackTint="@color/MID" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/SomeSetting5"
+                android:id="@+id/Main_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -285,14 +213,14 @@
                     android:layout_height="match_parent"
                     android:checked="false"
                     android:text="@string/InputMethodSkip"
-                    android:textColor="@color/SeekBackdroundFilled"
+                    android:textColor="@color/SeekBackgroundFilled"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:thumbTint="@color/SeekBackdroundFilled"
-                    app:trackDecorationTint="@color/SeekBackdroundFilled"
+                    app:thumbTint="@color/SeekBackgroundFilled"
+                    app:trackDecorationTint="@color/SeekBackgroundFilled"
                     app:trackTint="@color/MID" />
 
                 <TextView
@@ -301,7 +229,7 @@
                     android:layout_height="wrap_content"
                     android:alpha="0.75"
                     android:text="@string/SupportedInputMethods"
-                    android:textColor="@color/SeekBackdroundFilled"
+                    android:textColor="@color/SeekBackgroundFilled"
                     app:layout_constraintStart_toStartOf="@+id/InputMethodsSwitch"
                     app:layout_constraintTop_toBottomOf="@+id/InputMethodsSwitch" />
 
@@ -332,7 +260,7 @@
                     android:paddingTop="32dp"
                     android:paddingBottom="4dp"
                     android:text="@string/LSPosedSettingTitle"
-                    android:textColor="@color/ButtonBackdround"
+                    android:textColor="@color/ButtonBackground"
                     android:textSize="24sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -360,7 +288,7 @@
                     android:paddingLeft="12dp"
                     android:paddingRight="12dp"
                     android:text="@string/LSPosedWarning"
-                    android:textColor="@color/ButtonBackdround"
+                    android:textColor="@color/ButtonBackground"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/LSSetting5" />
@@ -379,14 +307,14 @@
                         android:layout_height="match_parent"
                         android:checked="false"
                         android:text="@string/LSPosed_OldDetection"
-                        android:textColor="@color/SeekBackdroundFilled"
+                        android:textColor="@color/SeekBackgroundFilled"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:thumbTint="@color/SeekBackdroundFilled"
-                        app:trackDecorationTint="@color/SeekBackdroundFilled"
+                        app:thumbTint="@color/SeekBackgroundFilled"
+                        app:trackDecorationTint="@color/SeekBackgroundFilled"
                         app:trackTint="@color/MID" />
 
                     <TextView
@@ -396,7 +324,7 @@
                         android:alpha="0.75"
                         android:paddingBottom="6dp"
                         android:text="@string/LSPosed_OldDetectionDescription"
-                        android:textColor="@color/SeekBackdroundFilled"
+                        android:textColor="@color/SeekBackgroundFilled"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/UseOldDetectionMethod" />
@@ -419,14 +347,14 @@
                         android:layout_height="match_parent"
                         android:checked="false"
                         android:text="@string/LSPosedHideType"
-                        android:textColor="@color/SeekBackdroundFilled"
+                        android:textColor="@color/SeekBackgroundFilled"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:thumbTint="@color/SeekBackdroundFilled"
-                        app:trackDecorationTint="@color/SeekBackdroundFilled"
+                        app:thumbTint="@color/SeekBackgroundFilled"
+                        app:trackDecorationTint="@color/SeekBackgroundFilled"
                         app:trackTint="@color/MID" />
 
                     <TextView
@@ -436,7 +364,7 @@
                         android:alpha="0.75"
                         android:paddingBottom="6dp"
                         android:text="@string/LSPosedHideDescription"
-                        android:textColor="@color/SeekBackdroundFilled"
+                        android:textColor="@color/SeekBackgroundFilled"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/MakeInvisibleInstead" />
@@ -460,22 +388,22 @@
                         android:layout_height="match_parent"
                         android:checked="false"
                         android:text="@string/TopPaneModifier"
-                        android:textColor="@color/SeekBackdroundFilled"
+                        android:textColor="@color/SeekBackgroundFilled"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:thumbTint="@color/SeekBackdroundFilled"
-                        app:trackDecorationTint="@color/SeekBackdroundFilled"
+                        app:thumbTint="@color/SeekBackgroundFilled"
+                        app:trackDecorationTint="@color/SeekBackgroundFilled"
                         app:trackTint="@color/MID" />
 
                     <TextView
-                        android:id="@+id/topPaneModificatorDescription"
+                        android:id="@+id/topPaneModificatorDisabled"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/IdleBrightness"
-                        android:textColor="@color/SeekBackdround"
+                        android:textColor="@color/SeekBackground"
                         app:layout_constraintStart_toStartOf="@+id/TopPaneModifier"
                         app:layout_constraintTop_toBottomOf="@+id/TopPaneModifier" />
 
@@ -492,7 +420,7 @@
                         android:valueTo="100"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/topPaneModificatorDescription" />
+                        app:layout_constraintTop_toBottomOf="@+id/topPaneModificatorDisabled" />
 
                     <ImageView
                         android:id="@+id/topPaneImage"
@@ -520,14 +448,14 @@
                         android:layout_height="match_parent"
                         android:checked="false"
                         android:text="@string/BottomPaneModifier"
-                        android:textColor="@color/SeekBackdroundFilled"
+                        android:textColor="@color/SeekBackgroundFilled"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:thumbTint="@color/SeekBackdroundFilled"
-                        app:trackDecorationTint="@color/SeekBackdroundFilled"
+                        app:thumbTint="@color/SeekBackgroundFilled"
+                        app:trackDecorationTint="@color/SeekBackgroundFilled"
                         app:trackTint="@color/MID" />
 
                     <TextView
@@ -535,7 +463,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/IdleBrightness"
-                        android:textColor="@color/SeekBackdround"
+                        android:textColor="@color/SeekBackground"
                         app:layout_constraintStart_toStartOf="@+id/BottomPaneModifier"
                         app:layout_constraintTop_toBottomOf="@+id/BottomPaneModifier" />
 
@@ -584,14 +512,14 @@
                         android:layout_height="match_parent"
                         android:checked="false"
                         android:text="@string/Shake2Show"
-                        android:textColor="@color/SeekBackdroundFilled"
+                        android:textColor="@color/SeekBackgroundFilled"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:thumbTint="@color/SeekBackdroundFilled"
-                        app:trackDecorationTint="@color/SeekBackdroundFilled"
+                        app:thumbTint="@color/SeekBackgroundFilled"
+                        app:trackDecorationTint="@color/SeekBackgroundFilled"
                         app:trackTint="@color/MID" />
 
                     <TextView
@@ -599,34 +527,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/Shake2SHowDescription"
-                        android:textColor="@color/SeekBackdround"
+                        android:textColor="@color/SeekBackground"
                         app:layout_constraintStart_toStartOf="@+id/Shake2Show"
                         app:layout_constraintTop_toBottomOf="@+id/Shake2Show" />
-
-                    <TextView
-                        android:id="@+id/textView13"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="-6dp"
-                        android:layout_marginTop="8dp"
-                        android:background="@drawable/verbg"
-                        android:padding="6dp"
-                        android:scaleX="0.75"
-                        android:scaleY="0.75"
-                        android:text="@string/BatteryExpensive"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/Shake2ShowDescription" />
-
-                    <TextView
-                        android:id="@+id/textView14"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/HighBatteryUsage"
-                        android:textColor="@color/MID"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView13"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/textView13"
-                        app:layout_constraintTop_toTopOf="@+id/textView13" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
