@@ -1,11 +1,8 @@
 package made.by.human.tiktokantiburn;
 
-import android.accessibilityservice.AccessibilityService;
 import android.app.Application;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityWindowInfo;
@@ -15,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 
-public class MyAccessibilityService extends AccessibilityService {
+public class AccessibilityService extends android.accessibilityservice.AccessibilityService {
     LogSystem logger;
     boolean CompatibilityMode = false;
 

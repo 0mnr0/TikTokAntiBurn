@@ -8,7 +8,6 @@ import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -171,29 +170,7 @@ public class MainActivity extends AppCompatActivity {
         TextView VersionCode = findViewById(R.id.VersionCode);
         VersionCode.setText(LogSystem.LoggerVersion);
         DefaultSettings.Setup(this);
-
-
-        boolean isServiceEnabled = isAccessibilityServiceEnabled(this, MyAccessibilityService.class);
-
-        if (!isServiceEnabled) {
-            // openSpecificAccessibilityServiceSettings(null);
-        }
-        if (!Settings.canDrawOverlays(this)) {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:" + getPackageName()));
-            // startActivity(intent);
-        }
-
         refreshPermissionStatuses();
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
-                    != PackageManager.PERMISSION_GRANTED) {
-                // ActivityCompat.requestPermissions(this,
-                //        new String[]{Manifest.permission.POST_NOTIFICATIONS}, 101);
-            }
-        }
 
 
         PeriodicWorkRequest checkRequest =
@@ -219,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean PermissionSpecialAbilitiesGranted(){
-        return isAccessibilityServiceEnabled(this, MyAccessibilityService.class);
+        return isAccessibilityServiceEnabled(this, AccessibilityService.class);
     }
 
     public void refreshPermissionStatuses() {

@@ -61,7 +61,7 @@ public class VersionCheckWorker extends Worker {
                 return Result.success();
             }
 
-            sendNotification("New App Version", "A new version of the app has been released: " + versionInfo);
+            sendNotification("We found an update", "A new version of the app has been released: " + versionInfo);
             return Result.success();
         } catch (Exception e) {
             return Result.retry();

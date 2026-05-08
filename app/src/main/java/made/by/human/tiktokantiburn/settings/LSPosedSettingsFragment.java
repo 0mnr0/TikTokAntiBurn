@@ -137,8 +137,8 @@ public class LSPosedSettingsFragment extends Fragment {
 
 
     public void UpdateBindInfo() {
-        final String whenBindModeEnabled = "Exit Bind Mode";
-        final String whenBindModeDisabled = "Enter Bind Mode";
+        final String whenBindModeEnabled = getString(R.string.Settings_LSP_BinderTitle_OFF);
+        final String whenBindModeDisabled = getString(R.string.Settings_LSP_BinderTitle_ON);
 
         Settings.Module.setBool(ctx, "StartWithBinder", activeBindMode);
         ActivateBinderAction.setText(activeBindMode ? whenBindModeEnabled : whenBindModeDisabled);

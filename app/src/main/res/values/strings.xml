@@ -65,4 +65,9 @@
     <string name="__Binder_Alpha">Alpha:</string>
     <string name="__Binder_Saved">Saved!</string>
     <string name="__Binder_Saved2">Force restart TikTok to apply!</string>
+    <string name="Settings_ADD_LogsTitle">Record logs</string>
+    <string name="Settings_ADD_LogsDesc">Can use up to 15 MB. Disable if all working fine</string>
+    <string name="Settings_LSP_BinderTitle_ON">Enter \"Click to hide\" Mode</string>
+    <string name="Settings_LSP_BinderDesc">Enable this mode to customize the hiding of any elements. After applying the changes, restart TikTok</string>
+    <string name="Settings_LSP_BinderTitle_OFF">Quit \"Click to hide\" mode</string>
 </resources>

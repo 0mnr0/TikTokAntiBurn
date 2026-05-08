@@ -60,7 +60,7 @@
                     android:backgroundTint="@color/pleasestar"
                     android:onClick="openRequestTopWindow"
                     android:padding="15dp"
-                    android:text="Run Binder"
+                    android:text="@string/Settings_LSP_BinderTitle_ON"
                     android:textColor="@color/SeekBackgroundFilled"
                     app:cornerRadius="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -71,9 +71,11 @@
                     android:id="@+id/textView13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Allows to hide any element YOU want. May be uneffective after structure update"
+                    android:text="@string/Settings_LSP_BinderDesc"
                     android:textColor="@color/MID"
                     android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="@+id/ActivateBinderMode"
+                    app:layout_constraintStart_toStartOf="@+id/ActivateBinderMode"
                     app:layout_constraintTop_toBottomOf="@+id/ActivateBinderMode" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
