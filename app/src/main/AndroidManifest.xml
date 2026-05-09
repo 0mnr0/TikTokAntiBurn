@@ -49,7 +49,7 @@
         </activity>
 
         <service
-            android:name=".AccessibilityService"
+            android:name=".MainAccessibilityService"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">

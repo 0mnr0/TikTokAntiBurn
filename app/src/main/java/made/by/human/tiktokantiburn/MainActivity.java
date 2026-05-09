@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean PermissionSpecialAbilitiesGranted(){
-        return isAccessibilityServiceEnabled(this, AccessibilityService.class);
+        return isAccessibilityServiceEnabled(this, MainAccessibilityService.class);
     }
 
     public void refreshPermissionStatuses() {

@@ -1,5 +1,6 @@
 package made.by.human.tiktokantiburn;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,26 +12,30 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import made.by.human.tiktokantiburn.settings.Settings;
 
-public class AccessibilityService extends android.accessibilityservice.AccessibilityService {
+
+
+@SuppressLint("AccessibilityPolicy")
+public class MainAccessibilityService extends android.accessibilityservice.AccessibilityService {
     LogSystem logger;
     boolean CompatibilityMode = false;
 
 
 
-    public boolean GetBoolean(String settingName, boolean defaultValue) {
-        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
-        return prefs.getBoolean(settingName, defaultValue);
+    public boolean GetBoolean(String settingName, boolean defValue) {
+        return Settings.Service.getBool(this, settingName, defValue);
     }
 
     public String GetString(String settingName, String defValue) {
-        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
-        return prefs.getString(settingName, defValue);
+        return Settings.Service.getString(this, settingName, defValue);
     }
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         final boolean isWindowsChanged = event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED || event.getEventType() == AccessibilityEvent.TYPE_WINDOWS_CHANGED;
+
+        Log.d("[MyAccessibilityService]", "isWChaned:" + isWindowsChanged);
         logger.Save("[MyAccessibilityService] - onAccessibilityEvent received", "Is WindowsChanged: "+isWindowsChanged, true, false);
         boolean ClosePopups;
         CompatibilityMode = GetBoolean("CompatibilityMode", false);

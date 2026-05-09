@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.util.Date;
 
 import android.app.Application;
+import android.util.Log;
 
 import made.by.human.tiktokantiburn.settings.Settings;
 

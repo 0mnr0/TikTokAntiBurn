@@ -3,12 +3,9 @@ package made.by.human.tiktokantiburn.settings;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,17 +13,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.materialswitch.MaterialSwitch;
-import com.google.android.material.textfield.TextInputEditText;
 
 import made.by.human.tiktokantiburn.LogSystem;
 import made.by.human.tiktokantiburn.R;
 
 public class AdditionalSettingsFragment extends Fragment {
-
-
-
-
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -74,7 +65,6 @@ public class AdditionalSettingsFragment extends Fragment {
 
             TextView FullScreenDesc = view.findViewById(R.id.FullScreenAPIText);
             FullScreenDesc.setText(getString(R.string.Settings_ADD_FULLSCREEN_API_NotSupported));
-
         }
 
 
