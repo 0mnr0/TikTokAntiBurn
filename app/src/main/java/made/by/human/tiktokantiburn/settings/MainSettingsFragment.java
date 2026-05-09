@@ -58,7 +58,7 @@ public class MainSettingsFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                Settings.Service.setString(ctx, "TriggerPacketName", s.toString());
+                Settings.Service.setString(ctx, "TriggerPacketName", s.toString().replace(" ", ""));
             }
         });
         TriggerPacketName.setText(Settings.Service.getString(ctx, "TriggerPacketName", "com.zhiliaoapp.musically"));

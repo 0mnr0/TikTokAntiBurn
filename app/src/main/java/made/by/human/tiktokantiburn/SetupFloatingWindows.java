@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
@@ -33,6 +33,8 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+import made.by.human.tiktokantiburn.settings.Settings;
 
 public class SetupFloatingWindows extends Service {
     final String PrefsFileName = "BlockData";
@@ -68,20 +70,15 @@ public class SetupFloatingWindows extends Service {
 
     @SuppressLint({"SetWorldReadable", "ApplySharedPref"})
     public void SaveSettings(String settingName, Object value) {
-        SharedPreferences prefs = getSharedPreferences(PrefsFileName, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-
         if (value instanceof String) {
-            editor.putString(settingName, (String) value);
+            Settings.Service.setString(this, settingName, (String) value);
         } else if (value instanceof Integer) {
-            editor.putInt(settingName, (Integer) value);
+            Settings.Service.setInt(this, settingName, (int) value);
         } else if (value instanceof Boolean) {
-            editor.putBoolean(settingName, (Boolean) value);
+            Settings.Service.setBool(this, settingName, (boolean) value);
         } else {
             throw new IllegalArgumentException("Unsupported value type: " + value.getClass().getName());
         }
-
-        editor.commit();
     }
 
 
@@ -351,8 +348,7 @@ public class SetupFloatingWindows extends Service {
     }
 
     public String GetString(String settingName, String defaultValue) {
-        SharedPreferences prefs = getSharedPreferences(PrefsFileName, MODE_PRIVATE);
-        return prefs.getString(settingName, defaultValue);
+        return Settings.Service.getString(this, settingName, defaultValue);
     }
 
     public void SaveSettings(){
@@ -371,35 +367,35 @@ public class SetupFloatingWindows extends Service {
             );
         }
 
-        SharedPreferences prefs = getSharedPreferences("blockPos", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-
-        Gson gson = new Gson();
-        String json = gson.toJson(blockList);
-
-        editor.putString("block_list", json);
-        editor.apply();
+        String json = new Gson().toJson(blockList);
+        Settings.Service.setString(this, "block_list", json);
         closeWindow();
     }
 
     public void launchTikTok() {
-        Intent launchIntent = getPackageManager().getLaunchIntentForPackage(GetString("TriggerPacketName", "com.zhiliaoapp.musically"));
+        String pkg = Settings.Service.getString(
+                this,
+                "TriggerPacketName",
+                "com.zhiliaoapp.musically"
+        );
+
+        PackageManager pm = getApplicationContext().getPackageManager();
+        Intent launchIntent = pm.getLaunchIntentForPackage(pkg);
+
         if (launchIntent != null) {
             launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(launchIntent);
         } else {
-            Toast.makeText(this, getString(R.string.TikTokNotFound), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.TargetPackageAppNotFound), Toast.LENGTH_LONG).show();
         }
     }
 
     public boolean GetBoolean(String settingName) {
-        SharedPreferences prefs = getSharedPreferences(PrefsFileName, MODE_PRIVATE);
-        return prefs.getBoolean(settingName, false);
+        return Settings.Service.getBool(this, settingName, false);
     }
 
     public void LoadSettings(){
-        SharedPreferences prefs = getSharedPreferences("blockPos", MODE_PRIVATE);
-        String json = prefs.getString("block_list", null);
+        String json = Settings.Service.getString(this, "block_list", null);
 
         Gson gson = new Gson();
         Type type = new TypeToken<List<BlockInfo>>(){}.getType();
