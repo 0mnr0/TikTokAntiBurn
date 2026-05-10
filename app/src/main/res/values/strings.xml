@@ -10,7 +10,7 @@
     <string name="Request_Floating">"Request \"Floating windows\" "</string>
     <string name="Request_UsageStats">Request \"Usage Stats\"</string>
     <string name="Request_SpecialThings">Reqeust \"Accessibility\"</string>
-    <string name="ExtendedSettings">Advanced AntiBurn Settings</string>
+    <string name="ExtendedSettings">Create additional blocks</string>
     <string name="ExtendedSetting_Create">Create Element</string>
     <string name="close" translatable="false">X</string>
     <string name="ExtendedSetting_Save">Save</string>

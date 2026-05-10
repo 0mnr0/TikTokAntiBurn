@@ -10,7 +10,7 @@
     <string name="Request_Floating">Запрос \"Поверх других окон\"</string>
     <string name="Request_UsageStats">Запрос \"Доступ об использовании\"</string>
     <string name="Request_SpecialThings">Запрос \"Специальные возможности\"</string>
-    <string name="ExtendedSettings">Расширенная настройка AntiBurn</string>
+    <string name="ExtendedSettings">Создать дополнительные блоки</string>
     <string name="ExtendedSetting_Create">Создать элемент</string>
     <string name="ExtendedSetting_Save">Сохранить</string>
     <string name="ExtendedSetting_WidthUnknown">Ширина: ?px</string>
