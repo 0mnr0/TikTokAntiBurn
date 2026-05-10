@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <accessibility-service
-    android:accessibilityEventTypes="typeWindowStateChanged"
+    android:accessibilityEventTypes="typeWindowStateChanged|typeWindowsChanged"
     android:accessibilityFeedbackType="feedbackSpoken"
     android:notificationTimeout="100"
     android:canRetrieveWindowContent="true"

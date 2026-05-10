@@ -126,6 +126,87 @@
                 app:trackTint="@color/MID" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <View
+            android:id="@+id/divider9"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="32dp"
+            android:background="@color/Settings" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/Main_4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/fast_setting_bg"
+            android:padding="12dp"
+            tools:layout_marginTop="8dp">
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/ShowDefaultElement"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:checked="false"
+                android:text="@string/Settings_Main_ShowDefaultElement"
+                android:textColor="@color/SeekBackgroundFilled"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:thumbTint="@color/SeekBackgroundFilled"
+                app:trackDecorationTint="@color/SeekBackgroundFilled"
+                app:trackTint="@color/MID" />
+
+            <TextView
+                android:id="@+id/textView20"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:alpha="0.75"
+                android:text="@string/Settings_Main_ShowDefaultDesc"
+                android:textColor="@color/SeekBackgroundFilled"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ShowDefaultElement" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ConstraintDefaultPanelHeight"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/fast_setting_bg"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/DefaultPanelHeightText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/Settins_Main_DefaultPanelHeight"
+                android:textColor="@color/SeekBackgroundFilled"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/topPaneModificatorDisabled"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/DefaultPanelHeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="-8dp"
+                android:layout_marginEnd="-8dp"
+                android:contentDescription="@string/IdleBrightness"
+                android:stepSize="1"
+                android:value="100"
+                android:valueTo="200"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/DefaultPanelHeightText" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </LinearLayout>
 </ScrollView>

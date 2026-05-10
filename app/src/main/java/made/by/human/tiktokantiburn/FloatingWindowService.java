@@ -3,7 +3,6 @@ package made.by.human.tiktokantiburn;
 import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
@@ -24,8 +23,10 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import made.by.human.tiktokantiburn.settings.Settings;
+
 public class FloatingWindowService extends Service {
-    final int AnimationLength = 250;
+    final int AnimationLength = 225;
     final int HiddenActionLength = 5000;
     private WindowManager windowManager;
     private LayoutInflater inflater;
@@ -38,7 +39,7 @@ public class FloatingWindowService extends Service {
     public void CreateElement(int x, int y, int width, int height, long radius, float alpha, boolean canBeHidden) {
         View floatingView = inflater.inflate(R.layout.blockburn_quad, null);
 
-        boolean useFullScreenAPI =  GetBoolean("FullScreenAPI");
+        boolean useFullScreenAPI = GetBoolean("FullScreenAPI");
 
         int displayMode = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         if (useFullScreenAPI) {
@@ -112,22 +113,20 @@ public class FloatingWindowService extends Service {
     }
 
     public boolean GetBoolean(String settingName) {
-        SharedPreferences prefs = getSharedPreferences("Preferences", MODE_PRIVATE);
-        return prefs.getBoolean(settingName, false);
+        return Settings.Service.getBool(this, settingName, false);
     }
 
 
     public void LoadCustomBurns(boolean canBeHidden) {
-        SharedPreferences prefs = getSharedPreferences("blockPos", MODE_PRIVATE);
-        String json = prefs.getString("block_list", null);
+        String json = Settings.Service.getString(this, "block_list", null);
 
-        Gson gson = new Gson();
         Type type = new TypeToken<List<BlockInfo>>(){}.getType();
-        List<BlockInfo> blockList = gson.fromJson(json, type);
+        List<BlockInfo> blockList = new Gson().fromJson(json, type);
 
         if (blockList == null || blockList.isEmpty()) {
             return;
         }
+
         for (int i = 0; i < blockList.size(); i++) {
             BlockInfo blockInfo = blockList.get(i);
             CreateElement(blockInfo.x, blockInfo.y, blockInfo.width, blockInfo.height, blockInfo.radius, blockInfo.alpha, canBeHidden);
@@ -149,15 +148,13 @@ public class FloatingWindowService extends Service {
         if (WindowsOpened) {return START_NOT_STICKY;} else {WindowsOpened = true;} // Some systems can call event more than one time, its defend to prevent "multi" popups on same places
         final boolean canBeHidden = GetBoolean("Clickable");
 
-        if (!GetBoolean("DisableMainFloatingWindow")) {
+        if (GetBoolean("ShowDefaultElement")) {
             Display display = windowManager.getDefaultDisplay();
             Point size = new Point();
             display.getSize(size);
             final int elementWidth = (size.x) / 5 - 30;
-            SharedPreferences sharedPreferences = getSharedPreferences("SeekBarPrefs", MODE_PRIVATE);
-            int savedValue = sharedPreferences.getInt("seekBarValue", 40);
-
-            CreateElement((size.x / 2) - (elementWidth / 2), size.y - savedValue, elementWidth, savedValue, 10, 1f, canBeHidden);
+            int savedValue = Settings.Service.getInt(this, "DefaultElementHeight", 80);
+            CreateElement((size.x / 2) - (elementWidth / 2), size.y - savedValue, elementWidth, savedValue, 25, 1f, canBeHidden);
         }
         LoadCustomBurns(canBeHidden);
 

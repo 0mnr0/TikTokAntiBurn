@@ -9,19 +9,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.materialswitch.MaterialSwitch;
+import com.google.android.material.slider.Slider;
 import com.google.android.material.textfield.TextInputEditText;
 
 import made.by.human.tiktokantiburn.R;
 
 public class MainSettingsFragment extends Fragment {
-
+    private ConstraintLayout ConstraintDefaultPanelHeight;
     private TextInputEditText TriggerPacketName;
 
 
@@ -83,16 +86,38 @@ public class MainSettingsFragment extends Fragment {
 
 
 
+        Slider DefaultPanelHeight = view.findViewById(R.id.DefaultPanelHeight);
+        DefaultPanelHeight.addOnChangeListener((slider, progress, fromUser) -> {
+            Settings.Module.setFloat(ctx, "DefaultElementHeight", progress);
+        });
+        DefaultPanelHeight.setValue(Settings.Service.getInt(ctx, "DefaultElementHeight", 100));
+
+        int screenHeight = ctx.getResources().getDisplayMetrics().heightPixels;
+        int savedValue = (int) (screenHeight * 0.09);
+        DefaultPanelHeight.setValueFrom((savedValue + 40) / 3f);
+        DefaultPanelHeight.setValueTo(savedValue);
 
 
 
-
-
+        ConstraintDefaultPanelHeight = view.findViewById(R.id.ConstraintDefaultPanelHeight);
+        MaterialSwitch ShowDefault = view.findViewById(R.id.ShowDefaultElement);
+        ShowDefault.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+            Settings.Service.setBool(ctx, "ShowDefaultElement", isChecked);
+            animateInactiveHeight(isChecked);
+        }));
+        if (Settings.Service.getBool(ctx, "ShowDefaultElement", true)) {
+            ShowDefault.setChecked(true);
+            animateInactiveHeight(true);
+        } else {
+            ShowDefault.setChecked(false);
+            animateInactiveHeight(false);
+        }
     }
 
 
 
-
-
+    public void animateInactiveHeight(boolean isGloballyEnabled) {
+        ConstraintDefaultPanelHeight.animate().alpha(isGloballyEnabled ? 1f : 0.65f).setDuration(200).start();
+    }
 
 }

@@ -70,4 +70,7 @@
     <string name="Alpha">"Прозрачность: "</string>
     <string name="Settings_ADD_FULLSCREEN_API_NotSupported">Эта опция доступна только с Android 9 и выше</string>
     <string name="TargetPackageAppNotFound">Целевой пакет не найден</string>
+    <string name="Settings_Main_ShowDefaultElement">Показывать стандартный элемент</string>
+    <string name="Settings_Main_ShowDefaultDesc">Перекрывает \"+\" внизу экрана</string>
+    <string name="Settins_Main_DefaultPanelHeight">Высота элемента по умолчанию:</string>
 </resources>

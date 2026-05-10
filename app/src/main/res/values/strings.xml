@@ -73,4 +73,7 @@
     <string name="Alpha">Alpha:</string>
     <string name="Settings_ADD_FULLSCREEN_API_NotSupported">This function is available from Android 9+</string>
     <string name="TargetPackageAppNotFound">Target package ID was not found</string>
+    <string name="Settings_Main_ShowDefaultElement">Show default element</string>
+    <string name="Settings_Main_ShowDefaultDesc">Overlaps the \"+\" at the bottom of the screen</string>
+    <string name="Settins_Main_DefaultPanelHeight">The default height of the element:</string>
 </resources>

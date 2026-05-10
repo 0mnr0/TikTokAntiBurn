@@ -3,7 +3,6 @@ package made.by.human.tiktokantiburn;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityWindowInfo;
@@ -35,7 +34,7 @@ public class MainAccessibilityService extends android.accessibilityservice.Acces
     public void onAccessibilityEvent(AccessibilityEvent event) {
         final boolean isWindowsChanged = event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED || event.getEventType() == AccessibilityEvent.TYPE_WINDOWS_CHANGED;
 
-        Log.d("[MyAccessibilityService]", "isWChaned:" + isWindowsChanged);
+        Log.d("accessibilityService", "isWChaned:" + isWindowsChanged);
         logger.Save("[MyAccessibilityService] - onAccessibilityEvent received", "Is WindowsChanged: "+isWindowsChanged, true, false);
         boolean ClosePopups;
         CompatibilityMode = GetBoolean("CompatibilityMode", false);

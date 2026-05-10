@@ -24,7 +24,6 @@ public class BlockableLinearLayout extends LinearLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        // Поглощаем событие, чтобы оно не ушло дальше по иерархии
         return blockTouches || super.onTouchEvent(ev);
     }
 }
