@@ -60,7 +60,10 @@ public class MainAccessibilityService extends android.accessibilityservice.Acces
                             p.startsWith("com.google.android.inputmethod") ||
                                     p.startsWith("com.simejikeyboard") ||
                                     p.startsWith("ru.yandex.androidkeyboard") ||
-                                    p.startsWith("com.touchtype.swiftkey"))) {
+                                    p.startsWith("com.touchtype.swiftkey") ||
+                                    p.startsWith("com.gamelounge.chroomakeyboard") ||
+                                    p.startsWith("com.facemoji.lite")))
+                    {
                         TikTokOpened = false;
                     }
                 }
@@ -70,10 +73,7 @@ public class MainAccessibilityService extends android.accessibilityservice.Acces
                         || activePackages.contains("com.google.android.apps.nexuslauncher")
                         || activePackages.contains("com.miui.home") // MIUI
                         || activePackages.contains("com.huawei.android.launcher") // Huawei
-                        || activePackages.contains("com.gamelounge.chroomakeyboard")  // Chrooma Keyboard
-                        || activePackages.contains("com.facemoji.lite")  // Facemoji Emoji Keyboard
-                        || activePackages.contains("com.samsung.android.launcher")) {
-
+                ) {
                     ClosePopups = true;
                 } else {
                     ClosePopups = !TikTokOpened;
@@ -108,6 +108,7 @@ public class MainAccessibilityService extends android.accessibilityservice.Acces
 
 
     private final Set<String> activePackages = new HashSet<>();
+    private Intent serviceIntent;
     @Override
     public void onServiceConnected() {
         super.onServiceConnected();
@@ -115,6 +116,7 @@ public class MainAccessibilityService extends android.accessibilityservice.Acces
         if (LogSystem.getInstanceOrNull() == null) {
             LogSystem.init((Application) getApplicationContext());
         }
+        serviceIntent = new Intent(this, FloatingWindowService.class);
         logger = LogSystem.getInstance();
         logger.Save("MyAccessibilityService", "Service connected", true, true);
     }
