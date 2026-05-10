@@ -21,6 +21,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import made.by.human.tiktokantiburn.helpers.UpdateChecker;
+
 
 public class VersionCheckWorker extends Worker {
     public VersionCheckWorker(@NonNull Context context, @NonNull WorkerParameters params) {
@@ -35,13 +37,23 @@ public class VersionCheckWorker extends Worker {
         } catch (PackageManager.NameNotFoundException e) {
             return null;
         }
-
     }
 
     @NonNull
     @Override
     public Result doWork() {
         try {
+            UpdateChecker.runAsync(this.getApplicationContext(), (ParseResult) -> {
+                if (ParseResult.isSuccessParse && ParseResult.haveNewUpdate) {
+                    sendNotification(
+                            "We found an update",
+                            "A new version of the app has been released: " + ParseResult.versionName,
+                            ParseResult.ProjectURL
+                    );
+                }
+            });
+
+
             URL url = new URL("https://raw.githubusercontent.com/0mnr0/TikTokAntiBurn/refs/heads/master/app/sampledata/lastversion.inf");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(5000);
@@ -61,16 +73,17 @@ public class VersionCheckWorker extends Worker {
                 return Result.success();
             }
 
-            sendNotification("We found an update", "A new version of the app has been released: " + versionInfo);
+
             return Result.success();
         } catch (Exception e) {
             return Result.retry();
         }
     }
 
-    private void sendNotification(String title, String text) {
+    private void sendNotification(String title, String text, String ProjectURL) {
+        if (ProjectURL == null) {ProjectURL = "https://github.com/0mnr0/TikTokAntiBurn/"; } // just in case
 
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/0mnr0/TikTokAntiBurn/"));
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(ProjectURL));
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 this.getApplicationContext(),
                 0,

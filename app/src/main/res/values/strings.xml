@@ -85,4 +85,5 @@
     <string name="Erase">Erase all</string>
     <string name="Cancel">Cancel</string>
     <string name="Settings_MENU_WasErased">The settings have been reset</string>
+    <string name="NewUpdateTitle">There is an update!</string>
 </resources>

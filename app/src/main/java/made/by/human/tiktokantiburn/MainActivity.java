@@ -39,11 +39,13 @@ import androidx.work.WorkManager;
 
 import java.util.concurrent.TimeUnit;
 
+import made.by.human.tiktokantiburn.helpers.UpdateChecker;
 import made.by.human.tiktokantiburn.settings.DefaultSettings;
 
 
 public class MainActivity extends AppCompatActivity {
     LogSystem logger;
+    String projectURL = "https://github.com/0mnr0/TikTokAntiBurn";
 
 
 
@@ -89,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void OpenGithub(View view) {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/0mnr0/TikTokAntiBurn"));
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(projectURL));
         startActivity(browserIntent);
     }
 
@@ -190,8 +192,9 @@ public class MainActivity extends AppCompatActivity {
                 ExistingPeriodicWorkPolicy.KEEP,
                 checkRequest
         );
-
         UpdateLogsVisibility();
+        CheckUpdates();
+
     }
 
     public void UpdateLogsVisibility() {
@@ -247,6 +250,14 @@ public class MainActivity extends AppCompatActivity {
         UpdateLogsVisibility();
     }
 
-
+    public void CheckUpdates() {
+        ConstraintLayout NewUpdateFound = findViewById(R.id.TheresNewUpdate);
+        UpdateChecker.runAsync(this, (result) -> {
+            if (result.isSuccessParse && result.haveNewUpdate) {
+                if (result.ProjectURL != null) {projectURL = result.ProjectURL;}
+                NewUpdateFound.setVisibility(View.VISIBLE);
+            }
+        });
+    }
 
 }
