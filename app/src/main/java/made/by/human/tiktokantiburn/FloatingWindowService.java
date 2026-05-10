@@ -117,11 +117,14 @@ public class FloatingWindowService extends Service {
     }
 
 
+
+    private static final Gson GSON = new Gson();
+    private static final Type BLOCK_LIST_TYPE = new TypeToken<List<BlockInfo>>(){}.getType();
     public void LoadCustomBurns(boolean canBeHidden) {
         String json = Settings.Service.getString(this, "block_list", null);
 
         Type type = new TypeToken<List<BlockInfo>>(){}.getType();
-        List<BlockInfo> blockList = new Gson().fromJson(json, type);
+        List<BlockInfo> blockList = GSON.fromJson(json, BLOCK_LIST_TYPE);
 
         if (blockList == null || blockList.isEmpty()) {
             return;

@@ -43,7 +43,7 @@ public class MainAccessibilityService extends android.accessibilityservice.Acces
             try {
                 List<AccessibilityWindowInfo> windows = getWindows();
 
-                Set<String> activePackages = new HashSet<>();
+                activePackages.clear();
                 for (AccessibilityWindowInfo window : windows) {
                     if (window.getRoot() != null) {
                         if (window.getRoot().getPackageName() != null) {
@@ -56,12 +56,11 @@ public class MainAccessibilityService extends android.accessibilityservice.Acces
                 boolean TikTokOpened = activePackages.contains(GetString("TriggerPacketName", "com.zhiliaoapp.musically"));
 
                 if (GetBoolean("InputMethodSkip", false)) {
-                    final String PCKGS = activePackages.toString();
-                    if (PCKGS.contains("com.google.android.inputmethod")
-                            || PCKGS.contains("com.simejikeyboard")
-                            || PCKGS.contains("ru.yandex.androidkeyboard")
-                            || PCKGS.contains("com.touchtype.swiftkey")
-                    ) {
+                    if (activePackages.stream().anyMatch(p ->
+                            p.startsWith("com.google.android.inputmethod") ||
+                                    p.startsWith("com.simejikeyboard") ||
+                                    p.startsWith("ru.yandex.androidkeyboard") ||
+                                    p.startsWith("com.touchtype.swiftkey"))) {
                         TikTokOpened = false;
                     }
                 }
@@ -106,6 +105,7 @@ public class MainAccessibilityService extends android.accessibilityservice.Acces
 
 
 
+    private final Set<String> activePackages = new HashSet<>();
     @Override
     public void onServiceConnected() {
         super.onServiceConnected();
@@ -116,6 +116,8 @@ public class MainAccessibilityService extends android.accessibilityservice.Acces
         logger = LogSystem.getInstance();
         logger.Save("MyAccessibilityService", "Service connected", true, true);
     }
+
+
 
     @Override
     public void onInterrupt() {
