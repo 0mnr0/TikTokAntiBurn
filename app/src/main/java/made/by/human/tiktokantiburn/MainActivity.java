@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         PeriodicWorkRequest checkRequest =
-                new PeriodicWorkRequest.Builder(VersionCheckWorker.class, 2, TimeUnit.MINUTES)
+                new PeriodicWorkRequest.Builder(VersionCheckWorker.class, 2, TimeUnit.DAYS)
                         .setConstraints(
                                 new Constraints.Builder()
                                         .setRequiredNetworkType(NetworkType.CONNECTED)
