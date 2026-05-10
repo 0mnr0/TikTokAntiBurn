@@ -83,4 +83,6 @@
     <string name="Cancel">Отмена</string>
     <string name="Settings_MENU_WasErased">Настройки были сброшены</string>
     <string name="NewUpdateTitle">Есть обновление!</string>
+    <string name="Settings_ADD_GitVerse">GitVerse как запасной канал обновлений</string>
+    <string name="Settings_ADD_GitVerseDesc">Для тех, у кого плохо работает GitHub. Проверка обновлений будет идти через GitVerse (аналог GitHub от Сбер\'а), если GitHub не доступен. Если вы не в России - оставьте Switch выключенным. :(</string>
 </resources>

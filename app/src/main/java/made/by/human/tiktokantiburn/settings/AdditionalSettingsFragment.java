@@ -68,5 +68,12 @@ public class AdditionalSettingsFragment extends Fragment {
         }
 
 
+
+        MaterialSwitch GitVerseAPI = view.findViewById(R.id.UseGitVerseAPI);
+        GitVerseAPI.setChecked(Settings.Iternal.getBool(ctx, "GitVerseAPI", false));
+        GitVerseAPI.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+            Settings.Iternal.setBool(ctx, "GitVerseAPI", isChecked);
+        }));
+
     }
 }

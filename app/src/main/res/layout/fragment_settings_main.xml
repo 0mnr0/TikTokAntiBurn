@@ -130,17 +130,16 @@
             android:id="@+id/divider9"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="12dp"
             android:background="@color/Settings" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/Main_4"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="12dp"
             android:background="@drawable/fast_setting_bg"
-            android:padding="12dp"
-            tools:layout_marginTop="8dp">
+            android:padding="12dp">
 
             <com.google.android.material.materialswitch.MaterialSwitch
                 android:id="@+id/ShowDefaultElement"

@@ -86,4 +86,6 @@
     <string name="Cancel">Cancel</string>
     <string name="Settings_MENU_WasErased">The settings have been reset</string>
     <string name="NewUpdateTitle">There is an update!</string>
+    <string name="Settings_ADD_GitVerse">GitVerse as a backup update channel</string>
+    <string name="Settings_ADD_GitVerseDesc">GitHub does not work well in Russia. Updates will be checked through the Russian GitVerse instead of the foreign GitHub. If you are not in Russia, leave the Switch turned off.</string>
 </resources>

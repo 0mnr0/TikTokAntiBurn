@@ -128,6 +128,7 @@ public class SettingsActivity extends AppCompatActivity {
     public void runClearer(boolean isServiceSettings) {
         if (isServiceSettings) {
             Settings.Service.clear(this);
+            Settings.Iternal.clear(this);
         } else {
             Settings.Module.clear(this);
         }

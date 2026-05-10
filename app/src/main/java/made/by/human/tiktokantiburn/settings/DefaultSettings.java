@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 
+import java.util.Locale;
+
 public class DefaultSettings {
     private static boolean isEmpty(Context context, String fileName) {
         SharedPreferences prefs = context.getSharedPreferences(fileName, MODE_PRIVATE);
@@ -16,6 +18,7 @@ public class DefaultSettings {
     public static void Setup(Context ctx) {
         SetupService(ctx);
         SetupModule(ctx);
+        SetupIternal(ctx);
     }
 
 
@@ -64,6 +67,14 @@ public class DefaultSettings {
     private static void SetupModule(Context ctx){
         if (!Settings.Module.contains(ctx, "ModuleSettings")) {
             Settings.Module.setBool(ctx, "ModuleSettings", true);
+        }
+    }
+
+    private static void SetupIternal(Context ctx){
+        if (!Settings.Iternal.contains(ctx, "GitVerseAPI")) {
+            if (Locale.getDefault().getLanguage().equals("ru")) {
+                Settings.Iternal.setBool(ctx, "GitVerseAPI", true);
+            }
         }
     }
 }

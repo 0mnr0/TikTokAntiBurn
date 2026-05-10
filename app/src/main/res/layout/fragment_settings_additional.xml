@@ -132,5 +132,50 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <View
+            android:id="@+id/divider10"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:background="?android:attr/listDivider" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/Additional_4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/fast_setting_bg"
+            android:padding="12dp">
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/UseGitVerseAPI"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="@string/Settings_ADD_GitVerse"
+                android:textColor="@color/SeekBackgroundFilled"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:thumbTint="@color/SeekBackgroundFilled"
+                app:trackDecorationTint="@color/SeekBackgroundFilled"
+                app:trackTint="@color/MID" />
+
+            <TextView
+                android:id="@+id/GitVerseAPIText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.75"
+                android:paddingBottom="6dp"
+                android:text="@string/Settings_ADD_GitVerseDesc"
+                android:textColor="@color/SeekBackgroundFilled"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/UseGitVerseAPI" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </LinearLayout>
 </ScrollView>

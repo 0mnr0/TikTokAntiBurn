@@ -20,6 +20,8 @@ import java.net.URL;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import made.by.human.tiktokantiburn.settings.Settings;
+
 public class UpdateChecker {
     public static class ParseResult {
         public boolean isSuccessParse = false;
@@ -82,7 +84,6 @@ public class UpdateChecker {
             String versionInfo = sb.toString().trim();
             result.isSuccessParse = true;
             result.wasGitSuccess = true;
-            if (true) { throw new Exception(""); }
 
             result.ProjectURL = "https://github.com/0mnr0/TikTokAntiBurn";
             if (versionInfo.equals(ParseThisVersion(ctx))) {
@@ -103,6 +104,11 @@ public class UpdateChecker {
 
     public static ParseResult tryGitVerse(Context ctx) {
         ParseResult result = new ParseResult();
+        if (!Settings.Iternal.getBool(ctx, "GitVerseAPI", false)) {
+            return result;
+        }
+
+
         try {
             URL url = new URL("https://gitverse.ru/api/repos/dsvl/TikTokAntiBurn/raw/branch/master/app%2Fsampledata%2Flastversion.inf");
 
