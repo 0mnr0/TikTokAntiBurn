@@ -43,7 +43,7 @@
     <string name="TopPaneModifier">Видимость верхней панели:</string>
     <string name="IdleBrightness">Яркость в простое:</string>
     <string name="InputMethodSkip">Прятать когда клавиатура открыта</string>
-    <string name="SupportedInputMethods">Поддерживаются:\nㅤㅤㅤ• GBoard\nㅤㅤㅤ• Facemoji\nㅤㅤㅤ• Yandex Keyboard\nㅤㅤㅤ• SwiftKey</string>
+    <string name="SupportedInputMethods">Поддерживаются:\nㅤㅤㅤ• GBoard\nㅤㅤㅤ• Facemoji\nㅤㅤㅤ• Yandex Keyboard\nㅤㅤㅤ• SwiftKey\nㅤㅤㅤ• Chrooma\nㅤㅤㅤ• Facemoji</string>
     <string name="BottomPaneModifier">Видимость нижней панели:</string>
     <string name="Shake2Show">Встряхните чтобы показать</string>
     <string name="Shake2SHowDescription">Встряхните телефон, чтобы сделать видимыми верхние и нижние панели</string>

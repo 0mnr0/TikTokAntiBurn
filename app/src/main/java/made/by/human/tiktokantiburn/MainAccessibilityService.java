@@ -70,6 +70,8 @@ public class MainAccessibilityService extends android.accessibilityservice.Acces
                         || activePackages.contains("com.google.android.apps.nexuslauncher")
                         || activePackages.contains("com.miui.home") // MIUI
                         || activePackages.contains("com.huawei.android.launcher") // Huawei
+                        || activePackages.contains("com.gamelounge.chroomakeyboard")  // Chrooma Keyboard
+                        || activePackages.contains("com.facemoji.lite")  // Facemoji Emoji Keyboard
                         || activePackages.contains("com.samsung.android.launcher")) {
 
                     ClosePopups = true;

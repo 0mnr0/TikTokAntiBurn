@@ -45,7 +45,7 @@
     <string name="TopPaneModifier">Top panel visibility:</string>
     <string name="IdleBrightness">Idle brightness:</string>
     <string name="InputMethodSkip">Hide when keyboard is opened</string>
-    <string name="SupportedInputMethods">Supporting:\nㅤㅤㅤ• GBoard\nㅤㅤㅤ• Facemoji\nㅤㅤㅤ• Yandex Keyboard\nㅤㅤㅤ• SwiftKey</string>
+    <string name="SupportedInputMethods">Supporting:\nㅤㅤㅤ• GBoard\nㅤㅤㅤ• Facemoji\nㅤㅤㅤ• Yandex Keyboard\nㅤㅤㅤ• SwiftKey\nㅤㅤㅤ• Chrooma\nㅤㅤㅤ• Facemoji</string>
     <string name="BottomPaneModifier">Visibility of the lower panel:</string>
     <string name="Shake2Show">Shake to show panels</string>
     <string name="Shake2SHowDescription">Shake your phone to make the top and bottom panels visible</string>
