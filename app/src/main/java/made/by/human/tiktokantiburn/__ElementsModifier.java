@@ -30,31 +30,34 @@ public class __ElementsModifier implements IXposedHookLoadPackage {
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
+        try {
+
+            XposedHelpers.findAndHookMethod("com.ss.android.ugc.aweme.main.MainActivity",
+                    lpparam.classLoader, "onWindowFocusChanged", boolean.class, new XC_MethodHook() {
+                        @Override
+                        protected void afterHookedMethod(MethodHookParam param) {
+                            boolean hasFocus = (boolean) param.args[0];
+                            if (!hasFocus || !ShouldRun.check(param.thisObject)) {
+                                returnToBasics();
+                                return;
+                            }
+                            if (debouncer == null) {
+                                debouncer = new Debouncer(300);
+                            }
+                            activity = (Activity) param.thisObject;
+
+                            View root = activity.getWindow().getDecorView().getRootView();
+                            ViewTreeObserver vto = root.getViewTreeObserver();
 
 
-        XposedHelpers.findAndHookMethod("com.ss.android.ugc.aweme.main.MainActivity",
-                lpparam.classLoader, "onWindowFocusChanged", boolean.class, new XC_MethodHook() {
-                    @Override
-                    protected void afterHookedMethod(MethodHookParam param) {
-                        boolean hasFocus = (boolean) param.args[0];
-                        if (!hasFocus || !ShouldRun.check(param.thisObject)) {
-                            returnToBasics();
-                            return;
+                            vto.removeOnGlobalLayoutListener(globalLayoutListener);
+                            vto.addOnGlobalLayoutListener(globalLayoutListener);
                         }
-                        if (debouncer == null) {
-                            debouncer = new Debouncer(300);
-                        }
-                        activity = (Activity) param.thisObject;
-
-                        View root = activity.getWindow().getDecorView().getRootView();
-                        ViewTreeObserver vto = root.getViewTreeObserver();
-
-
-                        vto.removeOnGlobalLayoutListener(globalLayoutListener);
-                        vto.addOnGlobalLayoutListener(globalLayoutListener);
                     }
-                }
-        );
+            );
+        } catch (Exception ignored) {
+            XposedBridge.log("BindModule: java.lang.ClassNotFoundException");
+        } //
     }
 
     private final ViewTreeObserver.OnGlobalLayoutListener globalLayoutListener = () -> {

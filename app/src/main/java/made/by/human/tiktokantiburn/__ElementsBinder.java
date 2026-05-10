@@ -106,7 +106,7 @@ public class __ElementsBinder implements IXposedHookZygoteInit, IXposedHookLoadP
                         param.args[0] = (View.OnClickListener) v -> {
                             if (notXposedTriggers(v) && enableBinder) {
                                 onClick(v);
-                            } else {
+                            } else if (originalListener != null) {
                                 originalListener.onClick(v);
                             }
                         };
