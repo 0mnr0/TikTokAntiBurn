@@ -78,4 +78,11 @@
     <string name="Settings_LSP_StructureDesc">The settings below depend on the structure of TikTok on your device. If the features below do not work, it means that your version of TikTok has a different XML structure than the one I used to create these features</string>
     <string name="Settings_LSP_HideInstead">Remove from the interface</string>
     <string name="Inactive">Inactive</string>
+    <string name="Settings_MENU_Reset">Reset to default</string>
+    <string name="Settings_MENU_ResetTitle">Reset the settings?</string>
+    <string name="Settings_MENU_ResetService">This will delete all service settings (including basic and advanced settings). Erase everything?</string>
+    <string name="Settings_MENU_ResetModule">This will delete all module settings. Erase everything?</string>
+    <string name="Erase">Erase all</string>
+    <string name="Cancel">Cancel</string>
+    <string name="Settings_MENU_WasErased">The settings have been reset</string>
 </resources>

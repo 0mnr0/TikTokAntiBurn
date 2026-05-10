@@ -75,4 +75,11 @@
     <string name="Settings_LSP_StructureDesc">Приведенные настройки ниже - зависят от структуры TikTok на вашем устройстве. Если функции ниже не работают - значит ваша версия TikTok отличается структурой XML на которой я готовил эти функции</string>
     <string name="Settings_LSP_HideInstead">Убрать из интерфейса</string>
     <string name="Inactive">Неактивно</string>
+    <string name="Settings_MENU_Reset">Сброс к значениям по умолчанию</string>
+    <string name="Settings_MENU_ResetTitle">Сбросить настройки?</string>
+    <string name="Settings_MENU_ResetService">Это удалит все настройки сервиса (включая основные и дополнительные). Стереть все?</string>
+    <string name="Settings_MENU_ResetModule">Это удалит все настройки модуля. Стереть все?</string>
+    <string name="Erase">Стереть все</string>
+    <string name="Cancel">Отмена</string>
+    <string name="Settings_MENU_WasErased">Настройки были сброшены</string>
 </resources>

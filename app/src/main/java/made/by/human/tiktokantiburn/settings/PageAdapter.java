@@ -11,7 +11,7 @@ import made.by.human.tiktokantiburn.RootCheck;
 
 public class PageAdapter extends FragmentStateAdapter {
     boolean haveRoot = false;
-    int tabsCount = 3; // with root
+    public int tabsCount = 3; // with root
 
 
 
