@@ -85,7 +85,7 @@ public class UpdateChecker {
             result.isSuccessParse = true;
             result.wasGitSuccess = true;
 
-            result.ProjectURL = "https://github.com/0mnr0/TikTokAntiBurn";
+            result.ProjectURL = "https://github.com/0mnr0/TikTokAntiBurn/releases";
             if (versionInfo.equals(ParseThisVersion(ctx))) {
                 return result;
             }
