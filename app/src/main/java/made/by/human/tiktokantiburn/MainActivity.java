@@ -31,7 +31,9 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -176,7 +178,12 @@ public class MainActivity extends AppCompatActivity {
 
         PeriodicWorkRequest checkRequest =
                 new PeriodicWorkRequest.Builder(VersionCheckWorker.class, 2, TimeUnit.DAYS)
-                        .build();
+                        .setConstraints(
+                                new Constraints.Builder()
+                                        .setRequiredNetworkType(NetworkType.CONNECTED)
+                                        .setRequiresBatteryNotLow(true)
+                                        .build()
+                        ).build();
 
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
                 "daily_version_check",
@@ -231,7 +238,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception ignored) {
             SpecialAbilities.setCompoundDrawablesWithIntrinsicBounds(unknown, null, null, null);
         }
-
     }
 
     @Override
