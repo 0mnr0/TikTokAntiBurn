@@ -6,11 +6,6 @@ import android.view.ViewGroup;
 
 public class ViewUtils {
 
-    // Основная функция для вызова
-    public static void printChildren(View view) {
-        printChildren(view, 0);
-    }
-
     // Рекурсивная функция с уровнем вложенности
     private static void printChildren(View view, int level) {
         if (view == null) return;
