@@ -33,8 +33,7 @@
     <string name="OpenSettingsButton">Open App Settings</string>
     <string name="Additional">Additional:</string>
     <string name="LSPosedSettingTitle">LSPosed Module Settings</string>
-    <string name="LSPosedHideType">Hide, not delete</string>
-    <string name="LSPosedHideDescription">By default, the button is hidden from the interface, but when the setting is enabled, it will not hide, but will become invisible and will work.</string>
+    <string name="LSPosedHideType">Make button invisible</string>
     <string name="LSPosedWarning">If you change the above settings, the settings of the external application will be changed on its behalf. This is a complex operation, the developer is not responsible for the consequences!</string>
     <string name="Experimental">Experimental</string>
     <string name="UpdateFound">A new version of the app has been released:</string>
@@ -43,11 +42,11 @@
     <string name="LSPosed_OldDetectionDescription">Use the old detection method if the new one doesn\'t work. (Supports English and Russian only)</string>
     <string name="borderRadiusSetting">Rounding up:</string>
     <string name="borderRadiusSetting_Unknown">Rounding up: ?px</string>
-    <string name="TopPaneModifier">Modify Top Panel</string>
+    <string name="TopPaneModifier">Top panel visibility:</string>
     <string name="IdleBrightness">Idle brightness:</string>
     <string name="InputMethodSkip">Hide when keyboard is opened</string>
     <string name="SupportedInputMethods">Supporting:\nㅤㅤㅤ• GBoard\nㅤㅤㅤ• Facemoji\nㅤㅤㅤ• Yandex Keyboard\nㅤㅤㅤ• SwiftKey</string>
-    <string name="BottomPaneModifier">Modify Bottom Panel</string>
+    <string name="BottomPaneModifier">Visibility of the lower panel:</string>
     <string name="Shake2Show">Shake to show panels</string>
     <string name="Shake2SHowDescription">Shake your phone to make the top and bottom panels visible</string>
     <string name="BatteryExpensive" translatable="false">🔋🔥</string>
@@ -76,4 +75,7 @@
     <string name="Settings_Main_ShowDefaultElement">Show default element</string>
     <string name="Settings_Main_ShowDefaultDesc">Overlaps the \"+\" at the bottom of the screen</string>
     <string name="Settins_Main_DefaultPanelHeight">The default height of the element:</string>
+    <string name="Settings_LSP_StructureDesc">The settings below depend on the structure of TikTok on your device. If the features below do not work, it means that your version of TikTok has a different XML structure than the one I used to create these features</string>
+    <string name="Settings_LSP_HideInstead">Remove from the interface</string>
+    <string name="Inactive">Inactive</string>
 </resources>

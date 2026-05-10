@@ -363,7 +363,6 @@
                         android:layout_height="wrap_content"
                         android:alpha="0.75"
                         android:paddingBottom="6dp"
-                        android:text="@string/LSPosedHideDescription"
                         android:textColor="@color/SeekBackgroundFilled"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

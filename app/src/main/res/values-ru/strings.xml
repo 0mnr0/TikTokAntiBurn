@@ -31,8 +31,7 @@
     <string name="OpenSettingsButton">Перейти в настройки</string>
     <string name="Additional">"Дополнительно: "</string>
     <string name="LSPosedSettingTitle">Настройки модуля LSPosed</string>
-    <string name="LSPosedHideType">Скрывать, а не удалять</string>
-    <string name="LSPosedHideDescription">"По умолчанию кнопка удаляется из интерфейса, но при её можно скрывать. Кнопка станет невидимой и будет работать как обычно. Сделано для креаторов :) "</string>
+    <string name="LSPosedHideType">Скрыть кнопку</string>
     <string name="LSPosedWarning">При изменении настройки выше будет выполнено изменение настроек внешнего приложения от его имени. Это сложная операция, разработчик не несёт ответственности за последствия!</string>
     <string name="Experimental">Экспериментально</string>
     <string name="UpdateFound">Выпущено новое обновление:</string>
@@ -41,11 +40,11 @@
     <string name="LSPosed_OldDetectionDescription">Используйте старый метод обнаружения если новый не работает. (Поддерживается только Английский и русский язык)</string>
     <string name="borderRadiusSetting">"Скругление: "</string>
     <string name="borderRadiusSetting_Unknown">Скругление: ?px</string>
-    <string name="TopPaneModifier">Модификация верхней панели</string>
+    <string name="TopPaneModifier">Видимость верхней панели:</string>
     <string name="IdleBrightness">Яркость в простое:</string>
     <string name="InputMethodSkip">Прятать когда клавиатура открыта</string>
     <string name="SupportedInputMethods">Поддерживаются:\nㅤㅤㅤ• GBoard\nㅤㅤㅤ• Facemoji\nㅤㅤㅤ• Yandex Keyboard\nㅤㅤㅤ• SwiftKey</string>
-    <string name="BottomPaneModifier">Модификация нижней панели</string>
+    <string name="BottomPaneModifier">Видимость нижней панели:</string>
     <string name="Shake2Show">Встряхните чтобы показать</string>
     <string name="Shake2SHowDescription">Встряхните телефон, чтобы сделать видимыми верхние и нижние панели</string>
     <string name="HighBatteryUsage">Высокий уровень использования батареи</string>
@@ -73,4 +72,7 @@
     <string name="Settings_Main_ShowDefaultElement">Показывать стандартный элемент</string>
     <string name="Settings_Main_ShowDefaultDesc">Перекрывает \"+\" внизу экрана</string>
     <string name="Settins_Main_DefaultPanelHeight">Высота элемента по умолчанию:</string>
+    <string name="Settings_LSP_StructureDesc">Приведенные настройки ниже - зависят от структуры TikTok на вашем устройстве. Если функции ниже не работают - значит ваша версия TikTok отличается структурой XML на которой я готовил эти функции</string>
+    <string name="Settings_LSP_HideInstead">Убрать из интерфейса</string>
+    <string name="Inactive">Неактивно</string>
 </resources>
