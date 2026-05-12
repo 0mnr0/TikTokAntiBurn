@@ -88,7 +88,7 @@ public class MainSettingsFragment extends Fragment {
 
         Slider DefaultPanelHeight = view.findViewById(R.id.DefaultPanelHeight);
         DefaultPanelHeight.addOnChangeListener((slider, progress, fromUser) -> {
-            Settings.Module.setFloat(ctx, "DefaultElementHeight", progress);
+            Settings.Service.setFloat(ctx, "DefaultElementHeight", progress);
         });
         DefaultPanelHeight.setValue(Settings.Service.getInt(ctx, "DefaultElementHeight", 100));
 
