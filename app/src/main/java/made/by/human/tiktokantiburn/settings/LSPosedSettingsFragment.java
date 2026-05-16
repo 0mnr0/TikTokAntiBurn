@@ -1,6 +1,7 @@
 package made.by.human.tiktokantiburn.settings;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.slider.Slider;
 
@@ -65,13 +67,16 @@ public class LSPosedSettingsFragment extends Fragment {
                 try {
                     Tools.forceStopTikTok(ctx);
                 } catch (Exception e) {
-                    Toast.makeText(ctx, "Please force-stop TikTok!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ctx, getString(R.string.__Binder_Saved2), Toast.LENGTH_LONG).show();
                 }
             }
         });
         if (activeBindMode) {
             UpdateBindInfo();
         }
+
+        TextView removeAllModified = view.findViewById(R.id.removeAllModified);
+        removeAllModified.setOnClickListener((v) -> askForModifiedReset());
 
 
         ImageView CenterPlusButton = view.findViewById(R.id.CenterPlusButton);
@@ -141,6 +146,33 @@ public class LSPosedSettingsFragment extends Fragment {
         });
         EnableModule.setChecked(Settings.Module.getBool(ctx, "isModuleEnabled", false));
         WholeModuleLayout.setVisibility(Settings.Module.getBool(ctx, "isModuleEnabled", false) ? View.VISIBLE : View.GONE);
+    }
+
+
+    public void askForModifiedReset() {
+        String descText = getString(R.string.Settings_LSP_RemoveModified_Desc);
+
+        new MaterialAlertDialogBuilder(ctx)
+                .setTitle(R.string.Settings_LSP_RemoveModified)
+                .setMessage(descText)
+                .setNegativeButton(getString(R.string.Cancel), (dialog, which) -> {
+                    dialog.cancel();
+                })
+                .setPositiveButton(getString(R.string.Erase), (dialog, which) -> {
+                    dialog.cancel();
+                    runClearer();
+                })
+                .show();
+    }
+
+    public void runClearer() {
+        Settings.Module.remove(ctx, "ElementsModifiers");
+        try {
+            Tools.forceStopTikTok(ctx);
+            Toast.makeText(ctx, getString(R.string.Done), Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(ctx, getString(R.string.__Binder_Saved2), Toast.LENGTH_LONG).show();
+        }
     }
 
 

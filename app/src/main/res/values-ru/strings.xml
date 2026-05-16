@@ -87,4 +87,8 @@
     <string name="Settings_ADD_GitVerseDesc">Для тех, у кого плохо работает GitHub. Проверка обновлений будет идти через GitVerse (аналог GitHub от Сбер\'а), если GitHub не доступен. Если вы не в России - оставьте Switch выключенным. :(</string>
     <string name="NotificationsPermission">Разрешение для уведомлений</string>
     <string name="Settings_LSP_isModuleEnabled">Включить модуль</string>
+    <string name="Settings_LSP_RemoveModified">Удалить всё модифицированное?</string>
+    <string name="Settings_LSP_RemoveModified_Desc">Это удалит список элементов которые вы создали. Их модификация больше не будет работать</string>
+    <string name="Yes">Да</string>
+    <string name="Done">Готово!</string>
 </resources>

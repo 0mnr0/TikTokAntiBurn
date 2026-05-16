@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/Rem"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:background="#241F1F">
@@ -55,17 +56,31 @@
 
                 <Button
                     android:id="@+id/ActivateBinderMode"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
                     android:backgroundTint="@color/pleasestar"
-                    android:onClick="openRequestTopWindow"
                     android:padding="15dp"
                     android:text="@string/Settings_LSP_BinderTitle_ON"
                     android:textColor="@color/SeekBackgroundFilled"
                     app:cornerRadius="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/removeAllModified"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/removeAllModified"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:background="@drawable/lsp_bind_remove"
+                    android:gravity="center"
+                    android:padding="14dp"
+                    android:text="@string/ExtendedSetting_Remove"
+                    app:layout_constraintBottom_toBottomOf="@+id/ActivateBinderMode"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/ActivateBinderMode" />
 
                 <TextView
                     android:id="@+id/textView13"
@@ -74,7 +89,7 @@
                     android:text="@string/Settings_LSP_BinderDesc"
                     android:textColor="@color/MID"
                     android:textSize="12sp"
-                    app:layout_constraintEnd_toEndOf="@+id/ActivateBinderMode"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/ActivateBinderMode"
                     app:layout_constraintTop_toBottomOf="@+id/ActivateBinderMode" />
             </androidx.constraintlayout.widget.ConstraintLayout>

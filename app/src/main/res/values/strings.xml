@@ -90,4 +90,8 @@
     <string name="Settings_ADD_GitVerseDesc">GitHub does not work well in Russia. Updates will be checked through the Russian GitVerse instead of the foreign GitHub. If you are not in Russia, leave the Switch turned off.</string>
     <string name="NotificationsPermission">Request \"Notification\" permission</string>
     <string name="Settings_LSP_isModuleEnabled">Enable Module</string>
+    <string name="Settings_LSP_RemoveModified">Delete everything modified?</string>
+    <string name="Settings_LSP_RemoveModified_Desc">This will delete the list of items that you created. Their modification will no longer work.</string>
+    <string name="Yes">Yes</string>
+    <string name="Done">Done!</string>
 </resources>
