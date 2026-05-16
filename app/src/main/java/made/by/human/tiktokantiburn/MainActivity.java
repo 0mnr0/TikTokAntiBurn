@@ -1,6 +1,7 @@
 package made.by.human.tiktokantiburn;
 
 import android.Manifest;
+import android.accessibilityservice.AccessibilityServiceInfo;
 import android.annotation.SuppressLint;
 import android.app.AppOpsManager;
 import android.app.Application;
@@ -9,6 +10,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ServiceInfo;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -19,6 +21,7 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +40,7 @@ import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import made.by.human.tiktokantiburn.helpers.UpdateChecker;
@@ -50,21 +54,23 @@ public class MainActivity extends AppCompatActivity {
 
 
     public static boolean isAccessibilityServiceEnabled(Context context, Class<?> accessibilityService) {
-        ComponentName expectedComponentName = new ComponentName(context, accessibilityService);
+        AccessibilityManager am = (AccessibilityManager)
+                context.getSystemService(Context.ACCESSIBILITY_SERVICE);
 
-        String enabledServicesSetting = Settings.Secure.getString(context.getContentResolver(),  Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
-        if (enabledServicesSetting == null)
-            return false;
+        if (am == null) return false;
 
-        TextUtils.SimpleStringSplitter colonSplitter = new TextUtils.SimpleStringSplitter(':');
-        colonSplitter.setString(enabledServicesSetting);
+        List<AccessibilityServiceInfo> enabledServices =
+                am.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_ALL_MASK);
 
-        while (colonSplitter.hasNext()) {
-            String componentNameString = colonSplitter.next();
-            ComponentName enabledService = ComponentName.unflattenFromString(componentNameString);
+        String expectedPackage = context.getPackageName();
+        String expectedClass = accessibilityService.getName();
 
-            if (enabledService != null && enabledService.equals(expectedComponentName))
+        for (AccessibilityServiceInfo info : enabledServices) {
+            ServiceInfo serviceInfo = info.getResolveInfo().serviceInfo;
+            if (expectedPackage.equals(serviceInfo.packageName) &&
+                    expectedClass.equals(serviceInfo.name)) {
                 return true;
+            }
         }
         return false;
     }
