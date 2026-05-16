@@ -31,15 +31,7 @@ public class UpdateChecker {
         public boolean wasGitSuccess = false;
     }
 
-    public static String ParseThisVersion(Context ctx) {
-        try {
-            PackageManager pm = ctx.getApplicationContext().getPackageManager();
-            PackageInfo pInfo = pm.getPackageInfo(ctx.getApplicationContext().getPackageName(), 0);
-            return pInfo.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            return null;
-        }
-    }
+
 
     public interface UpdateCallback {
         void onResult(ParseResult result);
@@ -60,7 +52,7 @@ public class UpdateChecker {
 
     public static ParseResult run(Context ctx) {
         ParseResult result = new ParseResult();
-        Log.d("updateStatusRUN:", "PRE: "+ParseThisVersion(ctx));
+        Log.d("updateStatusRUN:", "PRE: "+ApplicationVersion.get(ctx));
         try {
             URL url = new URL("https://raw.githubusercontent.com/0mnr0/TikTokAntiBurn/refs/heads/master/app/sampledata/lastversion.inf");
 
@@ -86,7 +78,7 @@ public class UpdateChecker {
             result.wasGitSuccess = true;
 
             result.ProjectURL = "https://github.com/0mnr0/TikTokAntiBurn/releases";
-            if (versionInfo.equals(ParseThisVersion(ctx))) {
+            if (versionInfo.equals(ApplicationVersion.get(ctx))) {
                 return result;
             }
             result.versionName = versionInfo;
@@ -130,7 +122,7 @@ public class UpdateChecker {
             result.isSuccessParse = true;
             result.wasGitSuccess = false;
             result.ProjectURL = "https://gitverse.ru/dsvl/TikTokAntiBurn/releases";
-            if (versionInfo.equals(ParseThisVersion(ctx))) {
+            if (versionInfo.equals(ApplicationVersion.get(ctx))) {
                 return result;
             }
             result.versionName = versionInfo;

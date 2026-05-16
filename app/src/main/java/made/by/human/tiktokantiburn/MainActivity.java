@@ -43,6 +43,7 @@ import androidx.work.WorkManager;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import made.by.human.tiktokantiburn.helpers.ApplicationVersion;
 import made.by.human.tiktokantiburn.helpers.UpdateChecker;
 import made.by.human.tiktokantiburn.settings.DefaultSettings;
 
@@ -212,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         TextView VersionCode = findViewById(R.id.VersionCode);
-        VersionCode.setText(LogSystem.LoggerVersion);
+        VersionCode.setText(ApplicationVersion.get(this));
         DefaultSettings.Setup(this);
         if (!areNotificationsEnabled()) { requestNotification(null); }
         refreshPermissionStatuses();
