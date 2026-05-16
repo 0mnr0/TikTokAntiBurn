@@ -41,10 +41,13 @@ public class __ElementsModifier implements IXposedHookLoadPackage {
                                 returnToBasics();
                                 return;
                             }
+                            activity = (Activity) param.thisObject;
+                            if (__SettingsGetter.getBoolean(activity, "StartWithBinder", false)) {return;}
+
+
                             if (debouncer == null) {
                                 debouncer = new Debouncer(300);
                             }
-                            activity = (Activity) param.thisObject;
 
                             View root = activity.getWindow().getDecorView().getRootView();
                             ViewTreeObserver vto = root.getViewTreeObserver();

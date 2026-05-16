@@ -69,7 +69,7 @@ public class __ElementsBinder implements IXposedHookZygoteInit, IXposedHookLoadP
 
     @Override
     public void initZygote(StartupParam startupParam) {
-        //XModuleResources moduleRes = XModuleResources.createInstance(startupParam.modulePath, null);
+        XModuleResources.createInstance(startupParam.modulePath, null);
     }
 
 

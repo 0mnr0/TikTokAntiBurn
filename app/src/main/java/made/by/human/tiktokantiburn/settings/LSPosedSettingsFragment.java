@@ -24,6 +24,7 @@ import com.google.android.material.slider.Slider;
 
 import made.by.human.tiktokantiburn.BlockableLinearLayout;
 import made.by.human.tiktokantiburn.R;
+import made.by.human.tiktokantiburn.root.Tools;
 
 public class LSPosedSettingsFragment extends Fragment {
     Context ctx;
@@ -59,10 +60,17 @@ public class LSPosedSettingsFragment extends Fragment {
         ActivateBinderAction.setOnClickListener((v) -> {
             activeBindMode = !activeBindMode;
             UpdateBindInfo();
+
+            if (activeBindMode) {
+                try {
+                    Tools.forceStopTikTok(ctx);
+                } catch (Exception e) {
+                    Toast.makeText(ctx, "Please force-stop TikTok!", Toast.LENGTH_LONG).show();
+                }
+            }
         });
         if (activeBindMode) {
-            activeBindMode = false;
-            ActivateBinderAction.performClick();
+            UpdateBindInfo();
         }
 
 
