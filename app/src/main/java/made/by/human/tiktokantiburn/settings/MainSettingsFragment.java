@@ -90,7 +90,7 @@ public class MainSettingsFragment extends Fragment {
         DefaultPanelHeight.addOnChangeListener((slider, progress, fromUser) -> {
             Settings.Service.setFloat(ctx, "DefaultElementHeight", progress);
         });
-        DefaultPanelHeight.setValue(Settings.Service.getInt(ctx, "DefaultElementHeight", 100));
+        DefaultPanelHeight.setValue(Settings.Service.getFloat(ctx, "DefaultElementHeight", 100f));
 
         int screenHeight = ctx.getResources().getDisplayMetrics().heightPixels;
         int savedValue = (int) (screenHeight * 0.09);

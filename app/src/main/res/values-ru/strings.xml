@@ -7,9 +7,9 @@
     <string name="UsageStatsPermessionIsNotGranted">Пожалуйста, выдайте разрешение \"Доступ об использовании\" самостоятельно</string>
     <string name="NoOverlayPermission">Не удалось получить разрешение \"Поверх окон\", выдайте его самостоятельно</string>
     <string name="AcessabilitySettingNotReacheable">Не удалось получить разрешение \"Доступ об использовании\", выдайте самостоятельно</string>
-    <string name="Request_Floating">Запрос \"Поверх других окон\"</string>
-    <string name="Request_UsageStats">Запрос \"Доступ об использовании\"</string>
-    <string name="Request_SpecialThings">Запрос \"Специальные возможности\"</string>
+    <string name="Request_Floating">Разрешение \"Поверх других окон\"</string>
+    <string name="Request_UsageStats">Разрешение \"Доступ об использовании\"</string>
+    <string name="Request_SpecialThings">Разрешение \"Специальные возможности\"</string>
     <string name="ExtendedSettings">Создать дополнительные блоки</string>
     <string name="ExtendedSetting_Create">Создать элемент</string>
     <string name="ExtendedSetting_Save">Сохранить</string>
@@ -24,7 +24,7 @@
     <string name="OptimalSwitchDescription">Включите, если вы выдали все разрешения, но элемент так и не появился. При включении - события закрытия TikTok придется ждать немного дольше, чем обычно.</string>
     <string name="PacketName">Имя пакета TikTok</string>
     <string name="packetnamedescription">Имя пакета TikTok</string>
-    <string name="LSPosedDescription">Используйте Root метод для нахождения TikTok</string>
+    <string name="LSPosedDescription">Используйте Root для предотвращения выгорания экрана</string>
     <string name="LSPosedHookButtonByText">Создать</string>
     <string name="GlobalSettingsDivide">Глобальные настройки</string>
     <string name="MainElementSettingsDivide">Настройки главного элемента</string>
@@ -85,4 +85,5 @@
     <string name="NewUpdateTitle">Есть обновление!</string>
     <string name="Settings_ADD_GitVerse">GitVerse как запасной канал обновлений</string>
     <string name="Settings_ADD_GitVerseDesc">Для тех, у кого плохо работает GitHub. Проверка обновлений будет идти через GitVerse (аналог GitHub от Сбер\'а), если GitHub не доступен. Если вы не в России - оставьте Switch выключенным. :(</string>
+    <string name="NotificationsPermission">Разрешение для уведомлений</string>
 </resources>

@@ -7,9 +7,9 @@
     <string name="UsageStatsPermessionIsNotGranted">Please, request permission of USAGE ACCESS manually</string>
     <string name="NoOverlayPermission">Failed to request Overlay permission. Request it manually</string>
     <string name="AcessabilitySettingNotReacheable">Cant reach accessibility setting. Request permission manually</string>
-    <string name="Request_Floating">"Request \"Floating windows\" "</string>
-    <string name="Request_UsageStats">Request \"Usage Stats\"</string>
-    <string name="Request_SpecialThings">Reqeust \"Accessibility\"</string>
+    <string name="Request_Floating">"Request \"Floating windows\" permission</string>
+    <string name="Request_UsageStats">Request \"Usage Stats\" permission</string>
+    <string name="Request_SpecialThings">Request \"Accessibility\" permission</string>
     <string name="ExtendedSettings">Create additional blocks</string>
     <string name="ExtendedSetting_Create">Create Element</string>
     <string name="close" translatable="false">X</string>
@@ -26,7 +26,7 @@
     <string name="OptimalSwitchDescription">Enable it if you have granted all permissions, but the item has not appeared. When enabled - TikTok closing event will have to wait a little longer than usual.</string>
     <string name="PacketName">TikTok Package Name</string>
     <string name="packetnamedescription">Specify the standard TikTok package name</string>
-    <string name="LSPosedDescription">Use Root to detect TikTok</string>
+    <string name="LSPosedDescription">Use Root to prevent TikTok screen burn</string>
     <string name="LSPosedHookButtonByText">Create</string>
     <string name="GlobalSettingsDivide">Global Settings</string>
     <string name="MainElementSettingsDivide">Main Element Settings</string>
@@ -88,4 +88,5 @@
     <string name="NewUpdateTitle">There is an update!</string>
     <string name="Settings_ADD_GitVerse">GitVerse as a backup update channel</string>
     <string name="Settings_ADD_GitVerseDesc">GitHub does not work well in Russia. Updates will be checked through the Russian GitVerse instead of the foreign GitHub. If you are not in Russia, leave the Switch turned off.</string>
+    <string name="NotificationsPermission">Request \"Notification\" permission</string>
 </resources>

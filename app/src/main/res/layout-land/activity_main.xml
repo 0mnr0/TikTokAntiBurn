@@ -100,6 +100,20 @@
                     app:layout_constraintTop_toBottomOf="@+id/AboveAllWindows" />
 
                 <Button
+                    android:id="@+id/requestNotification"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/ButtonBackground"
+                    android:onClick="requestNotification"
+                    android:padding="15dp"
+                    android:text="@string/NotificationsPermission"
+                    android:textColor="@color/ButtonForeground"
+                    app:cornerRadius="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/SpecialAbilities" />
+
+                <Button
                     android:id="@+id/ExtendedSetting"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -111,7 +125,7 @@
                     app:cornerRadius="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/SpecialAbilities" />
+                    app:layout_constraintTop_toBottomOf="@+id/requestNotification" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -234,14 +248,14 @@
                 app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
 
             <TextView
-                android:id="@+id/textView15"
+                android:id="@+id/PleaseGiveAStar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="12dp"
                 android:background="@drawable/pleasestarbg"
-                android:onClick="OpenGithub"
+                android:onClick="OpenGithubForAStar"
                 android:padding="16dp"
                 android:text="@string/pleasestar"
                 android:textColor="@color/SeekBG"

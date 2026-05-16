@@ -15,10 +15,10 @@
       </SelectionState>
       <SelectionState runConfigName="App">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2026-05-10T08:11:37.193862100Z">
+        <DropdownSelection timestamp="2026-05-16T12:24:17.415405200Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="PhysicalDevice" identifier="serial=39130DLJG001LH" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\savel\.android\avd\6.7_Horizontal_Fold-in.avd" />
             </handle>
           </Target>
         </DropdownSelection>

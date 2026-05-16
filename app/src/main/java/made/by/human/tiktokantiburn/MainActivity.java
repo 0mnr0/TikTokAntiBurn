@@ -3,10 +3,10 @@ package made.by.human.tiktokantiburn;
 import android.Manifest;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.AppOpsManager;
 import android.app.Application;
 import android.content.ActivityNotFoundException;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -18,7 +18,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.accessibility.AccessibilityManager;
@@ -30,6 +29,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -75,16 +75,6 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    private void checkOverlayPermission() {
-        try {
-            if (!Settings.canDrawOverlays(this)) {
-                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-                startActivityForResult(intent, 1234);
-            }
-        } catch (Exception e) {
-            Toast.makeText(this, getString(R.string.NoOverlayPermission), Toast.LENGTH_SHORT).show();
-        }
-    }
 
     public void openRequestTopWindow(View view){
         try {
@@ -96,9 +86,53 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void requestNotification(View view){
+        if (!areNotificationsEnabled()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+                    // Показать rationale, если пользователь уже отклонил однажды
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                            Manifest.permission.POST_NOTIFICATIONS)) {
+                        new AlertDialog.Builder(this)
+                                .setTitle("Нужны уведомления")
+                                .setMessage("Разреши уведомления, чтобы не пропустить важное.")
+                                .setPositiveButton("Разрешить", (d, w) ->
+                                        ActivityCompat.requestPermissions(this,
+                                                new String[]{Manifest.permission.POST_NOTIFICATIONS},
+                                                1001))
+                                .setNegativeButton("Отмена", null)
+                                .show();
+                    } else {
+                        ActivityCompat.requestPermissions(this,
+                                new String[]{Manifest.permission.POST_NOTIFICATIONS},
+                                1001);
+                    }
+                }
+            }
+        }
+    }
+
+    public boolean areNotificationsEnabled() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            return ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                    == PackageManager.PERMISSION_GRANTED;
+        } else {
+            return NotificationManagerCompat.from(this).areNotificationsEnabled();
+        }
+    }
+
     public void OpenGithub(View view) {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(projectURL));
         startActivity(browserIntent);
+    }
+
+    public void OpenGithubForAStar(View view) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/0mnr0/TikTokAntiBurn"));
+        startActivity(browserIntent);
+        made.by.human.tiktokantiburn.settings.Settings.Iternal.setBool(this, "HidePleaseStar", true);
+        findViewById(R.id.PleaseGiveAStar).setVisibility(View.GONE);
     }
 
 
@@ -177,10 +211,10 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        checkOverlayPermission();
         TextView VersionCode = findViewById(R.id.VersionCode);
         VersionCode.setText(LogSystem.LoggerVersion);
         DefaultSettings.Setup(this);
+        if (!areNotificationsEnabled()) { requestNotification(null); }
         refreshPermissionStatuses();
 
 
@@ -201,6 +235,10 @@ public class MainActivity extends AppCompatActivity {
         UpdateLogsVisibility();
         CheckUpdates();
 
+
+        if (made.by.human.tiktokantiburn.settings.Settings.Iternal.getBool(this, "HidePleaseStar", false)) {
+            findViewById(R.id.PleaseGiveAStar).setVisibility(View.GONE);
+        }
     }
 
     public void UpdateLogsVisibility() {
@@ -228,9 +266,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void refreshPermissionStatuses() {
-        Button AboveAllWindows, SpecialAbilities;
+        Button AboveAllWindows, SpecialAbilities, requestNotification;
         AboveAllWindows = findViewById(R.id.AboveAllWindows);
         SpecialAbilities = findViewById(R.id.SpecialAbilities);
+        requestNotification = findViewById(R.id.requestNotification);
         Drawable done = ContextCompat.getDrawable(this, R.drawable.check_circle);
         Drawable none = ContextCompat.getDrawable(this, R.drawable.x_circle);
         Drawable unknown = ContextCompat.getDrawable(this, R.drawable.patch_question);
@@ -247,6 +286,11 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception ignored) {
             SpecialAbilities.setCompoundDrawablesWithIntrinsicBounds(unknown, null, null, null);
         }
+
+        requestNotification.setCompoundDrawablesWithIntrinsicBounds(
+                areNotificationsEnabled() ? done : none,
+                null, null, null
+        );
     }
 
     @Override

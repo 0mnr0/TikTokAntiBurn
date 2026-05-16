@@ -43,7 +43,7 @@ public class DefaultSettings {
             int screenHeight = ctx.getResources().getDisplayMetrics().heightPixels;
             int savedValue = (int) (screenHeight * 0.09);
             savedValue = (savedValue + 40) / 2;
-            Settings.Service.setInt(ctx, "DefaultElementHeight", savedValue);
+            Settings.Service.setFloat(ctx, "DefaultElementHeight", savedValue);
         }
 
 
