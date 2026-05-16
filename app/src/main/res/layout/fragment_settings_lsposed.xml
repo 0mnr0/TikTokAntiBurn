@@ -23,7 +23,7 @@
             android:padding="20dp"
             android:paddingStart="0dp"
             android:paddingEnd="15dp"
-            android:text="Enable Module"
+            android:text="@string/Settings_LSP_isModuleEnabled"
             android:textColor="@color/ButtonForeground"
             android:textSize="18sp"
             android:textStyle="bold"

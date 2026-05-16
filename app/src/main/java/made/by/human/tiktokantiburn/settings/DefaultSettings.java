@@ -65,8 +65,8 @@ public class DefaultSettings {
     }
 
     private static void SetupModule(Context ctx){
-        if (!Settings.Module.contains(ctx, "ModuleSettings")) {
-            Settings.Module.setBool(ctx, "ModuleSettings", true);
+        if (!Settings.Module.contains(ctx, "isModuleEnabled")) {
+            Settings.Module.setBool(ctx, "isModuleEnabled", true);
         }
     }
 
