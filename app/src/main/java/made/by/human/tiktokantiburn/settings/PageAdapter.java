@@ -25,7 +25,6 @@ public class PageAdapter extends FragmentStateAdapter {
 
     public void init() {
         haveRoot = RootCheck.isDeviceRooted();
-        haveRoot = true;
         AdditionalSettings = new AdditionalSettingsFragment();
         LSPosedSettings = new LSPosedSettingsFragment();
         MainSettings = new MainSettingsFragment();
