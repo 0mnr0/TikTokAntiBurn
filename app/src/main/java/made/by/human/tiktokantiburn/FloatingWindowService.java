@@ -123,7 +123,6 @@ public class FloatingWindowService extends Service {
     public void LoadCustomBurns(boolean canBeHidden) {
         String json = Settings.Service.getString(this, "block_list", null);
 
-        Type type = new TypeToken<List<BlockInfo>>(){}.getType();
         List<BlockInfo> blockList = GSON.fromJson(json, BLOCK_LIST_TYPE);
 
         if (blockList == null || blockList.isEmpty()) {

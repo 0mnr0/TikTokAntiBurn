@@ -55,7 +55,7 @@ public class MainAccessibilityService extends android.accessibilityservice.Acces
 
                 boolean TikTokOpened = activePackages.contains(GetString("TriggerPacketName", "com.zhiliaoapp.musically"));
 
-                if (GetBoolean("InputMethodSkip", false)) {
+                if (GetBoolean("HideWhenKeyboardIsOpen", false)) {
                     if (activePackages.stream().anyMatch(p ->
                             p.startsWith("com.google.android.inputmethod") ||
                                     p.startsWith("com.simejikeyboard") ||
