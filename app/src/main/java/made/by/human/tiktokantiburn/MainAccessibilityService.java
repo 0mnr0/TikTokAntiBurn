@@ -37,7 +37,7 @@ public class MainAccessibilityService extends android.accessibilityservice.Acces
         Log.d("accessibilityService", "isWChaned:" + isWindowsChanged);
         logger.Save("[MyAccessibilityService] - onAccessibilityEvent received", "Is WindowsChanged: "+isWindowsChanged, true, false);
         boolean ClosePopups;
-        CompatibilityMode = GetBoolean("CompatibilityMode", false);
+        CompatibilityMode = GetBoolean("Compatibility_MODE", false);
         if (isWindowsChanged) {
             Intent serviceIntent = new Intent(this, FloatingWindowService.class);
             try {
