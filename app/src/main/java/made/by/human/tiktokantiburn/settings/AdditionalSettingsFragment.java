@@ -32,6 +32,15 @@ public class AdditionalSettingsFragment extends Fragment {
         final Context ctx = requireContext();
 
 
+        MaterialSwitch EnableLogging = view.findViewById(R.id.EnableLogging);
+        EnableLogging.setChecked(Settings.Service.getBool(ctx, ".enable_logging", false));
+        EnableLogging.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+            Settings.Service.setBool(ctx, ".enable_logging", isChecked);
+            if (!isChecked) {
+                LogSystem.getInstance().clear();
+            }
+        }));
+
         MaterialSwitch Compatibility_MODE = view.findViewById(R.id.Compatibility_MODE);
         Compatibility_MODE.setChecked(Settings.Service.getBool(ctx, "Compatibility_MODE", false));
         Compatibility_MODE.setOnCheckedChangeListener(((buttonView, isChecked) -> {
@@ -43,15 +52,6 @@ public class AdditionalSettingsFragment extends Fragment {
         FullScreenAPISwitch.setChecked(Settings.Service.getBool(ctx, "FullScreenAPISwitch", false));
         FullScreenAPISwitch.setOnCheckedChangeListener(((buttonView, isChecked) -> {
             Settings.Service.setBool(ctx, "FullScreenAPISwitch", isChecked);
-        }));
-
-        MaterialSwitch EnableLogging = view.findViewById(R.id.EnableLogging);
-        EnableLogging.setChecked(Settings.Service.getBool(ctx, ".enable_logging", false));
-        EnableLogging.setOnCheckedChangeListener(((buttonView, isChecked) -> {
-            Settings.Service.setBool(ctx, ".enable_logging", isChecked);
-            if (!isChecked) {
-                LogSystem.getInstance().clear();
-            }
         }));
 
 

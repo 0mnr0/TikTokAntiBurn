@@ -39,7 +39,7 @@ public class FloatingWindowService extends Service {
     public void CreateElement(int x, int y, int width, int height, long radius, float alpha, boolean canBeHidden) {
         View floatingView = inflater.inflate(R.layout.blockburn_quad, null);
 
-        boolean useFullScreenAPI = GetBoolean("FullScreenAPI");
+        boolean useFullScreenAPI = GetBoolean("FullScreenAPISwitch");
 
         int displayMode = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         if (useFullScreenAPI) {
@@ -148,7 +148,7 @@ public class FloatingWindowService extends Service {
         boolean CloseAll = intent != null && "ACTION_CLOSE_WINDOW".equals(intent.getAction()); // Detecting if popups must be closed
         if (CloseAll) { onDestroy(); WindowsOpened = false; return START_NOT_STICKY; } // Remove all popups and set "Multi-Open" defend to non active
         if (WindowsOpened) {return START_NOT_STICKY;} else {WindowsOpened = true;} // Some systems can call event more than one time, its defend to prevent "multi" popups on same places
-        final boolean canBeHidden = GetBoolean("Clickable");
+        final boolean canBeHidden = GetBoolean("HideOnTouch");
 
         if (GetBoolean("ShowDefaultElement")) {
             Display display = windowManager.getDefaultDisplay();
