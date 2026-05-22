@@ -415,7 +415,7 @@ public class SetupFloatingWindows extends Service {
             View blockburn = LayoutInflater.from(this).inflate(R.layout.blockburn, null);
 
 
-            boolean useFullScreenAPI =  GetBoolean("FullScreenAPI");
+            boolean useFullScreenAPI =  GetBoolean("FullScreenAPISwitch");
             int displayMode = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
             if (useFullScreenAPI) {
                 displayMode = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
