@@ -339,6 +339,7 @@ public class SetupFloatingWindows extends Service {
         blockburnList.clear();
         blockburnRadiusesList.clear();
         windowManager.removeView(floatingMenu);
+        Settings.Iternal.setBool(this, "viewsSetup", false);
 
         stopSelf(); // Остановить сервис
     }
@@ -383,6 +384,7 @@ public class SetupFloatingWindows extends Service {
         Intent launchIntent = pm.getLaunchIntentForPackage(pkg);
 
         if (launchIntent != null) {
+            Settings.Iternal.setBool(getApplicationContext(), "viewsSetup", true);
             launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(launchIntent);
         } else {

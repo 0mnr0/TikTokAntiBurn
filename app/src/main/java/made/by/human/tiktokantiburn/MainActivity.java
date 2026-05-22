@@ -214,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         TextView VersionCode = findViewById(R.id.VersionCode);
+        made.by.human.tiktokantiburn.settings.Settings.Iternal.setBool(this, "viewsSetup", false);
         VersionCode.setText(ApplicationVersion.get(this));
         MigrateFromOld.start(this);
         DefaultSettings.Setup(this);
@@ -301,6 +302,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         refreshPermissionStatuses();
         UpdateLogsVisibility();
+        made.by.human.tiktokantiburn.settings.Settings.Iternal.setBool(this, "viewsSetup", false);
     }
 
     public void CheckUpdates() {

@@ -84,6 +84,11 @@ public class MainAccessibilityService extends android.accessibilityservice.Acces
                     logger.Save("CompatibilityMode", "ClosePopup now = "+ClosePopups, false, false);
                 }
 
+                if (Settings.Iternal.getBool(this, "viewsSetup", false)) {
+                    ClosePopups = true;
+                    logger.Save("viewsSetup", "viewsSetup -> true ", false, false);
+                }
+
                 logger.Save("TikTok Opened", TikTokOpened, false, false);
 
                 if (ClosePopups) {
@@ -108,7 +113,6 @@ public class MainAccessibilityService extends android.accessibilityservice.Acces
 
 
     private final Set<String> activePackages = new HashSet<>();
-    private Intent serviceIntent;
     @Override
     public void onServiceConnected() {
         super.onServiceConnected();
@@ -116,7 +120,6 @@ public class MainAccessibilityService extends android.accessibilityservice.Acces
         if (LogSystem.getInstanceOrNull() == null) {
             LogSystem.init((Application) getApplicationContext());
         }
-        serviceIntent = new Intent(this, FloatingWindowService.class);
         logger = LogSystem.getInstance();
         logger.Save("MyAccessibilityService", "Service connected", true, true);
     }
