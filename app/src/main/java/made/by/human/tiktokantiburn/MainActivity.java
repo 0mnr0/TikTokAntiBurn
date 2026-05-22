@@ -46,6 +46,7 @@ import java.util.concurrent.TimeUnit;
 import made.by.human.tiktokantiburn.helpers.ApplicationVersion;
 import made.by.human.tiktokantiburn.helpers.UpdateChecker;
 import made.by.human.tiktokantiburn.settings.DefaultSettings;
+import made.by.human.tiktokantiburn.settings.MigrateFromOld;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -214,6 +215,7 @@ public class MainActivity extends AppCompatActivity {
         });
         TextView VersionCode = findViewById(R.id.VersionCode);
         VersionCode.setText(ApplicationVersion.get(this));
+        MigrateFromOld.start(this);
         DefaultSettings.Setup(this);
         if (!areNotificationsEnabled()) { requestNotification(null); }
         refreshPermissionStatuses();

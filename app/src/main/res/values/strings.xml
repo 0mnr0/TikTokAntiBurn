@@ -94,4 +94,5 @@
     <string name="Settings_LSP_RemoveModified_Desc">This will delete the list of items that you created. Their modification will no longer work.</string>
     <string name="Yes">Yes</string>
     <string name="Done">Done!</string>
+    <string name="SETTINGS_MIGRATION_FAILED">An error occurred when updating the settings.</string>
 </resources>

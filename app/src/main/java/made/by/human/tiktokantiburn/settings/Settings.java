@@ -13,6 +13,15 @@ public final class Settings {
     private Settings() {
     }
 
+    public static SharedPreferences getFile(Context ctx, String filename) {
+        return ctx.getSharedPreferences(filename, Context.MODE_PRIVATE);
+    }
+
+    public static void deleteFile(Context ctx, String filename) {
+        ctx.deleteSharedPreferences(filename);
+    }
+
+
     public static final class Service {
         private static final String PREF_NAME = "ServiceSettings";
 

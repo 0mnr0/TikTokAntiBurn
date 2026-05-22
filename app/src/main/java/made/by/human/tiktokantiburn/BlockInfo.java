@@ -1,12 +1,12 @@
 package made.by.human.tiktokantiburn;
 
 public class BlockInfo {
-    int width;
-    int height;
-    int x;
-    int y;
-    long radius = 0;
-    float alpha = 1f;
+    public int width;
+    public int height;
+    public int x;
+    public int y;
+    public long radius = 0;
+    public float alpha = 1f;
 
     public BlockInfo(int width, int height, int x, int y, float alpha, long radius) {
         this.width = width;

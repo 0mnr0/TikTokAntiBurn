@@ -91,4 +91,5 @@
     <string name="Settings_LSP_RemoveModified_Desc">Это удалит список элементов которые вы создали. Их модификация больше не будет работать</string>
     <string name="Yes">Да</string>
     <string name="Done">Готово!</string>
+    <string name="SETTINGS_MIGRATION_FAILED">"Ошибка при обновлении настроек. "</string>
 </resources>

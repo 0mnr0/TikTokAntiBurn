@@ -88,15 +88,20 @@ public class MainSettingsFragment extends Fragment {
 
         Slider DefaultPanelHeight = view.findViewById(R.id.DefaultPanelHeight);
         DefaultPanelHeight.addOnChangeListener((slider, progress, fromUser) -> {
+            if ((int) progress < DefaultPanelHeight.getValueFrom()) {progress = DefaultPanelHeight.getValueFrom();}
+            if ((int) progress > DefaultPanelHeight.getValueTo()) {progress = DefaultPanelHeight.getValueTo();}
             Settings.Service.setInt(ctx, "DefaultElementHeight", (int) progress);
         });
-        DefaultPanelHeight.setValue(Settings.Service.getInt(ctx, "DefaultElementHeight", 100));
 
         int screenHeight = ctx.getResources().getDisplayMetrics().heightPixels;
         int savedValue = (int) (screenHeight * 0.09);
         DefaultPanelHeight.setValueFrom((savedValue + 40) / 3f);
         DefaultPanelHeight.setValueTo(savedValue);
 
+        int setValue = Settings.Service.getInt(ctx, "DefaultElementHeight", 100);
+        if (setValue < DefaultPanelHeight.getValueFrom()) {setValue = (int) DefaultPanelHeight.getValueFrom();}
+        if (setValue > DefaultPanelHeight.getValueTo()) {setValue = (int) DefaultPanelHeight.getValueTo();}
+        DefaultPanelHeight.setValue(setValue);
 
 
         ConstraintDefaultPanelHeight = view.findViewById(R.id.ConstraintDefaultPanelHeight);
