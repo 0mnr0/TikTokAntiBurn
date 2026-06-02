@@ -35,6 +35,10 @@ public class DefaultSettings {
             Settings.Service.setBool(ctx, "HideOnTouch", true);
         }
 
+        if (!Settings.Service.contains(ctx, "touchThroughMode")) {
+            Settings.Service.setBool(ctx, "touchThroughMode", true);
+        }
+
         if (!Settings.Service.contains(ctx, "ShowDefaultElement")) {
             Settings.Service.setBool(ctx, "ShowDefaultElement", true);
         }

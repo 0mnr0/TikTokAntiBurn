@@ -95,4 +95,5 @@
     <string name="Yes">Yes</string>
     <string name="Done">Done!</string>
     <string name="SETTINGS_MIGRATION_FAILED">An error occurred when updating the settings.</string>
+    <string name="touchThroughToggle">Disable click detection</string>
 </resources>

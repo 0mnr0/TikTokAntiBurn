@@ -84,6 +84,12 @@ public class MainSettingsFragment extends Fragment {
             Settings.Service.setBool(ctx, "HideOnTouch", isChecked);
         }));
 
+        MaterialSwitch ClickThroughToggle = view.findViewById(R.id.ClickThroughToggle);
+        ClickThroughToggle.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+            Settings.Service.setBool(ctx, "touchThroughMode", isChecked);
+        }));
+        ClickThroughToggle.setChecked(Settings.Service.getBool(ctx, "touchThroughMode", true));
+
 
 
         Slider DefaultPanelHeight = view.findViewById(R.id.DefaultPanelHeight);

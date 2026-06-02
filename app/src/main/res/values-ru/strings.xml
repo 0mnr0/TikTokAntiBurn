@@ -92,4 +92,5 @@
     <string name="Yes">Да</string>
     <string name="Done">Готово!</string>
     <string name="SETTINGS_MIGRATION_FAILED">"Ошибка при обновлении настроек. "</string>
+    <string name="touchThroughToggle">Отключить обнаружение нажатий</string>
 </resources>

@@ -16,6 +16,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -34,23 +35,29 @@ public class FloatingWindowService extends Service {
     private final List<View> floatingViews = new ArrayList<>();
     private boolean WindowsOpened = false;
 
+    boolean useFullScreenAPI, touchThroughMode = true;
+
 
 
     @SuppressLint("InflateParams")
     public void CreateElement(int x, int y, int width, int height, long radius, float alpha, boolean canBeHidden) {
         View floatingView = inflater.inflate(R.layout.blockburn_quad, null);
 
-        boolean useFullScreenAPI = GetBoolean("FullScreenAPISwitch");
+        int displayMode = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
+                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
 
-        int displayMode = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         if (useFullScreenAPI) {
-            displayMode = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                    | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
-                    | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                    | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
-                    | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-                    | WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR;
+            displayMode |= WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
+            displayMode |= WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
+            displayMode |= WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR;
         }
+
+        if (touchThroughMode) {
+            displayMode |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+        }
+
+        Toast.makeText(this, touchThroughMode+"", Toast.LENGTH_LONG).show();
 
 
 
@@ -142,6 +149,8 @@ public class FloatingWindowService extends Service {
         super.onCreate();
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         inflater = LayoutInflater.from(this);
+        useFullScreenAPI = GetBoolean("FullScreenAPISwitch");
+        touchThroughMode = GetBoolean("touchThroughMode");
     }
 
     @Override

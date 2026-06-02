@@ -126,6 +126,32 @@
                 app:trackTint="@color/MID" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/Main_3_1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/fast_setting_bg"
+            android:padding="12dp">
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/ClickThroughToggle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:checked="false"
+                android:text="@string/touchThroughToggle"
+                android:textColor="@color/SeekBackgroundFilled"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:thumbTint="@color/SeekBackgroundFilled"
+                app:trackDecorationTint="@color/SeekBackgroundFilled"
+                app:trackTint="@color/MID" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <View
             android:id="@+id/divider9"
             android:layout_width="match_parent"
