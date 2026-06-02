@@ -57,8 +57,6 @@ public class FloatingWindowService extends Service {
             displayMode |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
         }
 
-        Toast.makeText(this, touchThroughMode+"", Toast.LENGTH_LONG).show();
-
 
 
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
