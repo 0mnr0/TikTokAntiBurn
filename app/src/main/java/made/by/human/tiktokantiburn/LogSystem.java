@@ -16,7 +16,7 @@ import android.util.Log;
 import made.by.human.tiktokantiburn.settings.Settings;
 
 public class LogSystem {
-    public static final String LoggerVersion = "1.5.0";
+    public static final String LoggerVersion = "1.5.1";
     private static final long MAX_FILE_SIZE = 15L * 1024 * 1024; // 15 MB
     private static final String LOG_FILE_NAME = "logs.txt";
     private static LogSystem instance;
