@@ -1,5 +1,7 @@
 package made.by.human.tiktokantiburn.settings;
 
+import static made.by.human.tiktokantiburn.utils.tools.setSafeValue;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -107,7 +109,7 @@ public class MainSettingsFragment extends Fragment {
         int setValue = Settings.Service.getInt(ctx, "DefaultElementHeight", 100);
         if (setValue < DefaultPanelHeight.getValueFrom()) {setValue = (int) DefaultPanelHeight.getValueFrom();}
         if (setValue > DefaultPanelHeight.getValueTo()) {setValue = (int) DefaultPanelHeight.getValueTo();}
-        DefaultPanelHeight.setValue(setValue);
+        setSafeValue(DefaultPanelHeight, setValue);
 
 
         ConstraintDefaultPanelHeight = view.findViewById(R.id.ConstraintDefaultPanelHeight);

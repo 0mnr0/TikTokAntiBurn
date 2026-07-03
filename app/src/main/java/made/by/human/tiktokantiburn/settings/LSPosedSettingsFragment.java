@@ -1,8 +1,8 @@
 package made.by.human.tiktokantiburn.settings;
 
+import static made.by.human.tiktokantiburn.utils.tools.setSafeValue;
+
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,15 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleObserver;
-import androidx.lifecycle.LifecycleOwner;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.materialswitch.MaterialSwitch;
@@ -27,6 +24,7 @@ import com.google.android.material.slider.Slider;
 import made.by.human.tiktokantiburn.BlockableLinearLayout;
 import made.by.human.tiktokantiburn.R;
 import made.by.human.tiktokantiburn.root.Tools;
+import made.by.human.tiktokantiburn.utils.tools;
 
 public class LSPosedSettingsFragment extends Fragment {
     Context ctx;
@@ -121,7 +119,7 @@ public class LSPosedSettingsFragment extends Fragment {
             topPaneImage.setAlpha(progress/100f);
             updateInactiveTop();
         });
-        TopPaneModifierValue.setValue(Settings.Module.getFloat(ctx, "TopPaneAlpha", 100f));
+        setSafeValue(TopPaneModifierValue, Settings.Module.getFloat(ctx, "TopPaneAlpha", 100f));
 
 
 
@@ -133,7 +131,7 @@ public class LSPosedSettingsFragment extends Fragment {
             bottomPaneImage.setAlpha(progress/100f);
             updateInactiveBottom();
         });
-        BottomPaneModifierValue.setValue(Settings.Module.getFloat(ctx, "BottomPaneAlpha", 100f));
+        setSafeValue(BottomPaneModifierValue, Settings.Module.getFloat(ctx, "BottomPaneAlpha", 100f));
         updateInActiveText();
 
 
