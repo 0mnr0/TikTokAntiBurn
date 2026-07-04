@@ -261,8 +261,9 @@
                     <TextView
                         android:id="@+id/topPaneModificatorDisabled"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Неактивно"
+                        android:layout_height="0dp"
+                        android:gravity="center"
+                        android:text="@string/Inactive"
                         android:textColor="@color/SeekBackground"
                         android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="@+id/TopPaneModificatorText"
@@ -296,7 +297,7 @@
                         android:valueTo="100"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/topPaneModificatorDisabled" />
+                        app:layout_constraintTop_toBottomOf="@+id/TopPaneModificatorText" />
 
                     <ImageView
                         android:id="@+id/topPaneImage"
@@ -321,7 +322,8 @@
                     <TextView
                         android:id="@+id/bottomPaneModificatorDisabled"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
+                        android:gravity="center"
                         android:text="@string/Inactive"
                         android:textColor="@color/SeekBackground"
                         android:visibility="gone"
@@ -357,7 +359,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/bottomPaneModificatorDisabled" />
+                        app:layout_constraintTop_toBottomOf="@+id/bottomPaneModificatorText" />
 
                     <ImageView
                         android:id="@+id/bottomPaneImage"
