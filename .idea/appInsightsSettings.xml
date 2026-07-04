@@ -9,10 +9,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="made.by.human.tiktokantiburn" />
+                  <option name="mobileSdkAppId" value="1:627093866597:android:c4d87e343a028a49011e8c" />
+                  <option name="projectId" value="tiktok-antiburn-74b6b" />
+                  <option name="projectNumber" value="627093866597" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "627093866597",
+    "project_id": "tiktok-antiburn-74b6b",
+    "storage_bucket": "tiktok-antiburn-74b6b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:627093866597:android:c4d87e343a028a49011e8c",
+        "android_client_info": {
+          "package_name": "made.by.human.tiktokantiburn"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7_jWT2R6y2_5iH-ZP8oWUtmQqriZH-GA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
