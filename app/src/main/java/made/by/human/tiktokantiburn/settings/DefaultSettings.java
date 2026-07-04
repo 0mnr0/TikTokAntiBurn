@@ -66,6 +66,10 @@ public class DefaultSettings {
         if (!Settings.Service.contains(ctx, "Compatibility_MODE")) {
             Settings.Service.setBool(ctx, "Compatibility_MODE", false);
         }
+
+        if (!Settings.Service.contains(ctx, "GoogleHelpers")) {
+            Settings.Service.setBool(ctx, "GoogleHelpers", true);
+        }
     }
 
     private static void SetupModule(Context ctx){

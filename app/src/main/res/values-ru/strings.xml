@@ -93,4 +93,7 @@
     <string name="Done">Готово!</string>
     <string name="SETTINGS_MIGRATION_FAILED">"Ошибка при обновлении настроек. "</string>
     <string name="touchThroughToggle">Отключить обнаружение нажатий</string>
+    <string name="GoogleCrashlyticsSettingsDesc">Отправлять отчеты о сбоях и медленной работе приложения. Аналитика не собирается. Отчеты анонимны. Если не трудно - оставьте включенным, это поможет в разработке приложения.</string>
+    <string name="GoogleCrashlyticsSettingsTitle">Анонимные отчеты о сбоях</string>
+    <string name="ThankYou">Спасибо! :)</string>
 </resources>

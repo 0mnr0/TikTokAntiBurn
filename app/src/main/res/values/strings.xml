@@ -96,4 +96,7 @@
     <string name="Done">Done!</string>
     <string name="SETTINGS_MIGRATION_FAILED">An error occurred when updating the settings.</string>
     <string name="touchThroughToggle">Disable click detection</string>
+    <string name="GoogleCrashlyticsSettingsDesc">Please send reports about app crashes and slow performance. No analytics are collected. The reports are anonymous. If it\'s not too much trouble, please leave this feature enabled - it will help us improve the app.</string>
+    <string name="GoogleCrashlyticsSettingsTitle">Anonymous Malfunction Report</string>
+    <string name="ThankYou">Thank You! :)</string>
 </resources>

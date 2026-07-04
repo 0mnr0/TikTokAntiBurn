@@ -1,5 +1,7 @@
 package made.by.human.tiktokantiburn.settings;
 
+import static made.by.human.tiktokantiburn.R.string.ThankYou;
+
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -7,12 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.materialswitch.MaterialSwitch;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.firebase.perf.FirebasePerformance;
 
 import made.by.human.tiktokantiburn.LogSystem;
 import made.by.human.tiktokantiburn.R;
@@ -68,6 +74,19 @@ public class AdditionalSettingsFragment extends Fragment {
         }
 
 
+
+        MaterialSwitch GoogleHelpers = view.findViewById(R.id.GoogleHelpers);
+        GoogleHelpers.setChecked(Settings.Iternal.getBool(ctx, "GoogleHelpers", true));
+        GoogleHelpers.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+            if (isChecked) {
+                Toast.makeText(ctx, getString(ThankYou), Toast.LENGTH_SHORT).show();
+            }
+
+
+            Settings.Iternal.setBool(ctx, "GoogleHelpers", isChecked);
+            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(isChecked);
+            FirebasePerformance.getInstance().setPerformanceCollectionEnabled(isChecked);
+        }));
 
         MaterialSwitch GitVerseAPI = view.findViewById(R.id.UseGitVerseAPI);
         GitVerseAPI.setChecked(Settings.Iternal.getBool(ctx, "GitVerseAPI", false));
