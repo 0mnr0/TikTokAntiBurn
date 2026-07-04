@@ -297,7 +297,8 @@
                         android:valueTo="100"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/TopPaneModificatorText" />
+                        app:layout_constraintTop_toBottomOf="@+id/TopPaneModificatorText"
+                        tools:stepSize="0" />
 
                     <ImageView
                         android:id="@+id/topPaneImage"
@@ -359,7 +360,8 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/bottomPaneModificatorText" />
+                        app:layout_constraintTop_toBottomOf="@+id/bottomPaneModificatorText"
+                        tools:stepSize="0" />
 
                     <ImageView
                         android:id="@+id/bottomPaneImage"
