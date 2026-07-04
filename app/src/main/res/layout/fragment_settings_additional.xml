@@ -167,7 +167,7 @@
                 app:trackTint="@color/MID" />
 
             <TextView
-                android:id="@+id/GitVerseAPIText"
+                android:id="@+id/GoogleHelpersText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:alpha="0.75"
