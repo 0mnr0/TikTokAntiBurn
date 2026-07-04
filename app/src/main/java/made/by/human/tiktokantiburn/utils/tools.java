@@ -21,4 +21,23 @@ public class tools {
 
         slider.setValue(value);
     }
+
+
+    public static void setSafeValue(Slider slider, int value) {
+        int from = (int) slider.getValueFrom();
+        int to = (int) slider.getValueTo();
+        int step = (int) slider.getStepSize();
+
+        if (value < from) value = from;
+        if (value > to) value = to;
+
+        if (step > 0) {
+            int steps = (value - from + (step / 2)) / step;
+            value = from + (steps * step);
+
+            if (value > to) value = to;
+        }
+
+        slider.setValue((float) value);
+    }
 }
