@@ -10,6 +10,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -34,8 +35,9 @@ public class FloatingWindowService extends Service {
     private LayoutInflater inflater;
     private final List<View> floatingViews = new ArrayList<>();
     private boolean WindowsOpened = false;
-
     boolean useFullScreenAPI, touchThroughMode = true;
+
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
 
 
@@ -93,11 +95,11 @@ public class FloatingWindowService extends Service {
         if (canBeHidden) {
             floatingView.setOnClickListener(v -> {
                 floatingView.animate().alpha(0f).setDuration(AnimationLength).start();
-                new Handler().postDelayed(() ->
+                mainHandler.postDelayed(() ->
                                 floatingView.setVisibility(View.GONE),
                 AnimationLength);
 
-                new Handler().postDelayed(() -> {
+                mainHandler.postDelayed(() -> {
                     if (floatingView != null && floatingView.getParent() != null) {
                         floatingView.setVisibility(View.VISIBLE);
                         floatingView.animate().alpha(alpha).setDuration(AnimationLength).start();
@@ -112,7 +114,7 @@ public class FloatingWindowService extends Service {
         for (View view : floatingViews) {
             if (view != null) {
                 view.animate().alpha(0f).setDuration(AnimationLength).start();
-                new Handler().postDelayed(() -> windowManager.removeView(view), AnimationLength);
+                mainHandler.postDelayed(() -> windowManager.removeView(view), AnimationLength);
             }
         }
         floatingViews.clear();
@@ -178,6 +180,7 @@ public class FloatingWindowService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mainHandler.removeCallbacksAndMessages(null);
         DestroyAll();
     }
 
