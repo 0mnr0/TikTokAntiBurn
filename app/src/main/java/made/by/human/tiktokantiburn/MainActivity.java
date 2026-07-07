@@ -140,6 +140,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void OpenExtendedSetting(View view) {
+        if (!PermissionOverlayGranted()) {
+            Toast.makeText(this, R.string.PleaseRequestOverlay, Toast.LENGTH_LONG).show();
+            return;
+        }
+
         Intent intent = new Intent(this, SetupFloatingWindows.class);
         startService(intent);
 
@@ -270,16 +275,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void refreshPermissionStatuses() {
-        Button AboveAllWindows, SpecialAbilities, requestNotification;
+        Button AboveAllWindows, SpecialAbilities, requestNotification, ExtendedSetting;
         AboveAllWindows = findViewById(R.id.AboveAllWindows);
         SpecialAbilities = findViewById(R.id.SpecialAbilities);
         requestNotification = findViewById(R.id.requestNotification);
+        ExtendedSetting = findViewById(R.id.ExtendedSetting);
+
         Drawable done = ContextCompat.getDrawable(this, R.drawable.check_circle);
         Drawable none = ContextCompat.getDrawable(this, R.drawable.x_circle);
         Drawable unknown = ContextCompat.getDrawable(this, R.drawable.patch_question);
 
         try {
-            AboveAllWindows.setCompoundDrawablesWithIntrinsicBounds(PermissionOverlayGranted() ? done : none, null, null, null);
+            final boolean isGranted = PermissionOverlayGranted();
+
+            ExtendedSetting.setAlpha(isGranted ? 1f : 0.75f);
+
+            AboveAllWindows.setCompoundDrawablesWithIntrinsicBounds(isGranted ? done : none, null, null, null);
             new Handler(Looper.getMainLooper()).postDelayed(() -> AboveAllWindows.setCompoundDrawablesWithIntrinsicBounds(PermissionOverlayGranted() ? done : none, null, null, null), 500);
         } catch (Exception ignored) {
             AboveAllWindows.setCompoundDrawablesWithIntrinsicBounds(unknown, null, null, null);
@@ -291,10 +302,7 @@ public class MainActivity extends AppCompatActivity {
             SpecialAbilities.setCompoundDrawablesWithIntrinsicBounds(unknown, null, null, null);
         }
 
-        requestNotification.setCompoundDrawablesWithIntrinsicBounds(
-                areNotificationsEnabled() ? done : none,
-                null, null, null
-        );
+        requestNotification.setVisibility(areNotificationsEnabled() ? View.GONE : View.VISIBLE);
     }
 
     @Override

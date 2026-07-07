@@ -96,4 +96,5 @@
     <string name="GoogleCrashlyticsSettingsDesc">Отправлять отчеты о сбоях и медленной работе приложения. Аналитика не собирается. Отчеты анонимны. Если не трудно - оставьте включенным, это поможет в разработке приложения.</string>
     <string name="GoogleCrashlyticsSettingsTitle">Анонимные отчеты о сбоях</string>
     <string name="ThankYou">Спасибо! :)</string>
+    <string name="PleaseRequestOverlay">Требуется разрешение \"Отображение поверх окон\"</string>
 </resources>
