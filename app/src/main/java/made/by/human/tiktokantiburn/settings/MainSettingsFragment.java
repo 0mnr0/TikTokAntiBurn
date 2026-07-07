@@ -67,6 +67,7 @@ public class MainSettingsFragment extends Fragment {
                 Settings.Service.setString(ctx, "TriggerPacketName", s.toString().replace(" ", ""));
             }
         });
+        HideOnClickOpt = view.findViewById(R.id.Main_3);
         TriggerPacketName.setText(Settings.Service.getString(ctx, "TriggerPacketName", "com.zhiliaoapp.musically"));
         TriggerPacketName.setOnEditorActionListener((v, actionId, event) -> {
             HideTextInputFocus(ctx);
@@ -129,7 +130,6 @@ public class MainSettingsFragment extends Fragment {
 
 
         ConstraintDefaultPanelHeight = view.findViewById(R.id.ConstraintDefaultPanelHeight);
-        HideOnClickOpt = view.findViewById(R.id.Main_3);
         MaterialSwitch ShowDefault = view.findViewById(R.id.ShowDefaultElement);
         ShowDefault.setOnCheckedChangeListener(((buttonView, isChecked) -> {
             Settings.Service.setBool(ctx, "ShowDefaultElement", isChecked);
