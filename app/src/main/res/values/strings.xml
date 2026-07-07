@@ -103,4 +103,6 @@
     <string name="FloatingWindowsLimitTitle">Testing firmware</string>
     <string name="FloatingWindowsLimitDesc">The maximum number of overlays is being tested</string>
     <string name="FloatingWindowsLimitError">You have reached the window limit of your firmware</string>
+    <string name="GrandOverlayFirst">Please grant overlay permission first!</string>
+    <string name="ServiceOverlayPermissionNotGranted">Please grant overlay permission!</string>
 </resources>

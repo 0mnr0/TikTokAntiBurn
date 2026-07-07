@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityWindowInfo;
+import android.widget.Toast;
 
 import java.util.HashSet;
 import java.util.List;
@@ -21,7 +22,6 @@ public class MainAccessibilityService extends android.accessibilityservice.Acces
     boolean CompatibilityMode = false;
 
 
-
     public boolean GetBoolean(String settingName, boolean defValue) {
         return Settings.Service.getBool(this, settingName, defValue);
     }
@@ -35,13 +35,16 @@ public class MainAccessibilityService extends android.accessibilityservice.Acces
         final boolean isWindowsChanged = event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED || event.getEventType() == AccessibilityEvent.TYPE_WINDOWS_CHANGED;
         if (!isWindowsChanged) { return; }
 
+        Intent serviceIntent = new Intent(this, FloatingWindowService.class);
+
+
 
         Log.d("accessibilityService", "isWChaned:" + isWindowsChanged);
         logger.Save("[MyAccessibilityService] - onAccessibilityEvent received", "Is WindowsChanged: "+isWindowsChanged, true, false);
         boolean ClosePopups;
         CompatibilityMode = GetBoolean("Compatibility_MODE", false);
 
-        Intent serviceIntent = new Intent(this, FloatingWindowService.class);
+
         try {
             List<AccessibilityWindowInfo> windows = getWindows();
 
@@ -92,6 +95,16 @@ public class MainAccessibilityService extends android.accessibilityservice.Acces
             }
 
             logger.Save("TikTok Opened", TikTokOpened, false, false);
+
+            if (!android.provider.Settings.canDrawOverlays(this)) {
+                logger.Save("OverlayError", "Overlay permission is not granted", false, false);
+                Toast.makeText(this, getString(R.string.ServiceOverlayPermissionNotGranted), Toast.LENGTH_LONG).show();
+                serviceIntent.setAction("ACTION_CLOSE_WINDOW");
+                startService(serviceIntent);
+                disableSelf();
+                return;
+            }
+
 
             if (ClosePopups) {
                 serviceIntent.setAction("ACTION_CLOSE_WINDOW");

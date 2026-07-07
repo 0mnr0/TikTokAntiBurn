@@ -100,4 +100,6 @@
     <string name="FloatingWindowsLimitTitle">Тест прошивки</string>
     <string name="FloatingWindowsLimitDesc">Идёт тест на максимальное кол-во плавающих окон</string>
     <string name="FloatingWindowsLimitError">Вы достигли лимита окон вашей прошивки</string>
+    <string name="GrandOverlayFirst">Пожалуйста, сначала предоставьте разрешение на отображение поверх!</string>
+    <string name="ServiceOverlayPermissionNotGranted">Пожалуйста, предоставьте разрешение на отображение поверх!</string>
 </resources>

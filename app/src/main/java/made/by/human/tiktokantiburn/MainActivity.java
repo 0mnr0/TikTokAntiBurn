@@ -161,6 +161,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openSpecificAccessibilityServiceSettings(View view) {
+        if (!PermissionOverlayGranted()) {
+            Toast.makeText(this, getString(R.string.GrandOverlayFirst), Toast.LENGTH_SHORT).show();
+            openRequestTopWindow(null);
+            return;
+        }
+
         try {
             Intent openSettings = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
             openSettings.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
@@ -292,6 +298,7 @@ public class MainActivity extends AppCompatActivity {
             final boolean isGranted = PermissionOverlayGranted();
 
             ExtendedSetting.setAlpha(isGranted ? 1f : 0.75f);
+            SpecialAbilities.setAlpha(isGranted ? 1f : 0.75f);
 
             AboveAllWindows.setCompoundDrawablesWithIntrinsicBounds(isGranted ? done : none, null, null, null);
             new Handler(Looper.getMainLooper()).postDelayed(() -> AboveAllWindows.setCompoundDrawablesWithIntrinsicBounds(PermissionOverlayGranted() ? done : none, null, null, null), 500);
