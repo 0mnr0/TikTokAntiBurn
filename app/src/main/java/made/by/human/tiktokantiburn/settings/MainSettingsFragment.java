@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import made.by.human.tiktokantiburn.R;
 
@@ -93,6 +94,7 @@ public class MainSettingsFragment extends Fragment {
         ClickThroughToggle.setChecked(Settings.Service.getBool(ctx, "touchThroughMode", true));
 
 
+        FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
 
         Slider DefaultPanelHeight = view.findViewById(R.id.DefaultPanelHeight);
         DefaultPanelHeight.addOnChangeListener((slider, progress, fromUser) -> {
@@ -103,13 +105,18 @@ public class MainSettingsFragment extends Fragment {
 
         int screenHeight = ctx.getResources().getDisplayMetrics().heightPixels;
         int savedValue = (int) (screenHeight * 0.09);
-        DefaultPanelHeight.setValueFrom((savedValue + 40) / 3f);
+
+        DefaultPanelHeight.setValueFrom((savedValue + 30) / 3f);
         DefaultPanelHeight.setValueTo(savedValue);
 
         int setValue = Settings.Service.getInt(ctx, "DefaultElementHeight", 100);
+        crashlytics.setCustomKey("userViewportHeight", screenHeight);
+        crashlytics.setCustomKey("SH-savedValue", savedValue);
+        crashlytics.setCustomKey("SH-setValue", savedValue);
         if (setValue < DefaultPanelHeight.getValueFrom()) {setValue = (int) DefaultPanelHeight.getValueFrom();}
         if (setValue > DefaultPanelHeight.getValueTo()) {setValue = (int) DefaultPanelHeight.getValueTo();}
         setSafeValue(DefaultPanelHeight, setValue);
+
 
 
         ConstraintDefaultPanelHeight = view.findViewById(R.id.ConstraintDefaultPanelHeight);
