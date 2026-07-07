@@ -119,6 +119,7 @@ public class FloatingWindowService extends Service {
     private static final Type BLOCK_LIST_TYPE = new TypeToken<List<BlockInfo>>(){}.getType();
     public void LoadCustomBurns(boolean canBeHidden) {
         String json = Settings.Service.getString(this, "block_list", null);
+        int maxWindows = Settings.Service.getInt(this, "MaxFloatWindows", 20);
 
         List<BlockInfo> blockList = GSON.fromJson(json, BLOCK_LIST_TYPE);
 
@@ -127,6 +128,7 @@ public class FloatingWindowService extends Service {
         }
 
         for (int i = 0; i < blockList.size(); i++) {
+            if (i >= maxWindows) {return;}
             BlockInfo blockInfo = blockList.get(i);
             CreateElement(blockInfo.x, blockInfo.y, blockInfo.width, blockInfo.height, blockInfo.radius, blockInfo.alpha, canBeHidden);
         }
@@ -186,8 +188,21 @@ public class FloatingWindowService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        boolean CloseAll = intent != null && "ACTION_CLOSE_WINDOW".equals(intent.getAction());
-        if (CloseAll) { animateAndStopSelf();return START_NOT_STICKY; }
+        if (intent != null) {
+            String action = intent.getAction();
+
+            if ("ACTION_CLOSE_WINDOW_IMMEDIATE".equals(action)) {
+                destroyAllImmediate();
+                WindowsOpened = false;
+                stopSelf();
+                return START_NOT_STICKY;
+            }
+
+            if ("ACTION_CLOSE_WINDOW".equals(action)) {
+                animateAndStopSelf();
+                return START_NOT_STICKY;
+            }
+        }
         if (WindowsOpened) { return START_NOT_STICKY; }
 
         final boolean canBeHidden = GetBoolean("HideOnTouch");

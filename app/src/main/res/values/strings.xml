@@ -11,7 +11,7 @@
     <string name="Request_UsageStats">Request \"Usage Stats\" permission</string>
     <string name="Request_SpecialThings">Request \"Accessibility\" permission</string>
     <string name="ExtendedSettings">Create additional blocks</string>
-    <string name="ExtendedSetting_Create">Create Element</string>
+    <string name="ExtendedSetting_Create">Create Element [%1$d / %2$d]</string>
     <string name="close" translatable="false">X</string>
     <string name="ExtendedSetting_Save">Save</string>
     <string name="ExtendedSetting_Remove" translatable="false">🗑️</string>
@@ -100,4 +100,7 @@
     <string name="GoogleCrashlyticsSettingsTitle">Anonymous Malfunction Report</string>
     <string name="ThankYou">Thank You! :)</string>
     <string name="PleaseRequestOverlay">Please grant overlay permission first!</string>
+    <string name="FloatingWindowsLimitTitle">Testing firmware</string>
+    <string name="FloatingWindowsLimitDesc">The maximum number of overlays is being tested</string>
+    <string name="FloatingWindowsLimitError">You have reached the window limit of your firmware</string>
 </resources>

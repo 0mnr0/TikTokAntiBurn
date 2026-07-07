@@ -20,6 +20,7 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
 import android.widget.TextView;
@@ -47,6 +48,7 @@ import made.by.human.tiktokantiburn.helpers.ApplicationVersion;
 import made.by.human.tiktokantiburn.helpers.UpdateChecker;
 import made.by.human.tiktokantiburn.settings.DefaultSettings;
 import made.by.human.tiktokantiburn.settings.MigrateFromOld;
+import made.by.human.tiktokantiburn.utils.FloatTestEnv;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -75,6 +77,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    private static void onCalculated(int maxWindows) {
+
     }
 
 
@@ -145,15 +151,13 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        Intent serviceIntent = new Intent(this, FloatingWindowService.class);
+        serviceIntent.setAction("ACTION_CLOSE_WINDOW_IMMEDIATE");
+        startService(serviceIntent);
+
         Intent intent = new Intent(this, SetupFloatingWindows.class);
         startService(intent);
 
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            Intent serviceIntent = new Intent(this, FloatingWindowService.class);
-            serviceIntent.setAction("ACTION_CLOSE_WINDOW");
-            startService(serviceIntent);
-
-        }, 500);
     }
 
     public void openSpecificAccessibilityServiceSettings(View view) {

@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import made.by.human.tiktokantiburn.settings.Settings;
+import made.by.human.tiktokantiburn.utils.FloatTestEnv;
 
 public class SetupFloatingWindows extends Service {
     final String PrefsFileName = "BlockData";
@@ -42,6 +43,7 @@ public class SetupFloatingWindows extends Service {
 
     ConstraintLayout blockBurnSettings;
     final int bgColor = Color.parseColor("#272727");
+    int maxWindows = 20;
 
     View lastBlockBurnElement = null;
     WindowManager windowManager;
@@ -52,18 +54,23 @@ public class SetupFloatingWindows extends Service {
 
     TextView elementWidth, elementHeight, elementRadius, elementAlpha;
     SeekBar widthBar, heightBar, radiusBar, alphaBar;
-    Button RemoveElementBtn;
+    Button RemoveElementBtn, btnSave, btnAdd;
 
     @Override
     public IBinder onBind(Intent intent) { return null; }
 
+    @SuppressLint("SetTextI18n")
     public void RemoveElement() {
         if (lastBlockBurnElement != null) {
+            lastBlockBurnElement.setOnTouchListener(null);
             windowManager.removeView(lastBlockBurnElement);
             blockburnRadiusesList.remove(blockburnList.indexOf(lastBlockBurnElement));
             blockburnList.remove(lastBlockBurnElement);
             lastBlockBurnElement = null;
             CloseBurnSettings();
+            btnAdd.setText(
+                    getString(R.string.ExtendedSetting_Create, blockburnList.size(), maxWindows)
+            );
         }
     }
 
@@ -87,7 +94,16 @@ public class SetupFloatingWindows extends Service {
     public void onCreate() {
         super.onCreate();
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+
         SaveSettings("isSetupping", true);
+        FloatTestEnv.get(this, windowManager, maxWindowCount -> {
+            maxWindows = maxWindowCount;
+            runService();
+        });
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    public void runService() {
         Context themedContext = new ContextThemeWrapper(getApplicationContext(), R.style.Theme_TikTokAntiBurn);
         LayoutInflater inflater = LayoutInflater.from(themedContext);
         floatingMenu = inflater.inflate(R.layout.floating_menu, null);
@@ -104,7 +120,14 @@ public class SetupFloatingWindows extends Service {
         windowManager.addView(floatingMenu, params);
         blockBurnSettings = floatingMenu.findViewById(R.id.BlockBurnSettings);
 
-        floatingMenu.findViewById(R.id.btnAdd).setOnClickListener(v -> addBlockburn());
+        btnAdd = floatingMenu.findViewById(R.id.btnAdd);
+        btnAdd.setOnClickListener(v -> addBlockburn());
+        btnAdd.setText(
+                getString(R.string.ExtendedSetting_Create, blockburnList.size(), maxWindows)
+        );
+
+
+
         floatingMenu.findViewById(R.id.btnClose).setOnClickListener(v -> closeWindow());
 
         ConstraintLayout constraintLayout = floatingMenu.findViewById(R.id.linearLayout);
@@ -117,7 +140,7 @@ public class SetupFloatingWindows extends Service {
         radiusBar = floatingMenu.findViewById(R.id.radiusBar);
         alphaBar = floatingMenu.findViewById(R.id.alphaBar);
         RemoveElementBtn = floatingMenu.findViewById(R.id.removeElement);
-        Button btnSave = floatingMenu.findViewById(R.id.btnSave);
+        btnSave = floatingMenu.findViewById(R.id.btnSave);
         btnSave.setOnClickListener(v -> SaveSettings());
         ImageView launchTikTok = floatingMenu.findViewById(R.id.launchTikTok);
         launchTikTok.setOnClickListener(v -> launchTikTok());
@@ -214,8 +237,19 @@ public class SetupFloatingWindows extends Service {
         LoadSettings();
     }
 
+    private long getRadiusFor(View view) {
+        int idx = blockburnList.indexOf(view);
+        return idx >= 0 ? blockburnRadiusesList.get(idx) : 0L;
+    }
+
+    @SuppressLint("SetTextI18n")
     private void addBlockburn() {
         if (dragging) {return;}
+        Log.d("blockburnList:", blockburnList.size() + "|" + maxWindows);
+        if (blockburnList.size() >= maxWindows) {
+            Toast.makeText(this, R.string.FloatingWindowsLimitError, Toast.LENGTH_LONG).show();
+            return;
+        }
         View blockburn = LayoutInflater.from(this).inflate(R.layout.blockburn, null);
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 dpToPx(100), dpToPx(100),
@@ -233,6 +267,9 @@ public class SetupFloatingWindows extends Service {
         blockburnList.add(blockburn);
         blockburnRadiusesList.add(0L);
         CloseBurnSettings();
+        btnAdd.setText(
+                getString(R.string.ExtendedSetting_Create, blockburnList.size(), maxWindows)
+        );
     }
 
 
@@ -245,13 +282,13 @@ public class SetupFloatingWindows extends Service {
         if (force) {
             widthBar.setProgress(BurnWidth);
             heightBar.setProgress(BurnHeight);
-            radiusBar.setProgress(Math.toIntExact(blockburnRadiusesList.get(blockburnList.indexOf(lastBlockBurnElement))));
+            radiusBar.setProgress(Math.toIntExact(getRadiusFor(lastBlockBurnElement)));
             alphaBar.setProgress((int) (lastBlockBurnElement.getAlpha() * 100f));
         }
 
         elementWidth.setText(getString(R.string.ExtendedSetting_Width) + BurnWidth + " px");
         elementHeight.setText(getString(R.string.ExtendedSetting_Height) + BurnHeight + " px");
-        elementRadius.setText(getString(R.string.borderRadiusSetting) + (blockburnRadiusesList.get(blockburnList.indexOf(lastBlockBurnElement))) + " px");
+        elementRadius.setText(getString(R.string.borderRadiusSetting) + (getRadiusFor(lastBlockBurnElement)) + " px");
         elementAlpha.setText(getString(R.string.Alpha) + ((int) (lastBlockBurnElement.getAlpha() * 100)) + "%");
     }
 
@@ -264,6 +301,10 @@ public class SetupFloatingWindows extends Service {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                if (!blockburnList.contains(v)) {
+                    return false;
+                }
+
                 boolean NeedCloseSettings = (v != lastBlockBurnElement);
                 if (v != lastBlockBurnElement && dragging) {
                     return true;
@@ -284,7 +325,7 @@ public class SetupFloatingWindows extends Service {
                         GradientDrawable drawable = new GradientDrawable();
                         drawable.setShape(GradientDrawable.RECTANGLE);
                         drawable.setColor(bgColor);
-                        drawable.setCornerRadius(blockburnRadiusesList.get(blockburnList.indexOf(lastBlockBurnElement)));
+                        drawable.setCornerRadius(getRadiusFor(lastBlockBurnElement));
                         drawable.setStroke(
                                 dpToPx(1), Color.RED
                         );
@@ -326,6 +367,9 @@ public class SetupFloatingWindows extends Service {
             drawable.setCornerRadius(blockburnRadiusesList.get(blockburnList.indexOf(view)));
             view.setBackground(drawable);
         }
+        btnAdd.setText(
+                getString(R.string.ExtendedSetting_Create, blockburnList.size(), maxWindows)
+        );
     }
 
     private void closeWindow() {
@@ -406,7 +450,13 @@ public class SetupFloatingWindows extends Service {
         if (blockList == null) {
             return;
         }
+
+        int windowCount = 0;
         for (BlockInfo blockInfo : blockList) {
+            if (windowCount >= maxWindows) {
+                break;
+            }
+
             GradientDrawable drawable = new GradientDrawable();
             drawable.setShape(GradientDrawable.RECTANGLE);
             drawable.setColor(Color.BLACK);
@@ -446,9 +496,9 @@ public class SetupFloatingWindows extends Service {
                     blockInfo.alpha
             );
             makeViewDraggable(blockburn, params);
+            windowCount++;
         }
         CloseBurnSettings();
-
     }
 
 

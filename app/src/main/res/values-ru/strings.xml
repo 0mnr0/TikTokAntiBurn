@@ -11,7 +11,7 @@
     <string name="Request_UsageStats">Разрешение \"Доступ об использовании\"</string>
     <string name="Request_SpecialThings">Разрешение \"Специальные возможности\"</string>
     <string name="ExtendedSettings">Создать дополнительные блоки</string>
-    <string name="ExtendedSetting_Create">Создать элемент</string>
+    <string name="ExtendedSetting_Create">Создать элемент [%1$d / %2$d]</string>
     <string name="ExtendedSetting_Save">Сохранить</string>
     <string name="ExtendedSetting_WidthUnknown">Ширина: ?px</string>
     <string name="ExtendedSetting_HeightUnknwon">Высота: ?px</string>
@@ -97,4 +97,7 @@
     <string name="GoogleCrashlyticsSettingsTitle">Анонимные отчеты о сбоях</string>
     <string name="ThankYou">Спасибо! :)</string>
     <string name="PleaseRequestOverlay">Требуется разрешение \"Отображение поверх окон\"</string>
+    <string name="FloatingWindowsLimitTitle">Тест прошивки</string>
+    <string name="FloatingWindowsLimitDesc">Идёт тест на максимальное кол-во плавающих окон</string>
+    <string name="FloatingWindowsLimitError">Вы достигли лимита окон вашей прошивки</string>
 </resources>
