@@ -27,7 +27,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import made.by.human.tiktokantiburn.R;
 
 public class MainSettingsFragment extends Fragment {
-    private ConstraintLayout ConstraintDefaultPanelHeight;
+    private ConstraintLayout ConstraintDefaultPanelHeight, HideOnClickOpt;
     private TextInputEditText TriggerPacketName;
 
 
@@ -82,14 +82,23 @@ public class MainSettingsFragment extends Fragment {
 
 
         MaterialSwitch hideOnTouch = view.findViewById(R.id.HideOnTouch);
-        hideOnTouch.setChecked(Settings.Service.getBool(ctx, "HideOnTouch", false));
+        MaterialSwitch ClickThroughToggle = view.findViewById(R.id.ClickThroughToggle);
+
         hideOnTouch.setOnCheckedChangeListener(((buttonView, isChecked) -> {
             Settings.Service.setBool(ctx, "HideOnTouch", isChecked);
+            if (isChecked && !ClickThroughToggle.isChecked()) {
+                ClickThroughToggle.setEnabled(false);
+                ClickThroughToggle.setAlpha(0.75f);
+            } else {
+                ClickThroughToggle.setEnabled(true);
+                ClickThroughToggle.setAlpha(1f);
+            }
         }));
+        hideOnTouch.setChecked(Settings.Service.getBool(ctx, "HideOnTouch", false));
 
-        MaterialSwitch ClickThroughToggle = view.findViewById(R.id.ClickThroughToggle);
         ClickThroughToggle.setOnCheckedChangeListener(((buttonView, isChecked) -> {
             Settings.Service.setBool(ctx, "touchThroughMode", isChecked);
+            HideOnClickOpt.setVisibility(isChecked ? View.GONE : View.VISIBLE);
         }));
         ClickThroughToggle.setChecked(Settings.Service.getBool(ctx, "touchThroughMode", true));
 
@@ -115,12 +124,12 @@ public class MainSettingsFragment extends Fragment {
         crashlytics.setCustomKey("SH-setValue", savedValue);
         if (setValue < DefaultPanelHeight.getValueFrom()) {setValue = (int) DefaultPanelHeight.getValueFrom();}
         if (setValue > DefaultPanelHeight.getValueTo()) {setValue = (int) DefaultPanelHeight.getValueTo();}
-        DefaultPanelHeight.setValueFrom(85.333f);
-        setSafeValue(DefaultPanelHeight, 85);
+        setSafeValue(DefaultPanelHeight, setValue);
 
 
 
         ConstraintDefaultPanelHeight = view.findViewById(R.id.ConstraintDefaultPanelHeight);
+        HideOnClickOpt = view.findViewById(R.id.Main_3);
         MaterialSwitch ShowDefault = view.findViewById(R.id.ShowDefaultElement);
         ShowDefault.setOnCheckedChangeListener(((buttonView, isChecked) -> {
             Settings.Service.setBool(ctx, "ShowDefaultElement", isChecked);
