@@ -57,9 +57,9 @@ public class FloatingWindowService extends Service {
 
         if (touchThroughMode) {
             displayMode |= WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+            floatingView.setClickable(false);
+            floatingView.setFocusable(false);
         }
-
-
 
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -92,8 +92,9 @@ public class FloatingWindowService extends Service {
         floatingViews.add(floatingView);
         floatingView.animate().alpha(alpha).setDuration(AnimationLength).start();
 
-        if (canBeHidden) {
+        if (canBeHidden && !touchThroughMode) {
             floatingView.setOnClickListener(v -> {
+                Toast.makeText(this, "a", Toast.LENGTH_SHORT).show();
                 floatingView.animate().alpha(0f).setDuration(AnimationLength).start();
                 mainHandler.postDelayed(() ->
                                 floatingView.setVisibility(View.GONE),
@@ -107,17 +108,6 @@ public class FloatingWindowService extends Service {
                 }, HiddenActionLength);
             });
         }
-    }
-
-
-    public void DestroyAll(){
-        for (View view : floatingViews) {
-            if (view != null) {
-                view.animate().alpha(0f).setDuration(AnimationLength).start();
-                mainHandler.postDelayed(() -> windowManager.removeView(view), AnimationLength);
-            }
-        }
-        floatingViews.clear();
     }
 
     public boolean GetBoolean(String settingName) {
@@ -153,12 +143,58 @@ public class FloatingWindowService extends Service {
         touchThroughMode = GetBoolean("touchThroughMode");
     }
 
+
+    private void animateAndStopSelf() {
+        if (floatingViews.isEmpty()) {
+            WindowsOpened = false;
+            stopSelf();
+            return;
+        }
+
+        for (View view : floatingViews) {
+            if (view != null) {
+                view.animate().alpha(0f).setDuration(AnimationLength).start();
+            }
+        }
+
+        mainHandler.postDelayed(() -> {
+            destroyAllImmediate();
+            WindowsOpened = false;
+            stopSelf();
+        }, AnimationLength);
+    }
+
+    private void destroyAllImmediate() {
+        for (View view : floatingViews) {
+            if (view != null && view.getParent() != null) {
+                try {
+                    windowManager.removeView(view);
+                } catch (Exception e) {
+                    Log.e("FloatingWindowService", "Ошибка при удалении Window: ", e);
+                }
+            }
+        }
+        floatingViews.clear();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mainHandler.removeCallbacksAndMessages(null);
+        destroyAllImmediate();
+    }
+
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        boolean CloseAll = intent != null && "ACTION_CLOSE_WINDOW".equals(intent.getAction()); // Detecting if popups must be closed
-        if (CloseAll) { onDestroy(); WindowsOpened = false; return START_NOT_STICKY; } // Remove all popups and set "Multi-Open" defend to non active
-        if (WindowsOpened) {return START_NOT_STICKY;} else {WindowsOpened = true;} // Some systems can call event more than one time, its defend to prevent "multi" popups on same places
+        boolean CloseAll = intent != null && "ACTION_CLOSE_WINDOW".equals(intent.getAction());
+        if (CloseAll) { animateAndStopSelf();return START_NOT_STICKY; }
+        if (WindowsOpened) { return START_NOT_STICKY; }
+
         final boolean canBeHidden = GetBoolean("HideOnTouch");
+        useFullScreenAPI = GetBoolean("FullScreenAPISwitch");
+        touchThroughMode = GetBoolean("touchThroughMode");
+        WindowsOpened = true;
 
         if (GetBoolean("ShowDefaultElement")) {
             Display display = windowManager.getDefaultDisplay();
@@ -170,19 +206,9 @@ public class FloatingWindowService extends Service {
         }
         LoadCustomBurns(canBeHidden);
 
-
-
-
         return START_NOT_STICKY;
     }
 
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mainHandler.removeCallbacksAndMessages(null);
-        DestroyAll();
-    }
 
 
 
