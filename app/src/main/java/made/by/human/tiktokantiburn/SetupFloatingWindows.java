@@ -377,15 +377,12 @@ public class SetupFloatingWindows extends Service {
         for (View view : blockburnList) {
             WindowManager.LayoutParams lp = (WindowManager.LayoutParams) view.getLayoutParams();
             savedPositions.add(new Point(lp.x, lp.y));
-            windowManager.removeView(view);
         }
 
-        blockburnList.clear();
-        blockburnRadiusesList.clear();
-        windowManager.removeView(floatingMenu);
+        clearAllViews();
         Settings.Iternal.setBool(this, "viewsSetup", false);
 
-        stopSelf(); // Остановить сервис
+        stopSelf();
     }
 
     private int dpToPx(int dp) {
@@ -501,13 +498,38 @@ public class SetupFloatingWindows extends Service {
         CloseBurnSettings();
     }
 
+    private void clearAllViews() {
+        if (windowManager == null) return;
+
+        for (View view : blockburnList) {
+            try {
+                if (view != null && view.isAttachedToWindow()) {
+                    windowManager.removeView(view);
+                }
+            } catch (IllegalArgumentException e) {
+                Log.e("AntiBurn", "Ошибка удаления плашки: " + e.getMessage());
+            }
+        }
+        blockburnList.clear();
+        blockburnRadiusesList.clear();
+
+        try {
+            if (floatingMenu != null && floatingMenu.isAttachedToWindow()) {
+                windowManager.removeView(floatingMenu);
+            }
+        } catch (IllegalArgumentException e) {
+            Log.e("AntiBurn", "Ошибка удаления меню: " + e.getMessage());
+        }
+    }
+
 
 
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
+        clearAllViews();
         SaveSettings("isSetupping", false);
+        super.onDestroy();
     }
 
 }
