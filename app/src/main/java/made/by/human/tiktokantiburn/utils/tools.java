@@ -24,20 +24,20 @@ public class tools {
 
 
     public static void setSafeValue(Slider slider, int value) {
-        int from = (int) slider.getValueFrom();
-        int to = (int) slider.getValueTo();
-        int step = (int) slider.getStepSize();
+        float from = slider.getValueFrom();
+        float to = slider.getValueTo();
+        float step = slider.getStepSize();
 
-        if (value < from) value = from;
-        if (value > to) value = to;
+        float safeValue = value;
 
-        if (step > 0) {
-            int steps = (value - from + (step / 2)) / step;
-            value = from + (steps * step);
+        safeValue = Math.max(from, Math.min(safeValue, to));
 
-            if (value > to) value = to;
+        if (step > 0f) {
+            safeValue = from + Math.round((safeValue - from) / step) * step;
+
+            safeValue = Math.max(from, Math.min(safeValue, to));
         }
 
-        slider.setValue((float) value);
+        slider.setValue(safeValue);
     }
 }

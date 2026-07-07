@@ -115,7 +115,8 @@ public class MainSettingsFragment extends Fragment {
         crashlytics.setCustomKey("SH-setValue", savedValue);
         if (setValue < DefaultPanelHeight.getValueFrom()) {setValue = (int) DefaultPanelHeight.getValueFrom();}
         if (setValue > DefaultPanelHeight.getValueTo()) {setValue = (int) DefaultPanelHeight.getValueTo();}
-        setSafeValue(DefaultPanelHeight, setValue);
+        DefaultPanelHeight.setValueFrom(85.333f);
+        setSafeValue(DefaultPanelHeight, 85);
 
 
 
