@@ -94,7 +94,6 @@ public class FloatingWindowService extends Service {
 
         if (canBeHidden && !touchThroughMode) {
             floatingView.setOnClickListener(v -> {
-                Toast.makeText(this, "a", Toast.LENGTH_SHORT).show();
                 floatingView.animate().alpha(0f).setDuration(AnimationLength).start();
                 mainHandler.postDelayed(() ->
                                 floatingView.setVisibility(View.GONE),
