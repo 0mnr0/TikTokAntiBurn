@@ -26,12 +26,24 @@ android {
         release {
             isDebuggable = false
             isMinifyEnabled = false
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
             signingConfig = signingConfigs.getByName("debug")
+
+            manifestPlaceholders["firebaseAnalyticsDeactivated"] = "false"
         }
+
+        debug {
+            manifestPlaceholders["firebaseAnalyticsDeactivated"] = "true"
+        }
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
 

@@ -209,7 +209,6 @@ public class MainActivity extends AppCompatActivity {
         if (LogSystem.getInstanceOrNull() == null) {
             LogSystem.init((Application) getApplicationContext());
         }
-
         logger = LogSystem.getInstance();
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);

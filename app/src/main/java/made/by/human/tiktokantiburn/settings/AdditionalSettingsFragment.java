@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.perf.FirebasePerformance;
@@ -82,11 +81,11 @@ public class AdditionalSettingsFragment extends Fragment {
                 Toast.makeText(ctx, getString(ThankYou), Toast.LENGTH_SHORT).show();
             }
 
-
             Settings.Iternal.setBool(ctx, "GoogleHelpers", isChecked);
             FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(isChecked);
             FirebasePerformance.getInstance().setPerformanceCollectionEnabled(isChecked);
         }));
+
 
         MaterialSwitch GitVerseAPI = view.findViewById(R.id.UseGitVerseAPI);
         GitVerseAPI.setChecked(Settings.Iternal.getBool(ctx, "GitVerseAPI", false));
