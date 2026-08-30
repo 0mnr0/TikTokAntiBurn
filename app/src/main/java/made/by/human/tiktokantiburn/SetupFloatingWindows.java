@@ -41,6 +41,7 @@ public class SetupFloatingWindows extends Service {
     final String PrefsFileName = "BlockData";
     boolean dragging = false;
 
+    boolean serviceStarted = false;
     ConstraintLayout blockBurnSettings;
     final int bgColor = Color.parseColor("#272727");
     int maxWindows = 20;
@@ -104,6 +105,10 @@ public class SetupFloatingWindows extends Service {
 
     @SuppressLint("ClickableViewAccessibility")
     public void runService() {
+        if (serviceStarted) {
+            return;
+        }
+        serviceStarted = true;
         Context themedContext = new ContextThemeWrapper(getApplicationContext(), R.style.Theme_TikTokAntiBurn);
         LayoutInflater inflater = LayoutInflater.from(themedContext);
         floatingMenu = inflater.inflate(R.layout.floating_menu, null);
@@ -117,7 +122,13 @@ public class SetupFloatingWindows extends Service {
                         WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
                 PixelFormat.TRANSLUCENT);
 
-        windowManager.addView(floatingMenu, params);
+        try {
+            windowManager.addView(floatingMenu, params);
+        } catch (WindowManager.BadTokenException e) {
+            Log.e("AntiBurn", "Не удалось добавить floatingMenu: " + e.getMessage());
+            stopSelf();
+            return;
+        }
         blockBurnSettings = floatingMenu.findViewById(R.id.BlockBurnSettings);
 
         btnAdd = floatingMenu.findViewById(R.id.btnAdd);
@@ -219,7 +230,6 @@ public class SetupFloatingWindows extends Service {
         });
 
 
-        //Add on click event
         constraintLayout.setOnTouchListener((v, event) -> {
             int[] location = new int[2];
             blockBurnSettings.getLocationOnScreen(location);
@@ -263,7 +273,13 @@ public class SetupFloatingWindows extends Service {
         blockburn.setBackgroundColor(bgColor);
 
         makeViewDraggable(blockburn, params);
-        windowManager.addView(blockburn, params);
+        try {
+            windowManager.addView(blockburn, params);
+        } catch (WindowManager.BadTokenException e) {
+            Log.e("AntiBurn", "Не удалось добавить плашку: " + e.getMessage());
+            Toast.makeText(this, R.string.FloatingWindowsLimitError, Toast.LENGTH_LONG).show();
+            return;
+        }
         blockburnList.add(blockburn);
         blockburnRadiusesList.add(0L);
         CloseBurnSettings();
@@ -486,7 +502,12 @@ public class SetupFloatingWindows extends Service {
             params.gravity = Gravity.TOP | Gravity.START;
             blockburn.setBackground(drawable);
 
-            windowManager.addView(blockburn, params);
+            try {
+                windowManager.addView(blockburn, params);
+            } catch (WindowManager.BadTokenException e) {
+                Log.e("AntiBurn", "Не удалось добавить плашку: " + e.getMessage());
+                break;
+            }
             blockburnList.add(blockburn);
             blockburnRadiusesList.add(blockInfo.radius);
             blockburn.setAlpha(
@@ -501,12 +522,12 @@ public class SetupFloatingWindows extends Service {
     private void clearAllViews() {
         if (windowManager == null) return;
 
-        for (View view : blockburnList) {
+        for (View view : new ArrayList<>(blockburnList)) {
             try {
-                if (view != null && view.isAttachedToWindow()) {
+                if (view != null) {
                     windowManager.removeView(view);
                 }
-            } catch (IllegalArgumentException e) {
+            } catch (Exception e) {
                 Log.e("AntiBurn", "Ошибка удаления плашки: " + e.getMessage());
             }
         }
@@ -514,10 +535,10 @@ public class SetupFloatingWindows extends Service {
         blockburnRadiusesList.clear();
 
         try {
-            if (floatingMenu != null && floatingMenu.isAttachedToWindow()) {
+            if (floatingMenu != null) {
                 windowManager.removeView(floatingMenu);
             }
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             Log.e("AntiBurn", "Ошибка удаления меню: " + e.getMessage());
         }
     }
@@ -533,4 +554,3 @@ public class SetupFloatingWindows extends Service {
     }
 
 }
-
