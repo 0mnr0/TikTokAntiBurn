@@ -30,7 +30,6 @@ import made.by.human.tiktokantiburn.settings.Settings;
 
 public class FloatingWindowService extends Service {
     final int AnimationLength = 225;
-    final int HiddenActionLength = 5000;
     private WindowManager windowManager;
     private LayoutInflater inflater;
     private final List<View> floatingViews = new ArrayList<>();
@@ -42,7 +41,7 @@ public class FloatingWindowService extends Service {
 
 
     @SuppressLint("InflateParams")
-    public void CreateElement(int x, int y, int width, int height, long radius, float alpha, boolean canBeHidden) {
+    public void CreateElement(int x, int y, int width, int height, long radius, float alpha, boolean canBeHidden, int hideTime) {
         View floatingView = inflater.inflate(R.layout.blockburn_quad, null);
 
         int displayMode = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
@@ -104,13 +103,22 @@ public class FloatingWindowService extends Service {
                         floatingView.setVisibility(View.VISIBLE);
                         floatingView.animate().alpha(alpha).setDuration(AnimationLength).start();
                     }
-                }, HiddenActionLength);
+                }, hideTime);
             });
         }
     }
 
     public boolean GetBoolean(String settingName) {
         return Settings.Service.getBool(this, settingName, false);
+    }
+
+    private int getDefaultHideTime() {
+        int saved = Settings.Service.getInt(
+                this,
+                Settings.Service.KEY_DEFAULT_VISIBILITY_TIMER,
+                BlockInfo.DEFAULT_HIDE_TIME
+        );
+        return saved > 0 ? saved : BlockInfo.DEFAULT_HIDE_TIME;
     }
 
 
@@ -130,7 +138,8 @@ public class FloatingWindowService extends Service {
         for (int i = 0; i < blockList.size(); i++) {
             if (i >= maxWindows) {return;}
             BlockInfo blockInfo = blockList.get(i);
-            CreateElement(blockInfo.x, blockInfo.y, blockInfo.width, blockInfo.height, blockInfo.radius, blockInfo.alpha, canBeHidden);
+            int hideTime = blockInfo.hideTime > 0 ? blockInfo.hideTime : getDefaultHideTime();
+            CreateElement(blockInfo.x, blockInfo.y, blockInfo.width, blockInfo.height, blockInfo.radius, blockInfo.alpha, canBeHidden, hideTime);
         }
 
     }
@@ -216,7 +225,7 @@ public class FloatingWindowService extends Service {
             display.getSize(size);
             final int elementWidth = (size.x) / 5 - 30;
             int savedValue = Settings.Service.getInt(this, "DefaultElementHeight", 80);
-            CreateElement((size.x / 2) - (elementWidth / 2), size.y - savedValue, elementWidth, savedValue, 25, 1f, canBeHidden);
+            CreateElement((size.x / 2) - (elementWidth / 2), size.y - savedValue, elementWidth, savedValue, 25, 1f, canBeHidden, getDefaultHideTime());
         }
         LoadCustomBurns(canBeHidden);
 

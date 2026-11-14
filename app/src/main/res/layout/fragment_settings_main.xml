@@ -172,6 +172,42 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/DefaultVisibilityTimer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/fast_setting_bg"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/DefaultVisibilityTimerTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/VisibilityTiimerSettingsTitle"
+                android:textColor="@color/SeekBackgroundFilled"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/DefaultVisibilityTimerSlider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="-8dp"
+                android:layout_marginEnd="-8dp"
+                android:contentDescription="@string/IdleBrightness"
+                android:stepSize="100"
+                android:value="5000"
+                android:valueFrom="500"
+                android:valueTo="10000"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/DefaultVisibilityTimerTitle" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <View
             android:id="@+id/divider9"
             android:layout_width="match_parent"

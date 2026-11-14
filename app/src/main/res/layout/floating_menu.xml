@@ -214,6 +214,40 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/alphaTextView" />
 
+            <View
+                android:id="@+id/divider12"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="6dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/alphaBar" />
+
+            <TextView
+                android:id="@+id/VisibilityTimer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/VisibilityTimerText"
+                android:textColor="@color/ButtonBackground"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider12" />
+
+            <SeekBar
+                android:id="@+id/VisibilityTimerBar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:max="10000"
+                android:min="500"
+                android:progressBackgroundTint="@color/SeekBackgroundFilled"
+                android:progressTint="@color/SeekBackgroundFilled"
+                android:thumbTint="@color/SeekBackgroundFilled"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/VisibilityTimer" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

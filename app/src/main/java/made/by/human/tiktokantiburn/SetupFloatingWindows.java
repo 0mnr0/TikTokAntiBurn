@@ -51,10 +51,11 @@ public class SetupFloatingWindows extends Service {
     View floatingMenu;
     List<View> blockburnList = new ArrayList<>();
     List<Long> blockburnRadiusesList = new ArrayList<>();
+    List<Integer> blockburnHideTimesList = new ArrayList<>();
     List<Point> savedPositions = new ArrayList<>();
 
-    TextView elementWidth, elementHeight, elementRadius, elementAlpha;
-    SeekBar widthBar, heightBar, radiusBar, alphaBar;
+    TextView elementWidth, elementHeight, elementRadius, elementAlpha, VisibilityTimer;
+    SeekBar widthBar, heightBar, radiusBar, alphaBar, VisibilityTimerBar;
     Button RemoveElementBtn, btnSave, btnAdd;
 
     @Override
@@ -65,7 +66,11 @@ public class SetupFloatingWindows extends Service {
         if (lastBlockBurnElement != null) {
             lastBlockBurnElement.setOnTouchListener(null);
             windowManager.removeView(lastBlockBurnElement);
-            blockburnRadiusesList.remove(blockburnList.indexOf(lastBlockBurnElement));
+            int index = blockburnList.indexOf(lastBlockBurnElement);
+            if (index >= 0) {
+                blockburnRadiusesList.remove(index);
+                blockburnHideTimesList.remove(index);
+            }
             blockburnList.remove(lastBlockBurnElement);
             lastBlockBurnElement = null;
             CloseBurnSettings();
@@ -146,10 +151,12 @@ public class SetupFloatingWindows extends Service {
         elementHeight = floatingMenu.findViewById(R.id.elementHeight);
         elementRadius = floatingMenu.findViewById(R.id.elementRadius);
         elementAlpha = floatingMenu.findViewById(R.id.alphaTextView);
+        VisibilityTimer = floatingMenu.findViewById(R.id.VisibilityTimer);
         widthBar = floatingMenu.findViewById(R.id.widthBar);
         heightBar = floatingMenu.findViewById(R.id.heightBar);
         radiusBar = floatingMenu.findViewById(R.id.radiusBar);
         alphaBar = floatingMenu.findViewById(R.id.alphaBar);
+        VisibilityTimerBar = floatingMenu.findViewById(R.id.VisibilityTimerBar);
         RemoveElementBtn = floatingMenu.findViewById(R.id.removeElement);
         btnSave = floatingMenu.findViewById(R.id.btnSave);
         btnSave.setOnClickListener(v -> SaveSettings());
@@ -172,6 +179,25 @@ public class SetupFloatingWindows extends Service {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 lastBlockBurnElement.setAlpha(alphaBar.getProgress() / 100f);
+                RefreshSettings(false);
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) { }
+        });
+
+
+
+        VisibilityTimerBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean fromUser) {
+                if (fromUser && lastBlockBurnElement != null) {
+                    int index = blockburnList.indexOf(lastBlockBurnElement);
+                    if (index >= 0 && index < blockburnHideTimesList.size()) {
+                        blockburnHideTimesList.set(index, i);
+                    }
+                }
                 RefreshSettings(false);
             }
             @Override
@@ -252,10 +278,27 @@ public class SetupFloatingWindows extends Service {
         return idx >= 0 ? blockburnRadiusesList.get(idx) : 0L;
     }
 
+    private int getHideTimeFor(View view) {
+        int idx = blockburnList.indexOf(view);
+        if (idx < 0 || idx >= blockburnHideTimesList.size()) {
+            return getDefaultHideTime();
+        }
+        int hideTime = blockburnHideTimesList.get(idx);
+        return hideTime > 0 ? hideTime : getDefaultHideTime();
+    }
+
+    private int getDefaultHideTime() {
+        int saved = Settings.Service.getInt(
+                this,
+                Settings.Service.KEY_DEFAULT_VISIBILITY_TIMER,
+                BlockInfo.DEFAULT_HIDE_TIME
+        );
+        return saved > 0 ? saved : BlockInfo.DEFAULT_HIDE_TIME;
+    }
+
     @SuppressLint("SetTextI18n")
     private void addBlockburn() {
         if (dragging) {return;}
-        Log.d("blockburnList:", blockburnList.size() + "|" + maxWindows);
         if (blockburnList.size() >= maxWindows) {
             Toast.makeText(this, R.string.FloatingWindowsLimitError, Toast.LENGTH_LONG).show();
             return;
@@ -282,6 +325,7 @@ public class SetupFloatingWindows extends Service {
         }
         blockburnList.add(blockburn);
         blockburnRadiusesList.add(0L);
+        blockburnHideTimesList.add(BlockInfo.HIDE_TIME_UNSET);
         CloseBurnSettings();
         btnAdd.setText(
                 getString(R.string.ExtendedSetting_Create, blockburnList.size(), maxWindows)
@@ -300,12 +344,16 @@ public class SetupFloatingWindows extends Service {
             heightBar.setProgress(BurnHeight);
             radiusBar.setProgress(Math.toIntExact(getRadiusFor(lastBlockBurnElement)));
             alphaBar.setProgress((int) (lastBlockBurnElement.getAlpha() * 100f));
+            VisibilityTimerBar.setProgress(getHideTimeFor(lastBlockBurnElement));
         }
 
         elementWidth.setText(getString(R.string.ExtendedSetting_Width) + BurnWidth + " px");
         elementHeight.setText(getString(R.string.ExtendedSetting_Height) + BurnHeight + " px");
         elementRadius.setText(getString(R.string.borderRadiusSetting) + (getRadiusFor(lastBlockBurnElement)) + " px");
         elementAlpha.setText(getString(R.string.Alpha) + ((int) (lastBlockBurnElement.getAlpha() * 100)) + "%");
+
+        float seconds = getHideTimeFor(lastBlockBurnElement) / 1000f;
+        VisibilityTimer.setText(getString(R.string.VisibilityTimerText, seconds));
     }
 
     private void makeViewDraggable(View view, WindowManager.LayoutParams params) {
@@ -413,6 +461,7 @@ public class SetupFloatingWindows extends Service {
         List<BlockInfo> blockList = new ArrayList<>();
         for (View view : blockburnList) {
             WindowManager.LayoutParams lp = (WindowManager.LayoutParams) view.getLayoutParams();
+            int index = blockburnList.indexOf(view);
             blockList.add(
                     new BlockInfo(
                             lp.width,
@@ -420,7 +469,8 @@ public class SetupFloatingWindows extends Service {
                             lp.x,
                             lp.y,
                             view.getAlpha(),
-                            blockburnRadiusesList.get(blockburnList.indexOf(view))
+                            blockburnRadiusesList.get(index),
+                            blockburnHideTimesList.get(index)
                     )
             );
         }
@@ -510,6 +560,9 @@ public class SetupFloatingWindows extends Service {
             }
             blockburnList.add(blockburn);
             blockburnRadiusesList.add(blockInfo.radius);
+            blockburnHideTimesList.add(
+                    blockInfo.hideTime > 0 ? blockInfo.hideTime : BlockInfo.HIDE_TIME_UNSET
+            );
             blockburn.setAlpha(
                     blockInfo.alpha
             );
@@ -533,6 +586,7 @@ public class SetupFloatingWindows extends Service {
         }
         blockburnList.clear();
         blockburnRadiusesList.clear();
+        blockburnHideTimesList.clear();
 
         try {
             if (floatingMenu != null) {

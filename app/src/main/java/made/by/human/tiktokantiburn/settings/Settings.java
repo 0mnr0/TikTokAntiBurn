@@ -25,6 +25,8 @@ public final class Settings {
     public static final class Service {
         private static final String PREF_NAME = "ServiceSettings";
 
+        public static final String KEY_DEFAULT_VISIBILITY_TIMER = "DefaultVisibilityTimer";
+
         private Service() {}
 
         private static SharedPreferences prefs(Context context) {

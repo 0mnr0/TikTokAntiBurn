@@ -4,9 +4,10 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Point;
 
 import java.util.Locale;
+
+import made.by.human.tiktokantiburn.BlockInfo;
 
 public class DefaultSettings {
     private static boolean isEmpty(Context context, String fileName) {
@@ -43,13 +44,21 @@ public class DefaultSettings {
             Settings.Service.setBool(ctx, "ShowDefaultElement", true);
         }
 
+        if (!Settings.Service.contains(ctx, Settings.Service.KEY_DEFAULT_VISIBILITY_TIMER)) {
+            Settings.Service.setInt(
+                    ctx,
+                    Settings.Service.KEY_DEFAULT_VISIBILITY_TIMER,
+                    BlockInfo.DEFAULT_HIDE_TIME
+            );
+        }
+
+
         if (!Settings.Service.contains(ctx, "DefaultElementHeight")) {
             int screenHeight = ctx.getResources().getDisplayMetrics().heightPixels;
             int savedValue = (int) (screenHeight * 0.09);
             savedValue = (savedValue + 40) / 2;
             Settings.Service.setInt(ctx, "DefaultElementHeight", savedValue);
         }
-
 
 
         // -- Additional --

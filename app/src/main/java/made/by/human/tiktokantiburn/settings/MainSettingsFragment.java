@@ -29,7 +29,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import made.by.human.tiktokantiburn.R;
 
 public class MainSettingsFragment extends Fragment {
-    private ConstraintLayout ConstraintDefaultPanelHeight, HideOnClickOpt;
+    private ConstraintLayout ConstraintDefaultPanelHeight, HideOnClickOpt, DefaultVisibilityTimer;
     private TextInputEditText TriggerPacketName;
 
 
@@ -38,8 +38,6 @@ public class MainSettingsFragment extends Fragment {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(TriggerPacketName.getWindowToken(), 0);
     }
-
-
 
 
 
@@ -70,6 +68,7 @@ public class MainSettingsFragment extends Fragment {
             }
         });
         HideOnClickOpt = view.findViewById(R.id.Main_3);
+        DefaultVisibilityTimer = view.findViewById(R.id.DefaultVisibilityTimer);
         TriggerPacketName.setText(Settings.Service.getString(ctx, "TriggerPacketName", "com.zhiliaoapp.musically"));
         TriggerPacketName.setOnEditorActionListener((v, actionId, event) -> {
             HideTextInputFocus(ctx);
@@ -92,8 +91,10 @@ public class MainSettingsFragment extends Fragment {
             Settings.Service.setBool(ctx, "HideOnTouch", isChecked);
             if (isChecked && !ClickThroughToggle.isChecked()) {
                 ClickThroughMode.setVisibility(View.GONE);
+                DefaultVisibilityTimer.setVisibility(View.VISIBLE);
             } else {
                 ClickThroughMode.setVisibility(View.VISIBLE);
+                DefaultVisibilityTimer.setVisibility(View.GONE);
             }
         }));
         hideOnTouch.setChecked(Settings.Service.getBool(ctx, "HideOnTouch", false));
@@ -103,6 +104,29 @@ public class MainSettingsFragment extends Fragment {
             HideOnClickOpt.setVisibility(isChecked ? View.GONE : View.VISIBLE);
         }));
         ClickThroughToggle.setChecked(Settings.Service.getBool(ctx, "touchThroughMode", true));
+
+        DefaultVisibilityTimer.setVisibility(hideOnTouch.isChecked() && !ClickThroughToggle.isChecked() ? View.VISIBLE : View.GONE);
+
+        Slider defaultVisibilityTimerSlider = view.findViewById(R.id.DefaultVisibilityTimerSlider);
+        defaultVisibilityTimerSlider.setLabelFormatter(val -> {
+            float seconds = val / 1000f;
+            return seconds + getString(R.string.VisibilityTiimerSettingsTooltip);
+        });
+
+        defaultVisibilityTimerSlider.addOnChangeListener((slider, progress, fromUser) -> {
+            Settings.Service.setInt(
+                    ctx,
+                    Settings.Service.KEY_DEFAULT_VISIBILITY_TIMER,
+                    (int) progress
+            );
+        });
+        defaultVisibilityTimerSlider.setValue(
+                Settings.Service.getInt(
+                        ctx,
+                        Settings.Service.KEY_DEFAULT_VISIBILITY_TIMER,
+                        5000
+                )
+        );
 
 
         FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();

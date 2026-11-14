@@ -111,4 +111,7 @@
     <string name="LockTimerDesc">Specify how many minutes you need to wait before locking the screen</string>
     <string name="LockTimerTitle_Format">%1$s — %2$d min.</string>
     <string name="AlphaValueProblem">Android 12 and above, “for security purposes” in this mode limits the opacity of elements, making them 20% transparent</string>
+    <string name="VisibilityTimerText">Hiding time: %1$.1f s</string>
+    <string name="VisibilityTiimerSettingsTitle">Hiding time:</string>
+    <string name="VisibilityTiimerSettingsTooltip">s</string>
 </resources>
