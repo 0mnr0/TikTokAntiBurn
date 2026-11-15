@@ -38,6 +38,22 @@ public class FloatingWindowService extends Service {
 
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
+    private WindowManager getTargetWindowManager() {
+        MainAccessibilityService MAS = MainAccessibilityService.getInstance();
+        if (MAS != null) {
+            return (WindowManager) MAS.getSystemService(WINDOW_SERVICE);
+        }
+        return (WindowManager) getSystemService(WINDOW_SERVICE);
+    }
+
+    private int getWindowType() {
+        MainAccessibilityService MAS = MainAccessibilityService.getInstance();
+        if (MAS != null) {
+            return WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY;
+        }
+        return WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+    }
+
 
 
     @SuppressLint("InflateParams")
@@ -63,7 +79,7 @@ public class FloatingWindowService extends Service {
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                getWindowType(),
                 displayMode,
                 PixelFormat.TRANSLUCENT
         );
@@ -147,7 +163,7 @@ public class FloatingWindowService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+        windowManager = getTargetWindowManager();
         inflater = LayoutInflater.from(this);
         useFullScreenAPI = GetBoolean("FullScreenAPISwitch");
         touchThroughMode = GetBoolean("touchThroughMode");
@@ -178,7 +194,9 @@ public class FloatingWindowService extends Service {
         for (View view : floatingViews) {
             if (view != null && view.getParent() != null) {
                 try {
-                    windowManager.removeView(view);
+                    if (windowManager != null) {
+                        windowManager.removeView(view);
+                    }
                 } catch (Exception e) {
                     Log.e("FloatingWindowService", "Ошибка при удалении Window: ", e);
                 }
@@ -217,6 +235,7 @@ public class FloatingWindowService extends Service {
         final boolean canBeHidden = GetBoolean("HideOnTouch");
         useFullScreenAPI = GetBoolean("FullScreenAPISwitch");
         touchThroughMode = GetBoolean("touchThroughMode");
+        windowManager = getTargetWindowManager();
         WindowsOpened = true;
 
         if (GetBoolean("ShowDefaultElement")) {

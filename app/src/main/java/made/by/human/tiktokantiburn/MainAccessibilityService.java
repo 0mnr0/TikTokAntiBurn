@@ -21,6 +21,12 @@ import made.by.human.tiktokantiburn.settings.Settings;
 
 @SuppressLint("AccessibilityPolicy")
 public class MainAccessibilityService extends android.accessibilityservice.AccessibilityService {
+    private static MainAccessibilityService instance;
+
+    public static MainAccessibilityService getInstance() {
+        return instance;
+    }
+
     LogSystem logger;
     boolean CompatibilityMode = false;
 
@@ -174,6 +180,7 @@ public class MainAccessibilityService extends android.accessibilityservice.Acces
     @Override
     public void onServiceConnected() {
         super.onServiceConnected();
+        instance = this;
         Log.d("MyAccessibilityService", "Accessibility Service connected");
         if (LogSystem.getInstanceOrNull() == null) {
             LogSystem.init((Application) getApplicationContext());
@@ -182,7 +189,17 @@ public class MainAccessibilityService extends android.accessibilityservice.Acces
         logger.Save("MyAccessibilityService", "Service connected", true, true);
     }
 
+    @Override
+    public boolean onUnbind(Intent intent) {
+        instance = null;
+        return super.onUnbind(intent);
+    }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        instance = null;
+    }
 
     @Override
     public void onInterrupt() {

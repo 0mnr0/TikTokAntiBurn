@@ -3,8 +3,6 @@ package made.by.human.tiktokantiburn.settings;
 import static made.by.human.tiktokantiburn.utils.tools.setSafeValue;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,9 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -154,7 +150,7 @@ public class MainSettingsFragment extends Fragment {
 
 
         TextView AlphaValueProblem = view.findViewById(R.id.AlphaValueProblem);
-        AlphaValueProblem.setVisibility(Build.VERSION.SDK_INT <= Build.VERSION_CODES.R ? View.GONE : View.VISIBLE);
+        AlphaValueProblem.setVisibility(View.GONE);
 
 
         ConstraintDefaultPanelHeight = view.findViewById(R.id.ConstraintDefaultPanelHeight);
