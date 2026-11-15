@@ -96,7 +96,7 @@ public class UpdateChecker {
 
     public static ParseResult tryGitVerse(Context ctx) {
         ParseResult result = new ParseResult();
-        if (!Settings.Iternal.getBool(ctx, "GitVerseAPI", false)) {
+        if (false) { // i'll disable this for now
             return result;
         }
 
